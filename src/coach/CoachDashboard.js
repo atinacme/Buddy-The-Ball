@@ -16,7 +16,7 @@ export default function CoachDashboard({ navigation }) {
                 <Button
                     title="PHOTOS"
                     color="#f194ff"
-                    onPress={() => navigation.navigate("CoachSchoolList")}
+                    onPress={() => navigation.navigate("CoachSchoolsPhotos")}
                 />
                 <Button
                     title="CALENDAR"
@@ -28,7 +28,7 @@ export default function CoachDashboard({ navigation }) {
                 <Button
                     title="MESSAGES"
                     color="#f194ff"
-                // onPress={() => navigation.navigate("CustomerDashboard")}
+                    onPress={() => navigation.navigate("CoachMessages")}
                 />
                 <Button
                     title="SCHOOLS"
