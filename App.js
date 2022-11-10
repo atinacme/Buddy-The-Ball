@@ -14,10 +14,11 @@ import CustomerDashboard from './src/customer/CustomerDashboard.js';
 import CustomerPhotos from './src/customer/CustomerPhotos.js';
 import CustomerParticularPhoto from './src/customer/CustomerParticularPhoto.js';
 import CoachDashboard from './src/coach/CoachDashboard.js';
-import CoachSchoolList from './src/coach/CoachSchoolList.js';
+import CoachSchoolsPhotos from './src/coach/CoachSchoolsPhotos.js';
 import CoachParticularSchoolPhotos from './src/coach/CoachParticularSchoolPhotos.js';
 import CoachParticularSchoolParticularPhoto from './src/coach/CoachParticularSchoolParticularPhoto.js';
 import CoachCalendar from './src/coach/CoachCalendar.js';
+import CoachMesages from './src/coach/CoachMesages.js';
 
 const Stack = createNativeStackNavigator();
 const App = () => {
@@ -29,10 +30,11 @@ const App = () => {
         <Stack.Screen name="CustomerPhotos" component={CustomerPhotos} />
         <Stack.Screen name="CustomerParticularPhoto" component={CustomerParticularPhoto} />
         <Stack.Screen name="CoachDashboard" component={CoachDashboard} />
-        <Stack.Screen name="CoachSchoolList" component={CoachSchoolList} />
+        <Stack.Screen name="CoachSchoolsPhotos" component={CoachSchoolsPhotos} />
         <Stack.Screen name="CoachParticularSchoolPhotos" component={CoachParticularSchoolPhotos} />
         <Stack.Screen name="CoachParticularSchoolParticularPhoto" component={CoachParticularSchoolParticularPhoto} />
         <Stack.Screen name="CoachCalendar" component={CoachCalendar} />
+        <Stack.Screen name="CoachMessages" component={CoachMesages} />
       </Stack.Navigator>
     </NavigationContainer>
   );
