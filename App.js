@@ -19,6 +19,8 @@ import CoachParticularSchoolPhotos from './src/coach/CoachParticularSchoolPhotos
 import CoachParticularSchoolParticularPhoto from './src/coach/CoachParticularSchoolParticularPhoto.js';
 import CoachCalendar from './src/coach/CoachCalendar.js';
 import CoachMesages from './src/coach/CoachMesages.js';
+import CoachSchoolList from './src/coach/CoachSchoolList.js';
+import CoachParticularSchoolStudents from './src/coach/CoachParticularSchoolStudents.js';
 
 const Stack = createNativeStackNavigator();
 const App = () => {
@@ -35,6 +37,8 @@ const App = () => {
         <Stack.Screen name="CoachParticularSchoolParticularPhoto" component={CoachParticularSchoolParticularPhoto} />
         <Stack.Screen name="CoachCalendar" component={CoachCalendar} />
         <Stack.Screen name="CoachMessages" component={CoachMesages} />
+        <Stack.Screen name="CoachSchoolList" component={CoachSchoolList} />
+        <Stack.Screen name="CoachParticularSchoolStudents" component={CoachParticularSchoolStudents} />
       </Stack.Navigator>
     </NavigationContainer>
   );

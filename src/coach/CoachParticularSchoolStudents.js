@@ -2,7 +2,7 @@ import React from 'react'
 import { SafeAreaView, Text, StyleSheet, TouchableOpacity } from 'react-native'
 import { DataTable } from 'react-native-paper';
 
-export default function CoachSchoolList({ navigation }) {
+export default function CoachParticularSchoolStudents() {
     const schools = [
         {
             id: 1,
@@ -22,12 +22,27 @@ export default function CoachSchoolList({ navigation }) {
     ]
     return (
         <SafeAreaView>
-            <Text>TERRITORY: LAS VEGAS</Text>
-            <Text>CURRENT SEASON: FALL 1 - Aug 15 - Oct 17</Text>
+            <Text>Lucknow Public School</Text>
             <DataTable style={styles.container}>
                 <DataTable.Header style={styles.tableHeader}>
-                    <DataTable.Title>DAY</DataTable.Title>
-                    <DataTable.Title>SCHOOL</DataTable.Title>
+                    <DataTable.Title>AT-</DataTable.Title>
+                    <DataTable.Title></DataTable.Title>
+                    <DataTable.Title></DataTable.Title>
+                    <DataTable.Title></DataTable.Title>
+                    <DataTable.Title></DataTable.Title>
+                    <DataTable.Title></DataTable.Title>
+                    <DataTable.Title></DataTable.Title>
+                    <DataTable.Title></DataTable.Title>
+                </DataTable.Header>
+                <DataTable.Header style={styles.tableHeader}>
+                    <DataTable.Title>Week 1</DataTable.Title>
+                    <DataTable.Title>Week 2</DataTable.Title>
+                    <DataTable.Title>Week 3</DataTable.Title>
+                    <DataTable.Title>Week 4</DataTable.Title>
+                    <DataTable.Title>Week 5</DataTable.Title>
+                    <DataTable.Title>Week 6</DataTable.Title>
+                    <DataTable.Title>Week 7</DataTable.Title>
+                    <DataTable.Title>Week 8</DataTable.Title>
                 </DataTable.Header>
                 {schools.map(item => {
                     return (

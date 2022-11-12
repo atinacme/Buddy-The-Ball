@@ -6,16 +6,19 @@ import rightArrow from '../assets/right-arrow.png'
 export default function CoachMesages() {
     const messages = [
         {
+            id: 1,
             name: 'Atin Gupta',
             day: 'Wednesday',
             message: 'Today is wednesday'
         },
         {
+            id: 2,
             name: 'Sugam Mahendaru',
             day: 'Yesterday',
             message: 'Yesterday is tuesday'
         },
         {
+            id: 3,
             name: 'Bhupendra Singh',
             day: 'Monday',
             message: 'Monday is the first day'
@@ -25,7 +28,7 @@ export default function CoachMesages() {
         <SafeAreaView>
             {messages.map(item => {
                 return (
-                    <View>
+                    <View key={item.id}>
                         <Image source={user} style={{ width: 40, height: 40 }} />
                         <Text>{item.name}</Text>
                         <Text>{item.day}</Text>

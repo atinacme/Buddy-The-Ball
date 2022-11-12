@@ -33,7 +33,7 @@ export default function CoachDashboard({ navigation }) {
                 <Button
                     title="SCHOOLS"
                     color="#f194ff"
-                // onPress={() => navigation.navigate("CustomerDashboard")}
+                    onPress={() => navigation.navigate("CoachSchoolList")}
                 />
             </View>
         </SafeAreaView>
