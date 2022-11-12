@@ -46,7 +46,9 @@ export default function CustomerDashboard({ navigation }) {
     return (
         <SafeAreaView style={styles.wrapper}>
             <Text style={styles.title}>Customer Dashboard</Text>
-         <Image source={{ uri: 'https://picsum.photos/seed/picsum/200/300' }} style={styles.img} />
+            <Text style={styles.dashimgWrap}>
+                <Image source={{ uri: 'https://picsum.photos/seed/picsum/200/300' }} style={styles.img} />
+            </Text>
             <Text style={styles.playPara}>Upload Player Picture</Text>
             <Text style={styles.heading}>Cayson Smith</Text>
             {/* <SectionList
@@ -61,25 +63,22 @@ export default function CustomerDashboard({ navigation }) {
             <Text>Favorite Pro Player: ROGER FEDERER</Text>
             <Text>Handed: LEFT</Text>
             <Text>Favorite Drill: SELF RALLIES</Text>
-            <Text style={styles.buttonWrap}>
-            <View style={styles.buttons}>
-                <Text style={styles.label}>Class Photos</Text>
-                <Button
-                    title="ENTER"
-                    color="#000"
-                    onPress={() => navigation.navigate("CustomerPhotos")}
-                />
-            </View>
-            <View style={styles.buttons}>
-                <Text style={styles.label}>Current Award:</Text>
-                <Button
-                    title="Enter"
-                    color="#000"
-                // onPress={() => navigation.navigate("CustomerDashboard")}
-                />
-            </View>
-            </Text>
-            
+                <View style={styles.buttons}>
+                    <Text style={styles.label}>Class Photos</Text>
+                    <Button
+                        title="ENTER"
+                        color="#000"
+                        onPress={() => navigation.navigate("CustomerPhotos")}
+                    />
+                </View>
+                <View style={styles.buttons}>
+                    <Text style={styles.label}>Current Award:</Text>
+                    <Button
+                        title="Enter"
+                        color="#000"
+                    // onPress={() => navigation.navigate("CustomerDashboard")}
+                    />
+                </View>
             <View>
                 <Text style={styles.label}>Message School Coach</Text>
                 <Button
@@ -118,11 +117,6 @@ const styles = StyleSheet.create({
         paddingLeft: 10,
         paddingRight: 10
     },
-    img: {
-        width: 140,
-        height: 140,
-        borderRadius: 100,
-    },
     playPara: {
         textAlign: 'center',
         color: '#000'
@@ -132,18 +126,13 @@ const styles = StyleSheet.create({
         textAlign: 'center',
         padding: 20
     },
+    dashimgWrap: {
+        textAlign: 'center',
+    },
     label: {
         fontSize: 18,
         color: '#000',
         paddingTop: 10,
-        paddingBottom: 10  
-       },
-       buttonWrap: {
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'space-between'
-       },
-       buttons: {
-        width: 10
-       }
+        paddingBottom: 10
+    },
 });
