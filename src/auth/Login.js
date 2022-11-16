@@ -1,16 +1,11 @@
-import React from 'react'
-import { Text, SafeAreaView, TextInput, StyleSheet, Button } from "react-native";
+import React from 'react';
+import { Text, SafeAreaView, TextInput, StyleSheet, Button, Image } from "react-native";
+import buddy from '../assets/buddy.png';
 
 export default function Login({ navigation }) {
     return (
         <SafeAreaView style={styles.wrapper}>
-            <Text style={styles.label}>Login</Text>
-            
-            <TextInput
-                style={styles.input}
-            // onChangeText={onChangeText}
-            // value={text}
-            />
+            <Image source={buddy} style={{ width: 200, height: 100, marginLeft: 'auto', marginRight: 'auto' }}  />
             <Text style={styles.label}>Email</Text>
             <TextInput
                 style={styles.input}
@@ -26,8 +21,8 @@ export default function Login({ navigation }) {
             <Button
                 title="Login"
                 color="#000"
-                style={{color: 'red', marginTop: 10, padding: '40'}}
-                onPress={() => navigation.navigate("CustomerDashboard")}
+                style={{ marginTop: 40, marginBottom: 40 }} 
+                onPress={() => navigation.navigate("CoachDashboard") }
             />
             <Text style={styles.labeLink}>Forgot Password?</Text>
             <Text style={styles.labeLink}>Create Account?</Text>
@@ -37,27 +32,27 @@ export default function Login({ navigation }) {
 
 const styles = StyleSheet.create({
     wrapper: {
-        padding: 30
+        padding: 20
     },
     input: {
         borderWidth: 1,
         padding: 10,
         borderRadius: 5,
-        marginTop: 10,
+        marginTop: 5,
         marginBottom: 10
     },
     label: {
-     fontSize: 18,
-     color: '#000',
-     paddingTop: 10,
-     paddingBottom: 10  
+        fontSize: 18,
+        color: '#000',
+        paddingTop: 10,
+        paddingBottom: 0  
     },
+
     labeLink: {
         fontSize: 14,
         textAlign: 'center',
         color: "#000",
        padding: 10,
        cursor: 'pointer'
-    },
-   
+    }
 });

@@ -1,21 +1,44 @@
 import React from 'react'
-import { Text, View, Image, TouchableOpacity } from 'react-native'
+import { Text, View, Image, TouchableOpacity, StyleSheet, SafeAreaView } from 'react-native'
+import user from '../assets/user.png'
 
 export default function CoachParticularSchoolPhotos({ navigation }) {
     return (
-        <View>
-            <Text>Kiddie Academy Anderson</Text>
-            <TouchableOpacity onPress={() => navigation.navigate("CoachParticularSchoolParticularPhoto")}><Image source={{ uri: 'https://picsum.photos/seed/picsum/200/300' }} style={{ width: 40, height: 40 }} /></TouchableOpacity>
-            <Image source={{ uri: 'https://picsum.photos/seed/picsum/200/300' }} style={{ width: 40, height: 40 }} />
-            <Image source={{ uri: 'https://picsum.photos/seed/picsum/200/300' }} style={{ width: 40, height: 40 }} />
-            <Image source={{ uri: 'https://picsum.photos/seed/picsum/200/300' }} style={{ width: 40, height: 40 }} />
-            <Image source={{ uri: 'https://picsum.photos/seed/picsum/200/300' }} style={{ width: 40, height: 40 }} />
-            <Image source={{ uri: 'https://picsum.photos/seed/picsum/200/300' }} style={{ width: 40, height: 40 }} />
-            <Image source={{ uri: 'https://picsum.photos/seed/picsum/200/300' }} style={{ width: 40, height: 40 }} />
-            <Image source={{ uri: 'https://picsum.photos/seed/picsum/200/300' }} style={{ width: 40, height: 40 }} />
-            <Image source={{ uri: 'https://picsum.photos/seed/picsum/200/300' }} style={{ width: 40, height: 40 }} />
-            <Image source={{ uri: 'https://picsum.photos/seed/picsum/200/300' }} style={{ width: 40, height: 40 }} />
-            <Image source={{ uri: 'https://picsum.photos/seed/picsum/200/300' }} style={{ width: 40, height: 40 }} />
+        <SafeAreaView>
+        <Text style={styles.label}>Kiddie Academy Anderson</Text>
+        <View style={styles.imgWrap}>
+            <TouchableOpacity onPress={() => navigation.navigate("CustomerParticularPhoto")}>
+                <Image source={user} style={{ width: 120, height: 140 }} />
+            </TouchableOpacity>
+            <Image source={user} style={{ width: 120, height: 140 }} />
+            <Image source={user} style={{ width: 120, height: 140 }} />
+            <Image source={user} style={{ width: 120, height: 140 }} />
+            <Image source={user} style={{ width: 120, height: 140 }} />
+            <Image source={user} style={{ width: 120, height: 140 }} />
+            <Image source={user} style={{ width: 120, height: 140 }} />
+            <Image source={user} style={{ width: 120, height: 140 }} />
+            <Image source={user} style={{ width: 120, height: 140 }} />
+            <Image source={user} style={{ width: 120, height: 140 }} />
+            <Image source={user} style={{ width: 120, height: 140 }} />
         </View>
+    </SafeAreaView>
     )
 }
+const styles = StyleSheet.create({
+    wrapper: {
+        padding: 20
+    },
+    label: {
+        fontSize: 20,
+        color: '#000',
+        paddingTop: 10,
+        paddingBottom: 10,
+        textAlign: 'center'
+    },
+    imgWrap: {
+        display: 'flex',
+        alignItems: 'center',
+        flexWrap: 'wrap',
+        flexDirection: 'row'
+    }
+});
