@@ -15,14 +15,14 @@ module.exports = function (app) {
     app.get("/api/test/user", [authJwt.verifyToken], controller.userBoard);
 
     app.get(
-        "/api/test/mod",
-        [authJwt.verifyToken, authJwt.isModerator],
-        controller.moderatorBoard
+        "/api/test/coach",
+        [authJwt.verifyToken, authJwt.isCoach],
+        controller.coachBoard
     );
 
     app.get(
         "/api/test/admin",
-        [authJwt.verifyToken, authJwt.isAdmin],
-        controller.adminBoard
+        [authJwt.verifyToken, authJwt.isSuperAdmin],
+        controller.superAdminBoard
     );
 };
