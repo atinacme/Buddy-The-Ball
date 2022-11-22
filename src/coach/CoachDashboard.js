@@ -9,10 +9,10 @@ export default function CoachDashboard({ navigation }) {
             </Text>
             <Text style={styles.playPara}>Upload Coach Picture</Text>
             <Text style={styles.heading}>Coach Tanner Townsend</Text>
-            <Text>Tennis Club: INDEPENDENT</Text>
-            <Text>Favorite Pro Player: ROGER FEDERER</Text>
-            <Text>Handed: LEFT</Text>
-            <Text>Favorite Drill: SELF RALLIES</Text>
+            <Text style={styles.txt}>Tennis Club: INDEPENDENT</Text>
+            <Text style={styles.txt}>Favorite Pro Player: ROGER FEDERER</Text>
+            <Text style={styles.txt}>Handed: LEFT</Text>
+            <Text style={styles.txt}>Favorite Drill: SELF RALLIES</Text>
             <View style={styles.btnCta}>
                 <View style={styles.btnCtawrap}>
                     <Button
@@ -61,10 +61,17 @@ const styles = StyleSheet.create({
     },
     header: {
         fontSize: 32,
-        backgroundColor: "#fff"
+        backgroundColor: "#fff",
+        fontFamily: 'LemonJuice'
     },
     title: {
-        fontSize: 24
+        fontSize: 24,
+        fontFamily: 'LemonJuice'
+    },
+    txt: {
+        fontFamily: 'LemonJuice',
+        textAlign: 'center',
+        fontSize: 18,
     },
     dashimgWrap: {
         textAlign: 'center'
@@ -73,7 +80,8 @@ const styles = StyleSheet.create({
         fontSize: 18,
         color: '#000',
         paddingTop: 10,
-        paddingBottom: 10
+        paddingBottom: 10,
+        fontFamily: 'LemonJuice'
     },
     dashContentWrap: {
         display: 'flex',
@@ -88,7 +96,8 @@ const styles = StyleSheet.create({
     heading: {
         fontSize: 25,
         textAlign: 'center',
-        padding: 5
+        padding: 5,
+        fontFamily: 'LemonJuice'
     },
     wrapper: {
         paddingTop: 0,
@@ -98,7 +107,8 @@ const styles = StyleSheet.create({
     },
     playPara: {
         textAlign: 'center',
-        color: '#000'
+        color: '#000',
+        fontFamily: 'LemonJuice'
     },
     btnCta: {
         display: 'flex',
@@ -107,6 +117,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'space-between',
         paddingTop: 20,
+        fontFamily: 'LemonJuice'
     },
     cta: {
         alignItems: 'center',
@@ -116,9 +127,11 @@ const styles = StyleSheet.create({
         borderRadius: 4,
         elevation: 3,
         backgroundColor: 'black',
+        fontFamily: 'LemonJuice'
     },
     btnCtawrap: {
         width: 160,
-        marginBottom: 10
+        marginBottom: 10,
+        fontFamily: 'LemonJuice'
     }
 });

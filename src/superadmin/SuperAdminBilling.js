@@ -1,5 +1,5 @@
 import React from 'react'
-import { SafeAreaView, StyleSheet } from 'react-native'
+import { SafeAreaView, StyleSheet, Text } from 'react-native'
 import { DataTable } from 'react-native-paper';
 
 export default function SuperAdminBilling() {
@@ -33,15 +33,15 @@ export default function SuperAdminBilling() {
         <SafeAreaView>
             <DataTable style={styles.container}>
                 <DataTable.Header style={styles.tableHeader}>
-                    <DataTable.Title>Child #</DataTable.Title>
-                    <DataTable.Title>Child Name</DataTable.Title>
-                    <DataTable.Title>School #</DataTable.Title>
-                    <DataTable.Title>Class Date</DataTable.Title>
+                    <DataTable.Title style={styles.title}>Child #</DataTable.Title>
+                    <DataTable.Title style={styles.title}>Child Name</DataTable.Title>
+                    <DataTable.Title style={styles.title}>School #</DataTable.Title>
+                    <DataTable.Title style={styles.title}>Class Date</DataTable.Title>
                 </DataTable.Header>
                 {billingList.map(item => {
                     return (
                         <DataTable.Row key={item.child_id}>
-                            <DataTable.Cell>{item.child_id}</DataTable.Cell>
+                         <DataTable.Cell>{item.child_id}</DataTable.Cell>
                             <DataTable.Cell>{item.child_name}</DataTable.Cell>
                             <DataTable.Cell>{item.school}</DataTable.Cell>
                             <DataTable.Cell>{item.class_date}</DataTable.Cell>
@@ -55,9 +55,23 @@ export default function SuperAdminBilling() {
 
 const styles = StyleSheet.create({
     container: {
-        padding: 15,
+        margin: 10,
+        borderColor: '#e5bb9f',
+        borderWidth: 1,
+        overflow: 'scroll',
+        width: 350,
+        marginLeft: 'auto',
+        marginRight: 'auto',
+        fontFamily: 'LemonJuice',
+        fontSize: 12
     },
     tableHeader: {
-        backgroundColor: '#DCDCDC',
+        backgroundColor: '#f3d8c6',
+        textAlign: 'center',
+        fontFamily: 'LemonJuice',
+        color: '#fff'
     },
+    title: {
+        fontSize: 10,
+    }
 });

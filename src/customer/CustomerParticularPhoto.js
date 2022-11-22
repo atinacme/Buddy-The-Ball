@@ -65,7 +65,8 @@ const styles = StyleSheet.create({
         marginTop: 10,
         color: '#fff',
         padding: 10,
-        backgroundColor: '#302f35'
+        backgroundColor: '#302f35',
+        fontFamily: 'LemonJuice'
     },
     iconWrap: {
         display: 'flex',
@@ -83,7 +84,8 @@ const styles = StyleSheet.create({
         borderRadius: 20,
     },
     icontxt: {
-        color: '#fff'
+        color: '#fff',
+        fontFamily: 'LemonJuice'
     },
     iconWrapper: {
         display: 'flex',
@@ -95,6 +97,7 @@ const styles = StyleSheet.create({
     date: {
         color: '#fff',
         textAlign: 'right',
-        float: 'right'
+        float: 'right',
+        fontFamily: 'LemonJuice'
     }
 });

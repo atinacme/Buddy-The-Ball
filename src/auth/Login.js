@@ -1,8 +1,10 @@
 import React from 'react';
 import { Text, SafeAreaView, TextInput, StyleSheet, Button, Image } from "react-native";
 import buddy from '../assets/buddy.png';
+import Lemon from '../assets/fonts/LemonJuice.ttf';
 
 export default function Login({ navigation }) {
+    // console.log("fonts----->", fonts.assets[0])
     return (
         <SafeAreaView style={styles.wrapper}>
             <Image source={buddy} style={{ width: 200, height: 100, marginLeft: 'auto', marginRight: 'auto' }}  />
@@ -21,8 +23,8 @@ export default function Login({ navigation }) {
             <Button
                 title="Login"
                 color="#000"
-                style={{ marginTop: 40, marginBottom: 40 }} 
-                onPress={() => navigation.navigate("CoachDashboard") }
+                style={{ marginTop: 40, marginBottom: 40, fontFamily: 'LemonJuice' }} 
+                onPress={() => navigation.navigate("SuperAdminDashboard") }
             />
             <Text style={styles.labeLink}>Forgot Password?</Text>
             <Text style={styles.labeLink}>Create Account?</Text>
@@ -39,13 +41,15 @@ const styles = StyleSheet.create({
         padding: 10,
         borderRadius: 5,
         marginTop: 5,
-        marginBottom: 10
+        marginBottom: 10,
+        fontFamily: 'LemonJuice'
     },
     label: {
         fontSize: 18,
         color: '#000',
         paddingTop: 10,
-        paddingBottom: 0  
+        paddingBottom: 0 ,
+        fontFamily: 'LemonJuice'
     },
 
     labeLink: {
@@ -53,6 +57,7 @@ const styles = StyleSheet.create({
         textAlign: 'center',
         color: "#000",
        padding: 10,
-       cursor: 'pointer'
+       cursor: 'pointer',
+       fontFamily: 'LemonJuice'
     }
 });

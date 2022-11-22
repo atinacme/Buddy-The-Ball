@@ -29,16 +29,18 @@ export default function CustomerMessages() {
             {messages.map(item => {
                 return (
                     <View key={item.id} style={styles.messagewrap}>
-                        <Image source={user} style={{ width: 30, height: 30 }} />
-                        {/* <Text style={styles.nameDay}> */}
-                            <Text style={styles.msgName}>{item.name}</Text>
-                            <Text style={styles.rightsec}>
-                                <Text style={styles.msgDay}>{item.day}</Text>
-                                <Image source={rightArrow} style={{ width: 15, height: 15  }} />
-                            </Text>
-                        {/* </Text> */}
+                    <Image source={user} style={{ width: 30, height: 30 }} />
+                    {/* <Text style={styles.nameDay}> */}
+                        <Text style={styles.msgName}>{item.name}</Text>
                         <Text style={styles.msgWrap}>{item.message}</Text>
-                    </View>
+                        <Text style={styles.rightsec}>
+                            <Text style={styles.msgDay}>{item.day}</Text>
+                            <Image source={rightArrow} style={{ width: 15, height: 15  }} />
+                        </Text>
+                       
+                    {/* </Text> */}
+                    
+                </View>
                 )
             })}
         </SafeAreaView>
@@ -58,17 +60,20 @@ const styles = StyleSheet.create({
         alignItems: 'center'
     },
     msgWrap: {
-        paddingLeft: 55,
+      
         paddingTop: 0,
-        marginTop: 0
+        marginTop: 0,
+            fontFamily: 'LemonJuice'
     },
     msgName: {
         textAlign: 'left',
-        color: '#000'
+        color: '#000',
+        fontFamily: 'LemonJuice'
     },
     msgDay: {
         textAlign: 'right',
        color: '#000',
-       marginRight: 10
-    }
+       marginRight: 10,
+       fontFamily: 'LemonJuice'
+    },
 });
