@@ -7,17 +7,17 @@ export default function Login({ navigation }) {
     const [email, setEmail] = useState();
     const [password, setPassword] = useState();
     const handleSignIn = async () => {
-        try {
-            const data = {
-                email: email,
-                password: password
-            }
-            const result = await SignInService(data);
-            console.log("result--->", result)
-            if (result.roles[0] === "ROLE_CUSTOMER") {
-                navigation.navigate("CustomerDashboard")
-            }
-        } catch (e) { }
+        // try {
+        //     const data = {
+        //         email: email,
+        //         password: password
+        //     }
+        //     const result = await SignInService(data);
+        //     console.log("result--->", result)
+        //     if (result.roles[0] === "ROLE_CUSTOMER") {
+                navigation.navigate("SuperAdminDashboard")
+        //     }
+        // } catch (e) { }
     }
     return (
         <SafeAreaView style={styles.wrapper}>
@@ -37,13 +37,8 @@ export default function Login({ navigation }) {
             <Button
                 title="Login"
                 color="#000"
-<<<<<<< HEAD:src/auth/Login.js
-                style={{ marginTop: 40, marginBottom: 40, fontFamily: 'LemonJuice' }} 
-                onPress={() => navigation.navigate("SuperAdminDashboard") }
-=======
                 style={{ marginTop: 40, marginBottom: 40 }}
                 onPress={handleSignIn}
->>>>>>> 058ee82128b30dfcb57497e7452a93c5996f57f7:BuddyTheBall-FrontEnd/src/auth/Login.js
             />
             <Text style={styles.labeLink}>Forgot Password?</Text>
             <Text style={styles.labeLink}>Create Account?</Text>
@@ -67,25 +62,16 @@ const styles = StyleSheet.create({
         fontSize: 18,
         color: '#000',
         paddingTop: 10,
-<<<<<<< HEAD:src/auth/Login.js
-        paddingBottom: 0 ,
+        paddingBottom: 0,
         fontFamily: 'LemonJuice'
-=======
-        paddingBottom: 0
->>>>>>> 058ee82128b30dfcb57497e7452a93c5996f57f7:BuddyTheBall-FrontEnd/src/auth/Login.js
     },
 
     labeLink: {
         fontSize: 14,
         textAlign: 'center',
         color: "#000",
-<<<<<<< HEAD:src/auth/Login.js
-       padding: 10,
-       cursor: 'pointer',
-       fontFamily: 'LemonJuice'
-=======
         padding: 10,
-        cursor: 'pointer'
->>>>>>> 058ee82128b30dfcb57497e7452a93c5996f57f7:BuddyTheBall-FrontEnd/src/auth/Login.js
+        cursor: 'pointer',
+        fontFamily: 'LemonJuice'
     }
 });

@@ -2,7 +2,7 @@ import React from 'react'
 import { SafeAreaView, Text, StyleSheet, View, TouchableOpacity, Image, ScrollView } from 'react-native'
 import user from '../assets/user.png'
 
-export default function SuperAdminPhotos() {
+export default function SuperAdminPhotos({navigation}) {
     return (
         <SafeAreaView>
             <Text style={styles.label}>Kiddie Academy Anderson</Text>         
