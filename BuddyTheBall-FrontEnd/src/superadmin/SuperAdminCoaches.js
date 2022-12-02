@@ -59,9 +59,21 @@ export default function SuperAdminCoaches() {
 
 const styles = StyleSheet.create({
     container: {
-        padding: 15,
+        margin: 10,
+        borderColor: '#000',
+        borderWidth: 1,
+        overflow: 'scroll',
+        width: 350,
+        marginLeft: 'auto',
+        marginRight: 'auto',
+        fontFamily: 'LemonJuice',
+        fontSize: 12
     },
     tableHeader: {
-        backgroundColor: '#DCDCDC',
+        backgroundColor: '#f3d8c6',
+        textAlign: 'center',
+        fontFamily: 'LemonJuice',
+        color: '#fff'
     },
+    
 });

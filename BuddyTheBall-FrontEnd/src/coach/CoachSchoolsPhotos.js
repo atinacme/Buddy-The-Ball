@@ -13,10 +13,10 @@ export default function CoachSchoolsPhotos({ navigation }) {
                 <View style={StyleSheet.imgWrapper}>
                     <Image source={kids} style={{ width: 340, height: 300 }} />
                     <Text style={styles.kidimg}>
-                            <Image source={galley} style={{ width: 40, height: 50 }} />
-                        </Text>
+                        <Image source={galley} style={{ width: 40, height: 50 }} />
+                    </Text>
                     <View style={styles.imgWrap}>
-                       
+
                         <Text style={styles.imgDes}>
                             <Text style={styles.day}>Yesterday</Text>
                             {'\n'}
@@ -38,10 +38,10 @@ export default function CoachSchoolsPhotos({ navigation }) {
                 <View style={StyleSheet.imgWrapper}>
                     <Image source={kids} style={{ width: 340, height: 300 }} />
                     <Text style={styles.kidimg}>
-                            <Image source={galley} style={{ width: 40, height: 50 }} />
-                        </Text>
+                        <Image source={galley} style={{ width: 40, height: 50 }} />
+                    </Text>
                     <View style={styles.imgWrap}>
-                       
+
                         <Text style={styles.imgDes}>
                             <Text style={styles.day}>Yesterday</Text>
                             {'\n'}
@@ -63,10 +63,10 @@ export default function CoachSchoolsPhotos({ navigation }) {
                 <View style={StyleSheet.imgWrapper}>
                     <Image source={kids} style={{ width: 340, height: 300 }} />
                     <Text style={styles.kidimg}>
-                            <Image source={galley} style={{ width: 40, height: 50 }} />
-                        </Text>
+                        <Image source={galley} style={{ width: 40, height: 50 }} />
+                    </Text>
                     <View style={styles.imgWrap}>
-                       
+
                         <Text style={styles.imgDes}>
                             <Text style={styles.day}>Yesterday</Text>
                             {'\n'}
@@ -105,18 +105,20 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between'
     },
     day: {
-        color: '#fff'
+        color: '#fff',
+        fontFamily: 'LemonJuice'
     },
     title: {
         color: '#fff',
-        fontSize: 12,
-        fontWeight: '700'
+        fontSize: 18,
+        fontFamily: 'LemonJuice'
     },
     num: {
-        color: '#fff'
+        color: '#fff',
+        fontFamily: 'LemonJuice'
     },
     tmgWrap: {
-        marginRight: 10
+       marginBottom: 40
     },
     cachpicWrap: {
         margin: 10

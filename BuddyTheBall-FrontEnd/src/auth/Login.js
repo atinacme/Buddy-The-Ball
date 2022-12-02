@@ -7,17 +7,17 @@ export default function Login({ navigation }) {
     const [email, setEmail] = useState();
     const [password, setPassword] = useState();
     const handleSignIn = async () => {
-        try {
-            const data = {
-                email: email,
-                password: password
-            }
-            const result = await SignInService(data);
-            console.log("result--->", result)
-            if (result.roles[0] === "ROLE_CUSTOMER") {
-                navigation.navigate("CustomerDashboard")
-            }
-        } catch (e) { }
+        // try {
+        //     const data = {
+        //         email: email,
+        //         password: password
+        //     }
+        //     const result = await SignInService(data);
+        //     console.log("result--->", result)
+        //     if (result.roles[0] === "ROLE_CUSTOMER") {
+                navigation.navigate("SuperAdminDashboard")
+        //     }
+        // } catch (e) { }
     }
     return (
         <SafeAreaView style={styles.wrapper}>
@@ -55,13 +55,15 @@ const styles = StyleSheet.create({
         padding: 10,
         borderRadius: 5,
         marginTop: 5,
-        marginBottom: 10
+        marginBottom: 10,
+        fontFamily: 'LemonJuice'
     },
     label: {
         fontSize: 18,
         color: '#000',
         paddingTop: 10,
-        paddingBottom: 0
+        paddingBottom: 0,
+        fontFamily: 'LemonJuice'
     },
 
     labeLink: {
@@ -69,6 +71,7 @@ const styles = StyleSheet.create({
         textAlign: 'center',
         color: "#000",
         padding: 10,
-        cursor: 'pointer'
+        cursor: 'pointer',
+        fontFamily: 'LemonJuice'
     }
 });

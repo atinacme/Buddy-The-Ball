@@ -33,7 +33,8 @@ const styles = StyleSheet.create({
         color: '#000',
         paddingTop: 10,
         paddingBottom: 10,
-        textAlign: 'center'
+        textAlign: 'center',
+        fontFamily: 'LemonJuice'
     },
     imgWrap: {
         display: 'flex',
