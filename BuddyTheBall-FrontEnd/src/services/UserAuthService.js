@@ -7,4 +7,8 @@ const SignInService = async (data) => {
     return await HttpRequest("POST", `${baseUrl}/auth/signin`, data);
 };
 
-export { SignInService };
+const SignUpService = async (data) => {
+    return await HttpRequest("POST", `${baseUrl}/auth/signup`, data);
+};
+
+export { SignInService, SignUpService };

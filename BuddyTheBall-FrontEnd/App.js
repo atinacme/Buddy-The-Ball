@@ -9,7 +9,8 @@
 import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import Login from './src/auth/Login.js';
+import SignIn from './src/auth/SignIn.js';
+import SignUp from './src/auth/SignUp.js';
 import CustomerDashboard from './src/customer/CustomerDashboard.js';
 import CustomerPhotos from './src/customer/CustomerPhotos.js';
 import CustomerParticularPhoto from './src/customer/CustomerParticularPhoto.js';
@@ -33,8 +34,9 @@ const Stack = createNativeStackNavigator();
 const App = () => {
   return (
     <NavigationContainer>
-      <Stack.Navigator initialRouteName="Login">
-        <Stack.Screen name="Login" component={Login} />
+      <Stack.Navigator initialRouteName="SignIn">
+        <Stack.Screen name="SignIn" component={SignIn} />
+        <Stack.Screen name="SignUp" component={SignUp} />
         <Stack.Screen name="CustomerDashboard" component={CustomerDashboard} />
         <Stack.Screen name="CustomerPhotos" component={CustomerPhotos} />
         <Stack.Screen name="CustomerParticularPhoto" component={CustomerParticularPhoto} />
