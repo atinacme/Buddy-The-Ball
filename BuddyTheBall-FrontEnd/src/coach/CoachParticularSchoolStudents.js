@@ -1,5 +1,5 @@
-import React from 'react'
-import { SafeAreaView, Text, StyleSheet, TouchableOpacity } from 'react-native'
+import React from 'react';
+import { SafeAreaView, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { DataTable } from 'react-native-paper';
 
 export default function CoachParticularSchoolStudents() {
@@ -19,7 +19,7 @@ export default function CoachParticularSchoolStudents() {
             day: 'Monday',
             school: 'Chirst Church'
         }
-    ]
+    ];
     return (
         <SafeAreaView>
             <Text>Lucknow Public School</Text>
@@ -46,17 +46,17 @@ export default function CoachParticularSchoolStudents() {
                 </DataTable.Header>
                 {schools.map(item => {
                     return (
-                        <TouchableOpacity key={item.id} onPress={() => navigation.navigate("CoachParticularSchoolStudents")}>
+                        <TouchableOpacity key={item.id} onPress={() => navigation.navigate("Coach Particular School Students")}>
                             <DataTable.Row>
                                 <DataTable.Cell>{item.day}</DataTable.Cell>
                                 <DataTable.Cell>{item.school}</DataTable.Cell>
                             </DataTable.Row>
                         </TouchableOpacity>
-                    )
+                    );
                 })}
             </DataTable>
         </SafeAreaView>
-    )
+    );
 }
 
 const styles = StyleSheet.create({

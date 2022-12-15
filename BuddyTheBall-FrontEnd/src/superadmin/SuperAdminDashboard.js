@@ -1,36 +1,37 @@
-import React from 'react'
-import { SafeAreaView, Text, TouchableOpacity, StyleSheet } from 'react-native'
+import React from 'react';
+import { SafeAreaView, Text, TouchableOpacity, StyleSheet } from 'react-native';
+
 export default function SuperAdminDashboard({ navigation }) {
     return (
         <SafeAreaView>
             <Text style={styles.adminWrapper}>
-                <TouchableOpacity onPress={() => navigation.navigate("SuperAdminBilling")}>
+                <TouchableOpacity onPress={() => navigation.navigate("SuperAdmin Billing")}>
                     <Text style={styles.adminContainer}>BILLING / INVOICING</Text>
                 </TouchableOpacity>
-                <TouchableOpacity onPress={() => navigation.navigate("SuperAdminCoaches")}>
+                <TouchableOpacity onPress={() => navigation.navigate("SuperAdmin Coaches")}>
                     <Text style={styles.adminContainer}>COACHES</Text>
                 </TouchableOpacity>
-                <TouchableOpacity onPress={() => navigation.navigate("SuperAdminPhotos")}>
+                <TouchableOpacity onPress={() => navigation.navigate("SuperAdmin Photos")}>
                     <Text style={styles.adminContainer}>PHOTOS</Text>
                 </TouchableOpacity>
-                <TouchableOpacity onPress={() => navigation.navigate("SuperAdminStudents")}>
+                <TouchableOpacity onPress={() => navigation.navigate("SuperAdmin Students")}>
                     <Text style={styles.adminContainer}>STUDENTS</Text>
                 </TouchableOpacity>
-                <TouchableOpacity onPress={() => navigation.navigate("SuperAdminSettings")}>
+                <TouchableOpacity onPress={() => navigation.navigate("SuperAdmin Settings")}>
                     <Text style={styles.adminContainer}>SETTINGS</Text>
                 </TouchableOpacity>
-                <TouchableOpacity onPress={() => navigation.navigate("SuperAdminBilling")}>
+                <TouchableOpacity onPress={() => navigation.navigate("SuperAdmin Billing")}>
                     <Text style={styles.adminContainer}>SCHOOLS</Text>
                 </TouchableOpacity>
-                <TouchableOpacity onPress={() => navigation.navigate("SuperAdminBilling")}>
+                <TouchableOpacity onPress={() => navigation.navigate("SuperAdmin Billing")}>
                     <Text style={styles.adminContainer}>MESSAGING</Text>
                 </TouchableOpacity>
-                <TouchableOpacity onPress={() => navigation.navigate("SuperAdminBilling")}>
+                <TouchableOpacity onPress={() => navigation.navigate("SuperAdmin Billing")}>
                     <Text style={styles.adminContainer}>CALENDAR</Text>
                 </TouchableOpacity>
             </Text>
         </SafeAreaView>
-    )
+    );
 }
 const styles = StyleSheet.create({
     adminWrapper: {
@@ -55,4 +56,4 @@ const styles = StyleSheet.create({
         fontWeight: '600',
         fontFamily: 'LemonJuice'
     },
-})
+});

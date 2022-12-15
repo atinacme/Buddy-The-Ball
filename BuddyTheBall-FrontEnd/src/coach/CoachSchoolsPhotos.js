@@ -1,5 +1,5 @@
-import React from 'react'
-import { Text, View, Image, TouchableOpacity, StyleSheet } from 'react-native'
+import React from 'react';
+import { Text, View, Image, TouchableOpacity, StyleSheet } from 'react-native';
 import gallery from '../assets/gallery.png';
 import user from '../assets/user.png';
 import kids from '../assets/kids.jpg';
@@ -9,7 +9,7 @@ import profile from '../assets/profile.png';
 export default function CoachSchoolsPhotos({ navigation }) {
     return (
         <View style={styles.wrapper}>
-            <TouchableOpacity onPress={() => navigation.navigate("CoachParticularSchoolPhotos")} style={styles.cachpicWrap}>
+            <TouchableOpacity onPress={() => navigation.navigate("Coach Particular School Photos")} style={styles.cachpicWrap}>
                 <View style={StyleSheet.imgWrapper}>
                     <Image source={kids} style={{ width: 340, height: 300 }} />
                     <Text style={styles.kidimg}>
@@ -34,7 +34,7 @@ export default function CoachSchoolsPhotos({ navigation }) {
                     </View>
                 </View>
             </TouchableOpacity>
-            <TouchableOpacity onPress={() => navigation.navigate("CoachParticularSchoolPhotos")} style={styles.cachpicWrap}>
+            <TouchableOpacity onPress={() => navigation.navigate("Coach Particular School Photos")} style={styles.cachpicWrap}>
                 <View style={StyleSheet.imgWrapper}>
                     <Image source={kids} style={{ width: 340, height: 300 }} />
                     <Text style={styles.kidimg}>
@@ -59,7 +59,7 @@ export default function CoachSchoolsPhotos({ navigation }) {
                     </View>
                 </View>
             </TouchableOpacity>
-            <TouchableOpacity onPress={() => navigation.navigate("CoachParticularSchoolPhotos")} style={styles.cachpicWrap}>
+            <TouchableOpacity onPress={() => navigation.navigate("Coach Particular School Photos")} style={styles.cachpicWrap}>
                 <View style={StyleSheet.imgWrapper}>
                     <Image source={kids} style={{ width: 340, height: 300 }} />
                     <Text style={styles.kidimg}>
@@ -85,7 +85,7 @@ export default function CoachSchoolsPhotos({ navigation }) {
                 </View>
             </TouchableOpacity>
         </View>
-    )
+    );
 }
 
 const styles = StyleSheet.create({
@@ -118,7 +118,7 @@ const styles = StyleSheet.create({
         fontFamily: 'LemonJuice'
     },
     tmgWrap: {
-       marginBottom: 40
+        marginBottom: 40
     },
     cachpicWrap: {
         margin: 10
@@ -131,4 +131,4 @@ const styles = StyleSheet.create({
     wrapper: {
         overflow: 'scroll'
     }
-})
+});

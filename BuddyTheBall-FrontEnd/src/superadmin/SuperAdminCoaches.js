@@ -1,8 +1,8 @@
-import React from 'react'
-import { SafeAreaView, StyleSheet } from 'react-native'
+import React from 'react';
+import { SafeAreaView, StyleSheet, View, Button } from 'react-native';
 import { DataTable } from 'react-native-paper';
 
-export default function SuperAdminCoaches() {
+export default function SuperAdminCoaches({ navigation }) {
     const billingList = [
         {
             id: 1,
@@ -32,9 +32,16 @@ export default function SuperAdminCoaches() {
             no_students: 99,
             school_qty: 11
         },
-    ]
+    ];
     return (
         <SafeAreaView>
+            <View>
+                <Button
+                    title="Coach Creation"
+                    color="#000"
+                    onPress={() => navigation.navigate("Coach Creation")}
+                />
+            </View>
             <DataTable style={styles.container}>
                 <DataTable.Header style={styles.tableHeader}>
                     <DataTable.Title>COACH</DataTable.Title>
@@ -50,11 +57,11 @@ export default function SuperAdminCoaches() {
                             <DataTable.Cell>{item.no_students}</DataTable.Cell>
                             <DataTable.Cell>{item.school_qty}</DataTable.Cell>
                         </DataTable.Row>
-                    )
+                    );
                 })}
             </DataTable>
         </SafeAreaView>
-    )
+    );
 }
 
 const styles = StyleSheet.create({
@@ -75,5 +82,5 @@ const styles = StyleSheet.create({
         fontFamily: 'LemonJuice',
         color: '#fff'
     },
-    
+
 });

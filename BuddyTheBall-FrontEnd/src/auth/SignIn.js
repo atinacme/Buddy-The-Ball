@@ -11,14 +11,18 @@ export default function SignIn({ navigation }) {
             const data = {
                 email: email,
                 password: password
-            }
+            };
             const result = await SignInService(data);
-            console.log("result--->", result)
+            console.log("result--->", result);
             if (result.roles[0] === "ROLE_CUSTOMER") {
-                navigation.navigate("CustomerDashboard")
+                navigation.navigate("Customer Dashboard");
+            } else if (result.roles[0] === "ROLE_COACH") {
+                navigation.navigate("Coach Dashboard");
+            } else {
+                navigation.navigate("SuperAdmin Dashboard");
             }
-        } catch (e) { }
-    }
+        } catch (e) { console.log(e.message); }
+    };
     return (
         <SafeAreaView style={styles.wrapper}>
             <Image source={buddy} style={{ width: 200, height: 100, marginLeft: 'auto', marginRight: 'auto' }} />
@@ -40,10 +44,9 @@ export default function SignIn({ navigation }) {
                 style={{ marginTop: 40, marginBottom: 40 }}
                 onPress={handleSignIn}
             />
-            <Text style={styles.labeLink}>Forgot Password?</Text>
-            <Text style={styles.labeLink} onPress={() => navigation.navigate("SignUp")}>Create Account?</Text>
+            {/* <Text style={styles.labeLink}>Forgot Password?</Text> */}
         </SafeAreaView>
-    )
+    );
 }
 
 const styles = StyleSheet.create({

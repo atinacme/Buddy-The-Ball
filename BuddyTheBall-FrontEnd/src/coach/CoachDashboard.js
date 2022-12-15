@@ -1,6 +1,7 @@
-import React from 'react'
-import { Text, Image, SafeAreaView, View, StyleSheet, StatusBar, Button } from 'react-native'
+import React from 'react';
+import { Text, Image, SafeAreaView, View, StyleSheet, StatusBar, Button } from 'react-native';
 import buddyBoy from '../assets/buddyGirl.png';
+
 export default function CoachDashboard({ navigation }) {
     return (
         <SafeAreaView style={styles.wrapper}>
@@ -19,33 +20,41 @@ export default function CoachDashboard({ navigation }) {
                         title="PHOTOS"
                         color="#000"
                         style={styles.cta}
-                        onPress={() => navigation.navigate("CoachSchoolsPhotos")}
+                        onPress={() => navigation.navigate("Coach Schools Photos")}
                     />
                 </View>
                 <View style={styles.btnCtawrap}>
                     <Button
                         title="CALENDAR"
                         color="#000"
-                        onPress={() => navigation.navigate("CoachCalendar")}
+                        onPress={() => navigation.navigate("Coach Calendar")}
                     />
                 </View>
                 <View style={styles.btnCtawrap}>
                     <Button
                         title="MESSAGES"
                         color="#000"
-                        onPress={() => navigation.navigate("CoachMessages")}
+                        onPress={() => navigation.navigate("Coach Messages")}
                     />
                 </View>
                 <View style={styles.btnCtawrap}>
                     <Button
                         title="SCHOOLS"
                         color="#000"
-                        onPress={() => navigation.navigate("CoachSchoolList")}
+                        onPress={() => navigation.navigate("Coach School List")}
+                    />
+                </View>
+                <View style={styles.btnCtawrap}>
+                    <Button
+                        title="Customer Creation"
+                        color="#000"
+                        style={styles.cta}
+                        onPress={() => navigation.navigate("Customer Creation")}
                     />
                 </View>
             </View>
         </SafeAreaView>
-    )
+    );
 }
 
 const styles = StyleSheet.create({

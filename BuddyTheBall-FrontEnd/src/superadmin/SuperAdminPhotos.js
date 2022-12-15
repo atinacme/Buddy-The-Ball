@@ -1,28 +1,28 @@
-import React from 'react'
-import { SafeAreaView, Text, StyleSheet, View, TouchableOpacity, Image, ScrollView } from 'react-native'
-import user from '../assets/user.png'
+import React from 'react';
+import { SafeAreaView, Text, StyleSheet, View, TouchableOpacity, Image, ScrollView } from 'react-native';
+import user from '../assets/user.png';
 
-export default function SuperAdminPhotos({navigation}) {
+export default function SuperAdminPhotos({ navigation }) {
     return (
         <SafeAreaView>
-            <Text style={styles.label}>Kiddie Academy Anderson</Text>         
-                <View style={styles.imgWrap}>
-                    <TouchableOpacity onPress={() => navigation.navigate("CustomerParticularPhoto")}>
-                        <Image source={user} style={{ width: 180, height: 140 }} />
-                    </TouchableOpacity>
+            <Text style={styles.label}>Kiddie Academy Anderson</Text>
+            <View style={styles.imgWrap}>
+                <TouchableOpacity onPress={() => navigation.navigate("Customer Particular Photo")}>
                     <Image source={user} style={{ width: 180, height: 140 }} />
-                    <Image source={user} style={{ width: 180, height: 140 }} />
-                    <Image source={user} style={{ width: 180, height: 140 }} />
-                    <Image source={user} style={{ width: 180, height: 140 }} />
-                    <Image source={user} style={{ width: 180, height: 140 }} />
-                    <Image source={user} style={{ width: 180, height: 140 }} />
-                    <Image source={user} style={{ width: 180, height: 140 }} />
-                    <Image source={user} style={{ width: 180, height: 140 }} />
-                    <Image source={user} style={{ width: 180, height: 140 }} />
-                    <Image source={user} style={{ width: 180, height: 140 }} />
-                </View>         
+                </TouchableOpacity>
+                <Image source={user} style={{ width: 180, height: 140 }} />
+                <Image source={user} style={{ width: 180, height: 140 }} />
+                <Image source={user} style={{ width: 180, height: 140 }} />
+                <Image source={user} style={{ width: 180, height: 140 }} />
+                <Image source={user} style={{ width: 180, height: 140 }} />
+                <Image source={user} style={{ width: 180, height: 140 }} />
+                <Image source={user} style={{ width: 180, height: 140 }} />
+                <Image source={user} style={{ width: 180, height: 140 }} />
+                <Image source={user} style={{ width: 180, height: 140 }} />
+                <Image source={user} style={{ width: 180, height: 140 }} />
+            </View>
         </SafeAreaView>
-    )
+    );
 }
 
 const styles = StyleSheet.create({

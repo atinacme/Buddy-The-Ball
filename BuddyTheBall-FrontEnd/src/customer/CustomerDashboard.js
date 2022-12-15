@@ -1,6 +1,6 @@
-import React from 'react'
-import { Text, Image, SafeAreaView, View, StyleSheet, StatusBar, Button } from 'react-native'
-import spark from '../assets/spark.png'
+import React from 'react';
+import { Text, Image, SafeAreaView, View, StyleSheet, StatusBar, Button } from 'react-native';
+import spark from '../assets/spark.png';
 import gallery from '../assets/gallery.png';
 import buddyGirl from '../assets/buddyGirl.png';
 export default function CustomerDashboard({ navigation }) {
@@ -21,7 +21,7 @@ export default function CustomerDashboard({ navigation }) {
                     <Button
                         title="ENTER"
                         color="#000"
-                        onPress={() => navigation.navigate("CustomerPhotos")}
+                        onPress={() => navigation.navigate("Customer Photos")}
                     />
                 </View>
                 <View>
@@ -34,11 +34,11 @@ export default function CustomerDashboard({ navigation }) {
                 <Button
                     title="MESSAGE"
                     color="#000"
-                    onPress={() => navigation.navigate("CustomerMessages")}
+                    onPress={() => navigation.navigate("Customer Messages")}
                 />
             </View>
         </SafeAreaView>
-    )
+    );
 }
 
 const styles = StyleSheet.create({
@@ -92,6 +92,6 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between'
     },
     dashContent: {
-      width: 180
+        width: 180
     }
 });
