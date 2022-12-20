@@ -1,17 +1,12 @@
 const mongoose = require("mongoose");
 
-const User = mongoose.model(
-    "User",
+const School = mongoose.model(
+    "School",
     new mongoose.Schema({
-        name: String,
-        coach_id: String,
-        roles: [
-            {
-                type: mongoose.Schema.Types.ObjectId,
-                ref: "Role"
-            }
-        ]
+        school_name: String,
+        territory: String,
+        alloted_day: String
     })
 );
 
-module.exports = User;
+module.exports = School;
