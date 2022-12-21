@@ -2,6 +2,9 @@ const config = require("../config/auth.config");
 const db = require("../models");
 const User = db.user;
 const Role = db.role;
+const Customer = db.customer;
+const School = db.school;
+const Coach = db.coach;
 
 var jwt = require("jsonwebtoken");
 var bcrypt = require("bcryptjs");
@@ -20,6 +23,64 @@ exports.signup = (req, res) => {
         }
 
         if (req.body.roles) {
+            if (req.body.roles[0] === "customer") {
+                const customer = new Customer({
+                    parent_name: req.body.parent_name,
+                    player_age: req.body.player_age,
+                    wristband_level: req.body.wristband_level,
+                    handed: req.body.handed,
+                    num_buddy_books_read: req.body.num_buddy_books_read,
+                    jersey_size: req.body.jersey_size,
+                    class_photos: req.body.class_photos,
+                    current_award: req.body.current_award,
+                    message: req.body.message
+                });
+
+                customer.save((err, customer) => {
+                    if (err) {
+                        res.status(500).send({ message: err });
+                        return;
+                    }
+                    if (req.body.school_name) {
+                        School.find(
+                            {
+                                school_name: { $in: req.body.school_name }
+                            },
+                            (err, school) => {
+                                if (err) {
+                                    res.status(500).send({ message: err });
+                                    return;
+                                }
+
+                                customer.school_name = school.map(school => school._id);
+                            }
+                        );
+                    }
+                    if (req.body.school_coach) {
+                        Coach.find(
+                            {
+                                coach_name: { $in: req.body.school_coach }
+                            },
+                            (err, coach) => {
+                                if (err) {
+                                    res.status(500).send({ message: err });
+                                    return;
+                                }
+
+                                customer.school_coach = coach.map(coach => coach._id);
+                                customer.save(err => {
+                                    if (err) {
+                                        res.status(500).send({ message: err });
+                                        return;
+                                    }
+
+                                    res.send({ message: "Customer was registered successfully!" });
+                                });
+                            }
+                        );
+                    }
+                });
+            }
             Role.find(
                 {
                     name: { $in: req.body.roles }
