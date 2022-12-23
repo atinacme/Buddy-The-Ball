@@ -9,8 +9,6 @@ module.exports = function (app) {
         next();
     });
 
-    app.post("/api/createCoach", controller.createCoach);
-
     app.get("/api/getCoaches", controller.getCoaches);
 
     app.get("/api/getParticularCoach/:id", controller.findParticularCoach);

@@ -12,6 +12,7 @@ export default function SignIn({ navigation }) {
                 email: email,
                 password: password
             };
+            console.log('login', data);
             const result = await SignInService(data);
             console.log("result--->", result);
             if (result.roles[0] === "ROLE_CUSTOMER") {

@@ -73,8 +73,46 @@ exports.signup = (req, res) => {
                                         res.status(500).send({ message: err });
                                         return;
                                     }
+                                });
+                            }
+                        );
+                    }
+                });
+            }
+            if (req.body.roles[0] === "coach") {
+                const coach = new Coach({
+                    coach_name: req.body.coach_name,
+                    tennis_club: req.body.tennis_club,
+                    favorite_pro_player: req.body.favorite_pro_player,
+                    handed: req.body.handed,
+                    favorite_drill: req.body.favorite_drill,
+                    class_photos: req.body.class_photos,
+                    calendar_slot: req.body.calendar_slot,
+                    message: req.body.message
+                });
 
-                                    res.send({ message: "Customer was registered successfully!" });
+                coach.save((err, coach) => {
+                    if (err) {
+                        res.status(500).send({ message: err });
+                        return;
+                    }
+                    if (req.body.alloted_schools) {
+                        School.find(
+                            {
+                                school_name: { $in: req.body.alloted_schools }
+                            },
+                            (err, school) => {
+                                if (err) {
+                                    res.status(500).send({ message: err });
+                                    return;
+                                }
+
+                                coach.alloted_schools = school.map(school => school._id);
+                                coach.save(err => {
+                                    if (err) {
+                                        res.status(500).send({ message: err });
+                                        return;
+                                    }
                                 });
                             }
                         );
