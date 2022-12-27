@@ -30,35 +30,39 @@ import SuperAdminCoaches from './src/superadmin/SuperAdminCoaches.js';
 import SuperAdminPhotos from './src/superadmin/SuperAdminPhotos.js';
 import SuperAdminStudents from './src/superadmin/SuperAdminStudents.js';
 import SuperAdminSettings from './src/superadmin/SuperAdminSettings.js';
+import { Provider } from "react-redux";
+import store from "./store";
 
 const Stack = createNativeStackNavigator();
 const App = () => {
   return (
-    <NavigationContainer>
-      <Stack.Navigator initialRouteName="SignIn">
-        <Stack.Screen name="SignIn" component={SignIn} />
-        <Stack.Screen name="Customer Creation" component={CustomerCreation} />
-        <Stack.Screen name="Customer Dashboard" component={CustomerDashboard} />
-        <Stack.Screen name="Customer Photos" component={CustomerPhotos} />
-        <Stack.Screen name="Customer Particular Photo" component={CustomerParticularPhoto} />
-        <Stack.Screen name="Customer Messages" component={CustomerMessages} />
-        <Stack.Screen name="Coach Creation" component={CoachCreation} />
-        <Stack.Screen name="Coach Dashboard" component={CoachDashboard} />
-        <Stack.Screen name="Coach Schools Photos" component={CoachSchoolsPhotos} />
-        <Stack.Screen name="Coach Particular School Photos" component={CoachParticularSchoolPhotos} />
-        <Stack.Screen name="Coach Particular School Particular Photo" component={CoachParticularSchoolParticularPhoto} />
-        <Stack.Screen name="Coach Calendar" component={CoachCalendar} />
-        <Stack.Screen name="Coach Messages" component={CoachMesages} />
-        <Stack.Screen name="Coach School List" component={CoachSchoolList} />
-        <Stack.Screen name="Coach Particular School Students" component={CoachParticularSchoolStudents} />
-        <Stack.Screen name="SuperAdmin Dashboard" component={SuperAdminDashboard} />
-        <Stack.Screen name="SuperAdmin Billing" component={SuperAdminBilling} />
-        <Stack.Screen name="SuperAdmin Coaches" component={SuperAdminCoaches} />
-        <Stack.Screen name="SuperAdmin Photos" component={SuperAdminPhotos} />
-        <Stack.Screen name="SuperAdmin Students" component={SuperAdminStudents} />
-        <Stack.Screen name="SuperAdmin Settings" component={SuperAdminSettings} />
-      </Stack.Navigator>
-    </NavigationContainer>
+    <Provider store={store}>
+      <NavigationContainer>
+        <Stack.Navigator initialRouteName="SignIn">
+          <Stack.Screen name="SignIn" component={SignIn} />
+          <Stack.Screen name="Customer Creation" component={CustomerCreation} />
+          <Stack.Screen name="Customer Dashboard" component={CustomerDashboard} />
+          <Stack.Screen name="Customer Photos" component={CustomerPhotos} />
+          <Stack.Screen name="Customer Particular Photo" component={CustomerParticularPhoto} />
+          <Stack.Screen name="Customer Messages" component={CustomerMessages} />
+          <Stack.Screen name="Coach Creation" component={CoachCreation} />
+          <Stack.Screen name="Coach Dashboard" component={CoachDashboard} />
+          <Stack.Screen name="Coach Schools Photos" component={CoachSchoolsPhotos} />
+          <Stack.Screen name="Coach Particular School Photos" component={CoachParticularSchoolPhotos} />
+          <Stack.Screen name="Coach Particular School Particular Photo" component={CoachParticularSchoolParticularPhoto} />
+          <Stack.Screen name="Coach Calendar" component={CoachCalendar} />
+          <Stack.Screen name="Coach Messages" component={CoachMesages} />
+          <Stack.Screen name="Coach School List" component={CoachSchoolList} />
+          <Stack.Screen name="Coach Particular School Students" component={CoachParticularSchoolStudents} />
+          <Stack.Screen name="SuperAdmin Dashboard" component={SuperAdminDashboard} />
+          <Stack.Screen name="SuperAdmin Billing" component={SuperAdminBilling} />
+          <Stack.Screen name="SuperAdmin Coaches" component={SuperAdminCoaches} />
+          <Stack.Screen name="SuperAdmin Photos" component={SuperAdminPhotos} />
+          <Stack.Screen name="SuperAdmin Students" component={SuperAdminStudents} />
+          <Stack.Screen name="SuperAdmin Settings" component={SuperAdminSettings} />
+        </Stack.Navigator>
+      </NavigationContainer>
+    </Provider>
   );
 };
 

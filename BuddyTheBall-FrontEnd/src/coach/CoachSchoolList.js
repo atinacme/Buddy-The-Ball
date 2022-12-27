@@ -1,25 +1,15 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { SafeAreaView, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import { useSelector } from "react-redux";
 import { DataTable } from 'react-native-paper';
 
 export default function CoachSchoolList({ navigation }) {
-    const schools = [
-        {
-            id: 1,
-            day: 'Wednesday',
-            school: 'Lucknow Public School'
-        },
-        {
-            id: 2,
-            day: 'Yesterday',
-            school: 'Melinium'
-        },
-        {
-            id: 3,
-            day: 'Monday',
-            school: 'Chirst Church'
-        }
-    ];
+    const state = useSelector((state) => state);
+    const [schoolData, setSchoolData] = useState([]);
+    useEffect(() => {
+        const result = state.authPage.auth_data.alloted_schools.filter(v => { return (v.territory == state.authPage.auth_data.alloted_territory); });
+        setSchoolData(result);
+    }, []);
     return (
         <SafeAreaView>
             <Text>TERRITORY: LAS VEGAS</Text>
@@ -29,12 +19,12 @@ export default function CoachSchoolList({ navigation }) {
                     <DataTable.Title>DAY</DataTable.Title>
                     <DataTable.Title>SCHOOL</DataTable.Title>
                 </DataTable.Header>
-                {schools.map(item => {
+                {schoolData.map(item => {
                     return (
-                        <TouchableOpacity key={item.id} onPress={() => navigation.navigate("Coach Particular School Students")}>
+                        <TouchableOpacity key={item._id} onPress={() => navigation.navigate("Coach Particular School Students")}>
                             <DataTable.Row>
-                                <DataTable.Cell>{item.day}</DataTable.Cell>
-                                <DataTable.Cell>{item.school}</DataTable.Cell>
+                                <DataTable.Cell>{item.alloted_day}</DataTable.Cell>
+                                <DataTable.Cell>{item.school_name}</DataTable.Cell>
                             </DataTable.Row>
                         </TouchableOpacity>
                     );

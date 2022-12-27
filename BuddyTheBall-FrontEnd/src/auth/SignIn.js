@@ -1,24 +1,27 @@
 import React, { useState } from 'react';
 import { Text, SafeAreaView, TextInput, StyleSheet, Button, Image } from "react-native";
 import buddy from '../assets/buddy.png';
+import { useDispatch } from "react-redux";
+import { AuthPageAction } from '../redux/Actions';
 import { SignInService } from '../services/UserAuthService';
 
 export default function SignIn({ navigation }) {
     const [email, setEmail] = useState();
     const [password, setPassword] = useState();
+    const dispatch = useDispatch();
     const handleSignIn = async () => {
         try {
             const data = {
                 email: email,
                 password: password
             };
-            console.log('login', data);
             const result = await SignInService(data);
-            console.log("result--->", result);
             if (result.roles[0] === "ROLE_CUSTOMER") {
                 navigation.navigate("Customer Dashboard");
+                dispatch(AuthPageAction(result.id, result.email, result.roles, result.customer_data, result.accessToken));
             } else if (result.roles[0] === "ROLE_COACH") {
                 navigation.navigate("Coach Dashboard");
+                dispatch(AuthPageAction(result.id, result.email, result.roles, result.coach_data, result.accessToken));
             } else {
                 navigation.navigate("SuperAdmin Dashboard");
             }

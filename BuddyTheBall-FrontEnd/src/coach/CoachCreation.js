@@ -2,12 +2,14 @@ import React, { useEffect, useState } from 'react';
 import { Text, SafeAreaView, TextInput, StyleSheet, Button, Image, Alert, ScrollView } from "react-native";
 import { MultipleSelectList } from 'react-native-dropdown-select-list';
 import buddy from '../assets/buddy.png';
+import { useSelector } from "react-redux";
 import { GetSchoolsService } from '../services/SchoolService';
 import { SignUpService } from '../services/UserAuthService';
 
 export default function CoachCreation({ navigation }) {
     const [data, setData] = useState([]);
     const [selected, setSelected] = useState([]);
+    const state = useSelector((state) => state);
 
     useEffect(() => {
         const getAllSchools = async () => {
@@ -60,7 +62,12 @@ export default function CoachCreation({ navigation }) {
                     ]
                 );
             }
-        } catch (e) { }
+        } catch (e) {
+            Alert.alert(
+                "Alert",
+                "Failed! Email is already in use!"
+            );
+        }
     };
     return (
         <SafeAreaView style={styles.wrapper}>

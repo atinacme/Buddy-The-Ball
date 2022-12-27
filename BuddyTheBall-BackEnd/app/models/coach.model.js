@@ -5,6 +5,7 @@ const Coach = mongoose.model(
     new mongoose.Schema({
         coach_name: String,
         tennis_club: String,
+        alloted_territory: String,
         alloted_schools: [
             {
                 type: mongoose.Schema.Types.ObjectId,

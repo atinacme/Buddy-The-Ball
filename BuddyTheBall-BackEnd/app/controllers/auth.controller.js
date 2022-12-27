@@ -83,6 +83,7 @@ exports.signup = (req, res) => {
                 const coach = new Coach({
                     coach_name: req.body.coach_name,
                     tennis_club: req.body.tennis_club,
+                    alloted_territory: req.body.alloted_territory,
                     favorite_pro_player: req.body.favorite_pro_player,
                     handed: req.body.handed,
                     favorite_drill: req.body.favorite_drill,
@@ -197,12 +198,53 @@ exports.signin = (req, res) => {
             for (let i = 0; i < user.roles.length; i++) {
                 authorities.push("ROLE_" + user.roles[i].name.toUpperCase());
             }
-            res.status(200).send({
-                id: user._id,
-                username: user.username,
-                email: user.email,
-                roles: authorities,
-                accessToken: token
-            });
+
+            if (authorities[0] === "ROLE_COACH") {
+                Coach.findOne({
+                    email: req.body.email
+                })
+                    .populate("alloted_schools", "-__v")
+                    .exec((err, coach_data) => {
+                        if (err) {
+                            res.status(500).send({ message: err });
+                        }
+                        return res.status(200).send({
+                            id: user._id,
+                            username: user.username,
+                            email: user.email,
+                            roles: authorities,
+                            coach_data: coach_data,
+                            accessToken: token
+                        });
+                    });
+            } else if (authorities[0] === "ROLE_CUSTOMER") {
+                Customer.findOne({
+                    email: req.body.email
+                })
+                    .populate("school_name school_coach", "-__v")
+                    .exec((err, customer_data) => {
+                        if (err) {
+                            res.status(500).send({ message: err });
+                        }
+                        return res.status(200).send({
+                            id: user._id,
+                            username: user.username,
+                            email: user.email,
+                            roles: authorities,
+                            customer_data: customer_data,
+                            accessToken: token
+                        });
+                    });
+            } else {
+                res.status(200).send({
+                    id: user._id,
+                    username: user.username,
+                    email: user.email,
+                    roles: authorities,
+                    accessToken: token
+                });
+            }
+
+
         });
 };
