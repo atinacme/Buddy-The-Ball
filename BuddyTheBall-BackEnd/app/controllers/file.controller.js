@@ -1,11 +1,10 @@
 const upload = require("../middlewares/upload");
 const dbConfig = require("../config/db.config");
-const db = require("../models");
 
-const MongoClient = db.mongoose.connect;
-const GridFSBucket = db.mongoose.mongo.GridFSBucket;
+const MongoClient = require("mongodb").MongoClient;
+const GridFSBucket = require("mongodb").GridFSBucket;
 
-const baseUrl = "http://localhost:8080/files/";
+const baseUrl = "http://localhost:8080/api/files/";
 
 const mongoClient = new MongoClient(`mongodb://${dbConfig.HOST}:${dbConfig.PORT}/${dbConfig.DB}`);
 
@@ -23,18 +22,6 @@ const uploadFiles = async (req, res) => {
         return res.status(200).send({
             message: "Files have been uploaded.",
         });
-
-        // console.log(req.file);
-
-        // if (req.file == undefined) {
-        //   return res.send({
-        //     message: "You must select a file.",
-        //   });
-        // }
-
-        // return res.send({
-        //   message: "File has been uploaded.",
-        // });
     } catch (error) {
         console.log(error);
 
@@ -46,27 +33,13 @@ const uploadFiles = async (req, res) => {
         return res.status(500).send({
             message: `Error when trying upload many files: ${error}`,
         });
-
-        // return res.send({
-        //   message: "Error when trying upload image: ${error}",
-        // });
     }
 };
 
 const getListFiles = async (req, res) => {
     try {
-        mongoClient.then((res) => {
-            console.log("Successfully connect to MongoDB.", res);
-            // initial();
-        })
-            .catch(err => {
-                console.error("Connection error", err);
-                process.exit();
-            });
-        // console.log(mongoClient.connect());
-        await mongoClient.connect();
-
-        const database = await mongoClient.db(dbConfig.DB);
+        await mongoClient.connect;
+        const database = mongoClient.db(dbConfig.DB);
         const images = database.collection(dbConfig.imgBucket + ".files");
 
         const cursor = images.find({});
@@ -95,9 +68,9 @@ const getListFiles = async (req, res) => {
 
 const download = async (req, res) => {
     try {
-        // await mongoClient.connect();
+        await mongoClient.connect();
 
-        const database = await mongoClient.db(dbConfig.database);
+        const database = mongoClient.db(dbConfig.database);
         const bucket = new GridFSBucket(database, {
             bucketName: dbConfig.imgBucket,
         });

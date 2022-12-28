@@ -83,6 +83,7 @@ require('./app/routes/school.routes')(app);
 require('./app/routes/coach.routes')(app);
 require('./app/routes/customer.routes')(app);
 require('./app/routes/file.routes')(app);
+require('./app/routes/customer.photos.routes')(app);
 
 // set port, listen for requests
 const PORT = process.env.PORT || 8080;

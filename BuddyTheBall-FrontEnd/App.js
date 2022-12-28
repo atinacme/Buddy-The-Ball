@@ -18,6 +18,7 @@ import CustomerMessages from './src/customer/CustomerMessages.js';
 import CoachCreation from './src/coach/CoachCreation.js';
 import CoachDashboard from './src/coach/CoachDashboard.js';
 import CoachSchoolsPhotos from './src/coach/CoachSchoolsPhotos.js';
+import CoachPhotoCreation from './src/coach/CoachPhotoCreation.js';
 import CoachParticularSchoolPhotos from './src/coach/CoachParticularSchoolPhotos.js';
 import CoachParticularSchoolParticularPhoto from './src/coach/CoachParticularSchoolParticularPhoto.js';
 import CoachCalendar from './src/coach/CoachCalendar.js';
@@ -48,6 +49,7 @@ const App = () => {
           <Stack.Screen name="Coach Creation" component={CoachCreation} />
           <Stack.Screen name="Coach Dashboard" component={CoachDashboard} />
           <Stack.Screen name="Coach Schools Photos" component={CoachSchoolsPhotos} />
+          <Stack.Screen name="Coach Photo Creation" component={CoachPhotoCreation} />
           <Stack.Screen name="Coach Particular School Photos" component={CoachParticularSchoolPhotos} />
           <Stack.Screen name="Coach Particular School Particular Photo" component={CoachParticularSchoolParticularPhoto} />
           <Stack.Screen name="Coach Calendar" component={CoachCalendar} />

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text, View, Image, TouchableOpacity, StyleSheet } from 'react-native';
+import { SafeAreaView, Text, View, Image, TouchableOpacity, StyleSheet } from 'react-native';
 import gallery from '../assets/gallery.png';
 import user from '../assets/user.png';
 import kids from '../assets/kids.jpg';
@@ -8,7 +8,7 @@ import profile from '../assets/profile.png';
 
 export default function CoachSchoolsPhotos({ navigation }) {
     return (
-        <View style={styles.wrapper}>
+        <SafeAreaView style={styles.wrapper}>
             <TouchableOpacity onPress={() => navigation.navigate("Coach Particular School Photos")} style={styles.cachpicWrap}>
                 <View style={StyleSheet.imgWrapper}>
                     <Image source={kids} style={{ width: 340, height: 300 }} />
@@ -84,7 +84,7 @@ export default function CoachSchoolsPhotos({ navigation }) {
                     </View>
                 </View>
             </TouchableOpacity>
-        </View>
+        </SafeAreaView>
     );
 }
 

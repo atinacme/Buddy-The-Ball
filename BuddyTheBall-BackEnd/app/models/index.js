@@ -10,6 +10,7 @@ db.role = require("./role.model");
 db.school = require("./school.model");
 db.coach = require("./coach.model");
 db.customer = require("./customer.model");
+db.customerPhotos = require("./customer.photos.model");
 db.dbConfig = require("../config/db.config");
 db.ROLES = ["customer", "superadmin", "coach"];
 
