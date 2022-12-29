@@ -1,11 +1,15 @@
 import React, { useEffect, useState } from 'react';
-import { Text, SafeAreaView, TouchableOpacity, StyleSheet, ScrollView, Image, Alert, View } from "react-native";
+import { Text, SafeAreaView, TouchableOpacity, StyleSheet, ScrollView, Image, Alert, View, Button } from "react-native";
 import { MultipleSelectList } from 'react-native-dropdown-select-list';
+import ImagePicker from 'react-native-image-crop-picker';
 import DocumentPicker from "react-native-document-picker";
+import { FAB, Portal, Provider } from 'react-native-paper';
+import { launchCamera, launchImageLibrary } from 'react-native-image-picker';
 import buddy from '../assets/buddy.png';
 import { useSelector } from "react-redux";
 import { SignUpService } from '../services/UserAuthService';
 import user from '../assets/user.png';
+import axios from 'axios';
 
 export default function CoachPhotoCreation() {
     const [data, setData] = useState([]);
@@ -32,64 +36,105 @@ export default function CoachPhotoCreation() {
         message: ""
     });
 
-
-    const uploadImage = async () => {
-        // Check if any file is selected or not
-        if (selectedFile != null) {
-            // If file selected then create FormData
-            const fileToUpload = selectedFile;
-            const data = new FormData();
-            data.append('customer_id', 'Image Upload');
-            data.append('school_id', 'Image Upload');
-            data.append('coach_id', 'Image Upload');
-            data.append('file', fileToUpload);
-            for (const [customer_id, school_id, coach_id, file] of Object.entries(data)) {
-                console.log(customer_id, school_id, coach_id, file);
-            }
-            let res = await fetch(
-                'http://localhost:8080/api/uploadCustomerPhotos',
-                {
-                    method: 'post',
-                    body: data,
-                    headers: {
-                        'Content-Type': 'multipart/form-data; ',
-                    },
-                }
-            );
-            let responseJson = await res.json();
-            if (responseJson.status == 200) {
-                alert('Upload Successful');
-            }
-        } else {
-            // If no file selected the show alert
-            alert('Please Select File first');
+    var options = {
+        title: "Select Image",
+        type: 'library',
+        options: {
+            maxHeight: 200,
+            maxWidth: 200,
+            selectionLimit: 0,
+            mediaType: 'photo',
+            includeBase64: false
         }
     };
 
-    const selectFile = async () => {
-        // Opening Document Picker to select one file
-        try {
-            const res = await DocumentPicker.pickMultiple({
-                type: [DocumentPicker.types.images],
-                presentationStyle: 'fullScreen'
+    const openGallery = async () => {
+        const result = await ImagePicker.openPicker({
+            multiple: true
+        });
+        // const images = await launchImageLibrary(options);
+        console.log('rsss->', result);
+        const formData = new FormData();
+        result.forEach((item) => {
+            formData.append('file', {
+                uri: item.uri,
+                type: item.type,
+                name: 'cdfghdghd'
             });
-            // Printing the log realted to the file
-            console.log('res : ' + JSON.stringify(res));
-            // Setting the state to show single file attributes
-            setSelectedFile(res);
-        } catch (err) {
-            setSelectedFile(null);
-            // Handling any exception (If any)
-            if (DocumentPicker.isCancel(err)) {
-                // If user canceled the document selection
-                alert('Canceled');
-            } else {
-                // For Unknown Error
-                alert('Unknown Error: ' + JSON.stringify(err));
-                throw err;
-            }
+        });
+        let res = await fetch('http://localhost:8080/api/uploadCustomerPhotos', {
+            method: 'POST',
+            body: formData,
+        });
+        let responseJson = await res.json();
+        if (responseJson) {
+            console.log('Upload Successful', responseJson);
         }
     };
+
+    // const uploadImage = async () => {
+    //     // Check if any file is selected or not
+    //     if (selectedFile != null) {
+    //         // If file selected then create FormData
+    //         // const fileToUpload = selectedFile;
+    //         console.log('fileToUpload--->', selectedFile);
+    //         const formData = new FormData();
+    //         // data.append('customer_id', 'Image Upload');
+    //         // data.append('school_id', 'Image Upload');
+    //         // data.append('coach_id', 'Image Upload');
+    //         // formData.append('file[]', selectedFile);
+    //         // selectedFile.forEach((file, i) => {
+    //         //     formData.append(`file-${i}`, file, file.name);
+    //         // });
+    //         const data = new FormData();
+
+    //         //images selected from image picker(react-native-image-crop-picker) library 
+
+    //         selectedFile.forEach((item, i) => {
+    //             data.append("file", {
+    //                 uri: item.uri,
+    //                 type: "image/jpeg",
+    //                 name: item.filename || `filename${i}.jpg`,
+    //             });
+    //         });
+    //         let res = await fetch('http://localhost:8080/api/uploadCustomerPhotos', {
+    //             method: 'POST',
+    //             body: formData,
+    //         });
+    //         let responseJson = await res.json();
+    //         if (responseJson.status == 200) {
+    //             alert('Upload Successful');
+    //         }
+    //     } else {
+    //         // If no file selected the show alert
+    //         alert('Please Select File first');
+    //     }
+    // };
+
+    // const selectFile = async () => {
+    //     // Opening Document Picker to select one file
+    //     try {
+    //         const res = await DocumentPicker.pickMultiple({
+    //             type: [DocumentPicker.types.images],
+    //             presentationStyle: 'fullScreen'
+    //         });
+    //         // Printing the log realted to the file
+    //         console.log('res : ' + JSON.stringify(res));
+    //         // Setting the state to show single file attributes
+    //         setSelectedFile(res);
+    //     } catch (err) {
+    //         setSelectedFile(null);
+    //         // Handling any exception (If any)
+    //         if (DocumentPicker.isCancel(err)) {
+    //             // If user canceled the document selection
+    //             alert('Canceled');
+    //         } else {
+    //             // For Unknown Error
+    //             alert('Unknown Error: ' + JSON.stringify(err));
+    //             throw err;
+    //         }
+    //     }
+    // };
 
     return (
         <SafeAreaView style={styles.wrapper}>
@@ -100,7 +145,10 @@ export default function CoachPhotoCreation() {
                     data={data}
                     save="value"
                 />
-                <View style={styles.mainBody}>
+                <View>
+                    <Button onPress={openGallery} title='upload' />
+                </View>
+                {/* <View style={styles.mainBody}>
                     <TouchableOpacity
                         style={styles.buttonStyle}
                         activeOpacity={0.5}
@@ -119,7 +167,7 @@ export default function CoachPhotoCreation() {
                             <Image source={{ uri: ls.uri }} style={{ height: 300, width: 300 }} />
                         </View>);
                     })}
-                </View>
+                </View> */}
                 {/* <Button
                 title="Submit"
                 color="#000"

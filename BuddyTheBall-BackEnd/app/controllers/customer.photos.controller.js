@@ -13,7 +13,7 @@ const mongoClient = new MongoClient(`mongodb://${dbConfig.HOST}:${dbConfig.PORT}
 const uploadCustomerPhotos = async (req, res) => {
     try {
         await upload(req, res);
-        console.log(req.body);
+        console.log(req.body, req.files);
         req.files.forEach(element => {
             const customerPhotos = new CustomerPhotos({
                 customer_id: req.body.customer_id,
