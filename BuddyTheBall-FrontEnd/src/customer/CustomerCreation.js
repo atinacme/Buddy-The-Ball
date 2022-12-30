@@ -11,7 +11,7 @@ export default function CustomerCreation({ navigation }) {
     const state = useSelector((state) => state);
 
     useEffect(() => {
-        const result = state.authPage.auth_data.alloted_schools.map(v => Object.assign(v, { key: v._id, value: v.school_name }));
+        const result = state.authPage.auth_data.assigned_schools.map(v => Object.assign(v, { key: v._id, value: v.school_name }));
         setData(result);
     }, []);
 
@@ -19,6 +19,7 @@ export default function CustomerCreation({ navigation }) {
         email: "",
         password: "",
         parent_name: "",
+        player_name: "",
         player_age: "",
         wristband_level: "",
         handed: "",
@@ -36,10 +37,11 @@ export default function CustomerCreation({ navigation }) {
                 password: customerData.password,
                 roles: ['customer'],
                 parent_name: customerData.parent_name,
+                player_name: customerData.player_name,
                 player_age: customerData.player_age,
                 wristband_level: customerData.wristband_level,
-                school_name: selected,
-                school_coach: state.authPage.auth_data.coach_name,
+                school: selected,
+                coach: state.authPage.auth_data.coach_name,
                 handed: customerData.handed,
                 num_buddy_books_read: customerData.num_buddy_books_read,
                 jersey_size: customerData.jersey_size,
@@ -88,6 +90,12 @@ export default function CustomerCreation({ navigation }) {
                     style={styles.input}
                     onChangeText={(e) => setCustomerData({ ...customerData, parent_name: e })}
                     value={customerData.parent_name}
+                />
+                <Text style={styles.label}>Player Name</Text>
+                <TextInput
+                    style={styles.input}
+                    onChangeText={(e) => setCustomerData({ ...customerData, player_name: e })}
+                    value={customerData.player_name}
                 />
                 <Text style={styles.label}>Player Age</Text>
                 <TextInput

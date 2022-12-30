@@ -6,8 +6,9 @@ import { DataTable } from 'react-native-paper';
 export default function CoachSchoolList({ navigation }) {
     const state = useSelector((state) => state);
     const [schoolData, setSchoolData] = useState([]);
+
     useEffect(() => {
-        const result = state.authPage.auth_data.alloted_schools.filter(v => { return (v.territory == state.authPage.auth_data.alloted_territory); });
+        const result = state.authPage.auth_data.assigned_schools.filter(v => { return (v.territory == state.authPage.auth_data.assigned_territory); });
         setSchoolData(result);
     }, []);
     return (
@@ -23,7 +24,7 @@ export default function CoachSchoolList({ navigation }) {
                     return (
                         <TouchableOpacity key={item._id} onPress={() => navigation.navigate("Coach Particular School Students")}>
                             <DataTable.Row>
-                                <DataTable.Cell>{item.alloted_day}</DataTable.Cell>
+                                <DataTable.Cell>{item.assigned_day}</DataTable.Cell>
                                 <DataTable.Cell>{item.school_name}</DataTable.Cell>
                             </DataTable.Row>
                         </TouchableOpacity>

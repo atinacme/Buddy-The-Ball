@@ -24,6 +24,7 @@ export default function CoachCreation({ navigation }) {
         email: "",
         password: "",
         coach_name: "",
+        assigned_territory: "",
         tennis_club: "",
         favorite_pro_player: "",
         handed: "",
@@ -40,7 +41,8 @@ export default function CoachCreation({ navigation }) {
                 password: coachData.password,
                 roles: ['coach'],
                 coach_name: coachData.coach_name,
-                alloted_schools: selected,
+                assigned_territory: coachData.assigned_territory,
+                assigned_schools: selected,
                 tennis_club: coachData.tennis_club,
                 favorite_pro_player: coachData.favorite_pro_player,
                 handed: coachData.handed,
@@ -91,7 +93,13 @@ export default function CoachCreation({ navigation }) {
                     onChangeText={(e) => setCoachData({ ...coachData, coach_name: e })}
                     value={coachData.coach_name}
                 />
-                <Text style={styles.label}>Alloted Schools</Text>
+                <Text style={styles.label}>Assigned Territory</Text>
+                <TextInput
+                    style={styles.input}
+                    onChangeText={(e) => setCoachData({ ...coachData, assigned_territory: e })}
+                    value={coachData.assigned_territory}
+                />
+                <Text style={styles.label}>Assigned Schools</Text>
                 <MultipleSelectList
                     setSelected={(val) => setSelected(val)}
                     data={data}
