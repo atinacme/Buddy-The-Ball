@@ -3,7 +3,7 @@ const Coach = db.coach;
 
 exports.getCoaches = (req, res) => {
     Coach.find()
-        .populate("alloted_schools", "-__v")
+        .populate("assigned_schools", "-__v")
         .then(data => {
             res.send(data);
         })

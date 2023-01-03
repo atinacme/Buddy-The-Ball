@@ -1,19 +1,36 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Text, View, Image, TouchableOpacity, StyleSheet, SafeAreaView, Button } from 'react-native';
 import user from '../assets/user.png';
+import { GetCustomerWithSchoolIdService } from '../services/CustomerService';
 
-export default function CoachParticularSchoolPhotos({ navigation }) {
+export default function CoachParticularSchoolPhotos({ navigation, route }) {
+    const [customerData, setCustomerData] = useState([]);
+    useEffect(() => {
+        const getCustomers = async () => {
+            const result = await GetCustomerWithSchoolIdService(route.params.schoolItem._id);
+            if (result) {
+                setCustomerData(result);
+            }
+        };
+        getCustomers();
+    }, []);
+    console.log(route.params, customerData);
     return (
         <SafeAreaView>
             <Button title="Create Customer Photo"
                 color="#000"
                 style={styles.cta}
-                onPress={() => navigation.navigate("Coach Photo Creation")} />
-            <Text style={styles.label}>Kiddie Academy Anderson</Text>
+                onPress={() => navigation.navigate("Coach Photo Creation", { schoolId: route.params.schoolItem._id })} />
+            <Text style={styles.label}>{route.params.schoolItem.school_name}</Text>
             <View style={styles.imgWrap}>
-                <TouchableOpacity onPress={() => navigation.navigate("Customer Particular Photo")}>
-                    <Image source={user} style={{ width: 120, height: 140 }} />
-                </TouchableOpacity>
+                {customerData.map(item => {
+                    return (
+                        <TouchableOpacity onPress={() => navigation.navigate("Customer Particular Photo", { customerId: item._id, schoolId: item.school })}>
+                            <Image source={user} style={{ width: 120, height: 140 }} />
+                        </TouchableOpacity>
+                    );
+                })}
+                {/* <Image source={user} style={{ width: 120, height: 140 }} />
                 <Image source={user} style={{ width: 120, height: 140 }} />
                 <Image source={user} style={{ width: 120, height: 140 }} />
                 <Image source={user} style={{ width: 120, height: 140 }} />
@@ -22,8 +39,7 @@ export default function CoachParticularSchoolPhotos({ navigation }) {
                 <Image source={user} style={{ width: 120, height: 140 }} />
                 <Image source={user} style={{ width: 120, height: 140 }} />
                 <Image source={user} style={{ width: 120, height: 140 }} />
-                <Image source={user} style={{ width: 120, height: 140 }} />
-                <Image source={user} style={{ width: 120, height: 140 }} />
+                <Image source={user} style={{ width: 120, height: 140 }} /> */}
             </View>
         </SafeAreaView>
     );

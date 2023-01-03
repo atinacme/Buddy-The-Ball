@@ -3,8 +3,8 @@ const Customer = db.customer;
 
 exports.getCustomers = (req, res) => {
     Customer.find()
-        .populate("school_name", "-__v")
-        .populate("school_coach", "-__v")
+        .populate("school", "-__v")
+        .populate("coach", "-__v")
         .then(data => {
             res.send(data);
         })
@@ -16,9 +16,23 @@ exports.getCustomers = (req, res) => {
         });
 };
 
+exports.findCustomerWithSchoolId = (req, res) => {
+    const id = req.params.id;
+    Customer.find({ school: id })
+        .then(data => {
+            if (!data)
+                res.status(404).send({ message: "Not found Customer with School id " + id });
+            else res.send(data);
+        })
+        .catch(err => {
+            res
+                .status(500)
+                .send({ message: "Error retrieving Customer with School id=" + id });
+        });
+};
+
 exports.findParticularCustomer = (req, res) => {
     const id = req.params.id;
-
     Customer.findById(id)
         .then(data => {
             if (!data)

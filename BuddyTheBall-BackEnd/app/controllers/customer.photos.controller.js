@@ -47,6 +47,7 @@ const uploadCustomerPhotos = async (req, res) => {
         });
     }
 };
+
 module.exports = {
     uploadCustomerPhotos
 };

@@ -5,27 +5,23 @@ import ImagePicker from 'react-native-image-crop-picker';
 import { useSelector } from "react-redux";
 import { CoachPhotoUploadService } from '../services/CoachService';
 import { GetCustomerWithSchoolIdService } from '../services/CustomerService';
+import axios from 'axios';
 
-export default function CoachPhotoCreation() {
-    const [data, setData] = useState([]);
-    const [schoolId, setSchoolId] = useState();
+export default function CoachPhotoCreation({ route }) {
     const [customerData, setCustomerData] = useState([]);
     const [customerId, setCustomerId] = useState();
     const [selectedFile, setSelectedFile] = useState(null);
     const state = useSelector((state) => state);
 
     useEffect(() => {
-        const result = state.authPage.auth_data.assigned_schools.map(v => Object.assign(v, { key: v._id, value: v.school_name }));
-        setData(result);
+        const handleStudentList = async (id) => {
+            const result = await GetCustomerWithSchoolIdService(route.params.schoolId);
+            if (result) {
+                setCustomerData(result.map(v => Object.assign(v, { key: v._id, value: v.player_name })));
+            }
+        };
+        handleStudentList();
     }, []);
-
-    const handleStudentList = async (id) => {
-        setSchoolId(id);
-        const result = await GetCustomerWithSchoolIdService(id);
-        if (result) {
-            setCustomerData(result.map(v => Object.assign(v, { key: v._id, value: v.player_name })));
-        }
-    };
 
     const openGallery = async () => {
         const result = await ImagePicker.openPicker({
@@ -35,8 +31,8 @@ export default function CoachPhotoCreation() {
         console.log('rsss->', result);
         const formData = new FormData();
         formData.append('customer_id', customerId);
-        formData.append('school_id', schoolId);
-        formData.append('coach_id', 'Image Upload');
+        formData.append('school_id', route.params.schoolId);
+        formData.append('coach_id', state.authPage.auth_data._id);
         result.forEach((item) => {
             const newImageUri = "file:///" + item.path.split("file:/").join("");
             formData.append('file', {
@@ -45,7 +41,16 @@ export default function CoachPhotoCreation() {
                 name: newImageUri.split("/").pop()
             });
         });
-        const res = await CoachPhotoUploadService(formData);
+        const res = await axios({
+            method: 'post',
+            url: "http://localhost:8080/api/uploadCustomerPhotos",
+            data: formData,
+            headers: {
+                Accept: 'application/json',
+                'Content-Type': 'multipart/form-data',
+            },
+        });
+        // const res = await CoachPhotoUploadService(formData);
         if (res) {
             console.log('Upload Successful', res.data);
         }
@@ -55,11 +60,6 @@ export default function CoachPhotoCreation() {
         <SafeAreaView style={styles.wrapper}>
             <ScrollView style={styles.scrollView}>
                 <Text style={styles.label}>Students List</Text>
-                <SelectList
-                    setSelected={(val) => handleStudentList(val)}
-                    data={data}
-                    save="key"
-                />
                 <SelectList
                     setSelected={(val) => setCustomerId(val)}
                     data={customerData}

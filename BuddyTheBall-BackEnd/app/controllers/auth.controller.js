@@ -26,6 +26,7 @@ exports.signup = (req, res) => {
             if (req.body.roles[0] === "customer") {
                 const customer = new Customer({
                     parent_name: req.body.parent_name,
+                    player_name: req.body.player_name,
                     player_age: req.body.player_age,
                     wristband_level: req.body.wristband_level,
                     handed: req.body.handed,
@@ -41,10 +42,10 @@ exports.signup = (req, res) => {
                         res.status(500).send({ message: err });
                         return;
                     }
-                    if (req.body.school_name) {
+                    if (req.body.school) {
                         School.find(
                             {
-                                school_name: { $in: req.body.school_name }
+                                school_name: { $in: req.body.school }
                             },
                             (err, school) => {
                                 if (err) {
@@ -52,14 +53,14 @@ exports.signup = (req, res) => {
                                     return;
                                 }
 
-                                customer.school_name = school.map(school => school._id);
+                                customer.school = school.map(school => school._id);
                             }
                         );
                     }
-                    if (req.body.school_coach) {
+                    if (req.body.coach) {
                         Coach.find(
                             {
-                                coach_name: { $in: req.body.school_coach }
+                                coach_name: { $in: req.body.coach }
                             },
                             (err, coach) => {
                                 if (err) {
@@ -67,7 +68,7 @@ exports.signup = (req, res) => {
                                     return;
                                 }
 
-                                customer.school_coach = coach.map(coach => coach._id);
+                                customer.coach = coach.map(coach => coach._id);
                                 customer.save(err => {
                                     if (err) {
                                         res.status(500).send({ message: err });
@@ -83,7 +84,7 @@ exports.signup = (req, res) => {
                 const coach = new Coach({
                     coach_name: req.body.coach_name,
                     tennis_club: req.body.tennis_club,
-                    alloted_territory: req.body.alloted_territory,
+                    assigned_territory: req.body.assigned_territory,
                     favorite_pro_player: req.body.favorite_pro_player,
                     handed: req.body.handed,
                     favorite_drill: req.body.favorite_drill,
@@ -97,10 +98,10 @@ exports.signup = (req, res) => {
                         res.status(500).send({ message: err });
                         return;
                     }
-                    if (req.body.alloted_schools) {
+                    if (req.body.assigned_schools) {
                         School.find(
                             {
-                                school_name: { $in: req.body.alloted_schools }
+                                school: { $in: req.body.assigned_schools }
                             },
                             (err, school) => {
                                 if (err) {
@@ -108,7 +109,7 @@ exports.signup = (req, res) => {
                                     return;
                                 }
 
-                                coach.alloted_schools = school.map(school => school._id);
+                                coach.assigned_schools = school.map(school => school._id);
                                 coach.save(err => {
                                     if (err) {
                                         res.status(500).send({ message: err });
@@ -203,7 +204,7 @@ exports.signin = (req, res) => {
                 Coach.findOne({
                     email: req.body.email
                 })
-                    .populate("alloted_schools", "-__v")
+                    .populate("assigned_schools", "-__v")
                     .exec((err, coach_data) => {
                         if (err) {
                             res.status(500).send({ message: err });
@@ -221,7 +222,7 @@ exports.signin = (req, res) => {
                 Customer.findOne({
                     email: req.body.email
                 })
-                    .populate("school_name school_coach", "-__v")
+                    .populate("school coach", "-__v")
                     .exec((err, customer_data) => {
                         if (err) {
                             res.status(500).send({ message: err });

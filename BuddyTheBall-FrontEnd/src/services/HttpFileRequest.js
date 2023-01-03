@@ -5,8 +5,12 @@ const HttpFileRequest = async (method, url, data) => {
         method: method,
         url: url,
         data: data,
+        headers: {
+            Accept: 'application/json',
+            'Content-Type': 'multipart/form-data',
+        }
     });
-    return response;
+    return response.data;
 };
 
 export default HttpFileRequest;

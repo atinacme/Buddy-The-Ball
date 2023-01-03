@@ -11,7 +11,7 @@ exports.createSchool = (req, res) => {
     const school = new School({
         school_name: req.body.school_name,
         territory: req.body.territory,
-        alloted_day: req.body.alloted_day
+        assigned_day: req.body.assigned_day
     });
 
     // Save School in the database

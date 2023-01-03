@@ -11,6 +11,8 @@ module.exports = function (app) {
 
     app.get("/api/getCustomers", controller.getCustomers);
 
+    app.get("/api/getCustomerWithSchoolId/:id", controller.findCustomerWithSchoolId);
+
     app.get("/api/getParticularCustomer/:id", controller.findParticularCustomer);
 
     app.put("/api/updateCustomer/:id", controller.updateCustomer);
