@@ -10,6 +10,7 @@ module.exports = function (app) {
     });
 
     app.post("/api/uploadCustomerPhotos", controller.uploadCustomerPhotos);
-    // app.get("/api/files", controller.getListFiles);
+
+    app.get("/api/getSchoolFiles/:id", controller.getSchoolFiles);
     // app.get("/api/files/:name", controller.download);
 };
