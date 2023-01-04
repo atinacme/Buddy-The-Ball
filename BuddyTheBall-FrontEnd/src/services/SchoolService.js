@@ -7,4 +7,9 @@ const GetSchoolsService = async () => {
     return await HttpRequest("GET", `${baseUrl}/getSchools`, null);
 };
 
-export { GetSchoolsService };
+const SchoolCreationService = async (data) => {
+    return await HttpRequest("POST", `${baseUrl}/createSchool`, data);
+};
+
+
+export { GetSchoolsService, SchoolCreationService };

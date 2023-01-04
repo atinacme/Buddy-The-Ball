@@ -29,11 +29,14 @@ export default function CoachPhotoCreation({ route }) {
         });
         setSelectedFile(result);
         console.log('rsss->', result);
+    };
+
+    const handleSignUp = async () => {
         const formData = new FormData();
         formData.append('customer_id', customerId);
         formData.append('school_id', route.params.schoolId);
         formData.append('coach_id', state.authPage.auth_data._id);
-        result.forEach((item) => {
+        selectedFile.forEach((item) => {
             const newImageUri = "file:///" + item.path.split("file:/").join("");
             formData.append('file', {
                 uri: newImageUri,
@@ -43,7 +46,7 @@ export default function CoachPhotoCreation({ route }) {
         });
         const res = await axios({
             method: 'post',
-            url: "http://localhost:8080/api/uploadCustomerPhotos",
+            url: "https://buddytheball-backend.herokuapp.com/api/uploadCustomerPhotos",
             data: formData,
             headers: {
                 Accept: 'application/json',
@@ -52,7 +55,17 @@ export default function CoachPhotoCreation({ route }) {
         });
         // const res = await CoachPhotoUploadService(formData);
         if (res) {
-            console.log('Upload Successful', res.data);
+            Alert.alert(
+                "Alert",
+                "All Files Uploaded Sucessfully",
+                [
+                    {
+                        text: "OK",
+                        onPress: () => setSelectedFile(null)
+                    }
+                ]
+            );
+            // console.log('Upload Successful', );
         }
     };
 
@@ -73,12 +86,12 @@ export default function CoachPhotoCreation({ route }) {
                         </View>);
                     })}
                 </View>
-                {/* <Button
-                title="Submit"
-                color="#000"
-                style={{ marginTop: 40, marginBottom: 40 }}
-                onPress={handleSignUp}
-            /> */}
+                <Button
+                    title="Submit"
+                    color="#000"
+                    style={{ marginTop: 40, marginBottom: 40 }}
+                    onPress={handleSignUp}
+                />
             </ScrollView>
         </SafeAreaView>
     );

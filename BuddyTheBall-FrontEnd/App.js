@@ -28,6 +28,9 @@ import CoachParticularSchoolStudents from './src/coach/CoachParticularSchoolStud
 import SuperAdminDashboard from './src/superadmin/SuperAdminDashboard.js';
 import SuperAdminBilling from './src/superadmin/SuperAdminBilling.js';
 import SuperAdminCoaches from './src/superadmin/SuperAdminCoaches.js';
+import SuperAdminCoachDescription from './src/superadmin/SuperAdminCoachDescription.js';
+import SuperAdminSchools from './src/superadmin/SuperAdminSchools.js';
+import SuperAdminSchoolCreation from './src/superadmin/SuperAdminSchoolCreation.js';
 import SuperAdminPhotos from './src/superadmin/SuperAdminPhotos.js';
 import SuperAdminStudents from './src/superadmin/SuperAdminStudents.js';
 import SuperAdminSettings from './src/superadmin/SuperAdminSettings.js';
@@ -59,6 +62,9 @@ const App = () => {
           <Stack.Screen name="SuperAdmin Dashboard" component={SuperAdminDashboard} />
           <Stack.Screen name="SuperAdmin Billing" component={SuperAdminBilling} />
           <Stack.Screen name="SuperAdmin Coaches" component={SuperAdminCoaches} />
+          <Stack.Screen name="SuperAdmin Coach Description" component={SuperAdminCoachDescription} />
+          <Stack.Screen name="SuperAdmin Schools" component={SuperAdminSchools} />
+          <Stack.Screen name="SuperAdmin School Creation" component={SuperAdminSchoolCreation} />
           <Stack.Screen name="SuperAdmin Photos" component={SuperAdminPhotos} />
           <Stack.Screen name="SuperAdmin Students" component={SuperAdminStudents} />
           <Stack.Screen name="SuperAdmin Settings" component={SuperAdminSettings} />

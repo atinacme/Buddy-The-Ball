@@ -1,44 +1,42 @@
 import React, { useEffect, useState } from 'react';
 import { SafeAreaView, StyleSheet, View, Button, TouchableOpacity } from 'react-native';
 import { DataTable } from 'react-native-paper';
-import { GetAllCoachesService } from '../services/CoachService';
+import { GetSchoolsService } from '../services/SchoolService';
 
-export default function SuperAdminCoaches({ navigation }) {
-    const [coaches, setCoaches] = useState([]);
+export default function SuperAdminSchools({ navigation }) {
+    const [schools, setSchools] = useState([]);
+    const [coachData, setCoachData] = useState();
     useEffect(() => {
-        const getCoaches = async () => {
-            const result = await GetAllCoachesService();
-            console.log(result);
+        const getSchools = async () => {
+            const result = await GetSchoolsService();
             if (result) {
-                setCoaches(result);
+                setSchools(result);
             }
         };
-        getCoaches();
+        getSchools();
     }, []);
     return (
         <SafeAreaView>
             <View>
                 <Button
-                    title="Coach Creation"
+                    title="School Creation"
                     color="#000"
-                    onPress={() => navigation.navigate("Coach Creation")}
+                    onPress={() => navigation.navigate("SuperAdmin School Creation")}
                 />
             </View>
             <DataTable style={styles.container}>
                 <DataTable.Header style={styles.tableHeader}>
-                    <DataTable.Title>COACH</DataTable.Title>
+                    <DataTable.Title>SCHOOL</DataTable.Title>
                     <DataTable.Title>TERRITORY</DataTable.Title>
-                    {/* <DataTable.Title># of STUDENTS</DataTable.Title> */}
-                    <DataTable.Title>SCHOOL QTY</DataTable.Title>
+                    <DataTable.Title>ASSIGNED DAY</DataTable.Title>
                 </DataTable.Header>
-                {coaches.map(item => {
+                {schools.map(item => {
                     return (
-                        <TouchableOpacity key={item._id} onPress={() => navigation.navigate("SuperAdmin Coach Description", { coachId: item._id })}>
+                        <TouchableOpacity key={item._id}>
                             <DataTable.Row>
-                                <DataTable.Cell>{item.coach_name}</DataTable.Cell>
-                                <DataTable.Cell>{item.assigned_territory}</DataTable.Cell>
-                                {/* <DataTable.Cell>{item.no_students}</DataTable.Cell> */}
-                                <DataTable.Cell>{item.assigned_schools.length}</DataTable.Cell>
+                                <DataTable.Cell>{item.school_name}</DataTable.Cell>
+                                <DataTable.Cell>{item.territory}</DataTable.Cell>
+                                <DataTable.Cell>{item.assigned_day}</DataTable.Cell>
                             </DataTable.Row>
                         </TouchableOpacity>
                     );

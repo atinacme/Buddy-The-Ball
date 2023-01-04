@@ -20,7 +20,7 @@ export default function SuperAdminDashboard({ navigation }) {
                 <TouchableOpacity onPress={() => navigation.navigate("SuperAdmin Settings")}>
                     <Text style={styles.adminContainer}>SETTINGS</Text>
                 </TouchableOpacity>
-                <TouchableOpacity onPress={() => navigation.navigate("SuperAdmin Billing")}>
+                <TouchableOpacity onPress={() => navigation.navigate("SuperAdmin Schools")}>
                     <Text style={styles.adminContainer}>SCHOOLS</Text>
                 </TouchableOpacity>
                 <TouchableOpacity onPress={() => navigation.navigate("SuperAdmin Billing")}>
