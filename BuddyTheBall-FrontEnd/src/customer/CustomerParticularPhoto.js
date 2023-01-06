@@ -1,20 +1,21 @@
-import React from 'react'
-import { Text, View, Image, TextInput, StyleSheet } from 'react-native'
+import React from 'react';
+import { Text, View, Image, TextInput, StyleSheet } from 'react-native';
 import smiley from '../assets/smiley.png';
 import message from '../assets/message.png';
 import heart from '../assets/red-heart.png';
 import clapping from '../assets/clappingHand.png';
 import profile from '../assets/profile.png';
-export default function CustomerParticularPhoto() {
+
+export default function CustomerParticularPhoto({ navigation, route }) {
     return (
         <View style={styles.imgWrap}>
-            <Image source={{ uri: 'https://picsum.photos/seed/picsum/200/300' }} style={{ width: 400, height: '100%' }} />
+            <Image source={{ uri: route.params.photo.url }} style={{ width: 400, height: '100%' }} />
             <View style={styles.imgDes}>
                 <Text style={styles.DateName}>
-                    <Image source={profile} style={{ width: 40, height: 40, borderRadius: 50, backgroundColor: '#fff' }} />           
-                        <Text style={styles.icontxt}>Ayan</Text>{"\n"}
-                        <Image source={clapping} style={{ width: 40, height: 40 }} />         
+                    <Image source={profile} style={{ width: 40, height: 40, borderRadius: 50, backgroundColor: '#fff' }} />
+                    <Text style={styles.icontxt}>Ayan</Text>{"\n"}
                     <Text style={styles.date}>September 26 6:26 P.M</Text>
+                    <Image source={clapping} style={{ width: 40, height: 40 }} />
                 </Text>
                 <TextInput
                     style={styles.input}
@@ -38,7 +39,7 @@ export default function CustomerParticularPhoto() {
                 </View>
             </View>
         </View>
-    )
+    );
 }
 const styles = StyleSheet.create({
     imgWrap: {

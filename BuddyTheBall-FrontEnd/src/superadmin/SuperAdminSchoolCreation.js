@@ -26,7 +26,7 @@ export default function SuperAdminSchoolCreation({ navigation }) {
                     [
                         {
                             text: "OK",
-                            onPress: () => setSchoolData()
+                            onPress: () => navigation.navigate("SuperAdmin Dashboard")
                         }
                     ]
                 );

@@ -11,7 +11,8 @@ export default function CustomerCreation({ navigation }) {
     const state = useSelector((state) => state);
 
     useEffect(() => {
-        const result = state.authPage.auth_data.assigned_schools.map(v => Object.assign(v, { key: v._id, value: v.school_name }));
+        const added = state.authPage.auth_data.assigned_schools.map(v => Object.assign(v, { key: v._id, value: v.school_name }));
+        const result = added.filter(v => { return (v.territory == state.authPage.auth_data.assigned_territory); });
         setData(result);
     }, []);
 
@@ -135,23 +136,11 @@ export default function CustomerCreation({ navigation }) {
                     onChangeText={(e) => setCustomerData({ ...customerData, jersey_size: e })}
                     value={customerData.jersey_size}
                 />
-                <Text style={styles.label}>Class Photos</Text>
-                <TextInput
-                    style={styles.input}
-                    onChangeText={(e) => setCustomerData({ ...customerData, class_photos: e })}
-                    value={customerData.class_photos}
-                />
                 <Text style={styles.label}>Current Award</Text>
                 <TextInput
                     style={styles.input}
                     onChangeText={(e) => setCustomerData({ ...customerData, current_award: e })}
                     value={customerData.current_award}
-                />
-                <Text style={styles.label}>Messages</Text>
-                <TextInput
-                    style={styles.input}
-                    onChangeText={(e) => setCustomerData({ ...customerData, message: e })}
-                    value={customerData.message}
                 />
                 <Button
                     title="Submit"

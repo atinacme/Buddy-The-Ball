@@ -28,10 +28,7 @@ export default function CoachCreation({ navigation }) {
         tennis_club: "",
         favorite_pro_player: "",
         handed: "",
-        favorite_drill: "",
-        class_photos: "",
-        calendar_slot: "",
-        message: ""
+        favorite_drill: ""
     });
 
     const handleSignUp = async () => {
@@ -46,10 +43,7 @@ export default function CoachCreation({ navigation }) {
                 tennis_club: coachData.tennis_club,
                 favorite_pro_player: coachData.favorite_pro_player,
                 handed: coachData.handed,
-                favorite_drill: coachData.favorite_drill,
-                class_photos: coachData.class_photos,
-                calendar_slot: coachData.calendar_slot,
-                message: coachData.message
+                favorite_drill: coachData.favorite_drill
             };
             const result = await SignUpService(data);
             if (result) {
@@ -59,7 +53,7 @@ export default function CoachCreation({ navigation }) {
                     [
                         {
                             text: "OK",
-                            onPress: () => navigation.navigate("SuperAdmin Coaches")
+                            onPress: () => navigation.navigate("SuperAdmin Dashboard")
                         }
                     ]
                 );
@@ -130,24 +124,6 @@ export default function CoachCreation({ navigation }) {
                     style={styles.input}
                     onChangeText={(e) => setCoachData({ ...coachData, favorite_drill: e })}
                     value={coachData.favorite_drill}
-                />
-                <Text style={styles.label}>Photos</Text>
-                <TextInput
-                    style={styles.input}
-                    onChangeText={(e) => setCoachData({ ...coachData, class_photos: e })}
-                    value={coachData.class_photos}
-                />
-                <Text style={styles.label}>Calendar</Text>
-                <TextInput
-                    style={styles.input}
-                    onChangeText={(e) => setCoachData({ ...coachData, calendar_slot: e })}
-                    value={coachData.calendar_slot}
-                />
-                <Text style={styles.label}>Messages</Text>
-                <TextInput
-                    style={styles.input}
-                    onChangeText={(e) => setCoachData({ ...coachData, message: e })}
-                    value={coachData.message}
                 />
                 <Button
                     title="Submit"

@@ -6,6 +6,7 @@ import { useSelector } from "react-redux";
 import { CoachPhotoUploadService } from '../services/CoachService';
 import { GetCustomerWithSchoolIdService } from '../services/CustomerService';
 import axios from 'axios';
+import Config from '../../Config';
 
 export default function CoachPhotoCreation({ route }) {
     const [customerData, setCustomerData] = useState([]);
@@ -46,7 +47,7 @@ export default function CoachPhotoCreation({ route }) {
         });
         const res = await axios({
             method: 'post',
-            url: "https://buddytheball-backend.herokuapp.com/api/uploadCustomerPhotos",
+            url: `${Config.REACT_APP_BASE_URL}/uploadCustomerPhotos`,
             data: formData,
             headers: {
                 Accept: 'application/json',
