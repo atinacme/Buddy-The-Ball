@@ -11,9 +11,17 @@ const SchoolCreationService = async (data) => {
     return await HttpRequest("POST", `${baseUrl}/createSchool`, data);
 };
 
+const GetParticularSchoolService = async (id) => {
+    return await HttpRequest("GET", `${baseUrl}/getParticularSchool/${id}`, null);
+};
+
 const GetParticularSchoolPhotosService = async (id) => {
     return await HttpRequest("GET", `${baseUrl}/getParticularSchoolPhotos/${id}`, null);
 };
 
+const SchoolUpdationService = async (id, data) => {
+    return await HttpRequest("PUT", `${baseUrl}/updateSchool/${id}`, data);
+};
 
-export { GetSchoolsService, SchoolCreationService, GetParticularSchoolPhotosService };
+
+export { GetSchoolsService, SchoolCreationService, GetParticularSchoolService, GetParticularSchoolPhotosService, SchoolUpdationService };

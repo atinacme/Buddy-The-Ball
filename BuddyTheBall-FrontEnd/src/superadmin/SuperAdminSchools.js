@@ -5,7 +5,6 @@ import { GetSchoolsService } from '../services/SchoolService';
 
 export default function SuperAdminSchools({ navigation }) {
     const [schools, setSchools] = useState([]);
-    const [coachData, setCoachData] = useState();
     useEffect(() => {
         const getSchools = async () => {
             const result = await GetSchoolsService();
@@ -32,7 +31,7 @@ export default function SuperAdminSchools({ navigation }) {
                 </DataTable.Header>
                 {schools.map(item => {
                     return (
-                        <TouchableOpacity key={item._id}>
+                        <TouchableOpacity key={item._id} onPress={() => navigation.navigate("SuperAdmin School Description", { school: item })}>
                             <DataTable.Row>
                                 <DataTable.Cell>{item.school_name}</DataTable.Cell>
                                 <DataTable.Cell>{item.territory}</DataTable.Cell>

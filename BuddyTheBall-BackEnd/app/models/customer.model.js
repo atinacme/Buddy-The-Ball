@@ -3,6 +3,9 @@ const mongoose = require("mongoose");
 const Customer = mongoose.model(
     "Customer",
     new mongoose.Schema({
+        user_id: String,
+        email: String,
+        password: String,
         parent_name: String,
         player_name: String,
         player_age: String,
@@ -18,9 +21,7 @@ const Customer = mongoose.model(
             type: mongoose.Schema.Types.ObjectId,
             ref: "Coach"
         },
-        class_photos: String,
-        current_award: String,
-        message: String
+        current_award: String
     })
 );
 

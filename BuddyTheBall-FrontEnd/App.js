@@ -9,6 +9,8 @@
 import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { Provider } from "react-redux";
+import store from "./store";
 import SignIn from './src/auth/SignIn.js';
 import CustomerCreation from './src/customer/CustomerCreation.js';
 import CustomerDashboard from './src/customer/CustomerDashboard.js';
@@ -30,12 +32,11 @@ import SuperAdminBilling from './src/superadmin/SuperAdminBilling.js';
 import SuperAdminCoaches from './src/superadmin/SuperAdminCoaches.js';
 import SuperAdminCoachDescription from './src/superadmin/SuperAdminCoachDescription.js';
 import SuperAdminSchools from './src/superadmin/SuperAdminSchools.js';
+import SuperAdminSchoolDescription from './src/superadmin/SuperAdminSchoolDescription.js';
 import SuperAdminSchoolCreation from './src/superadmin/SuperAdminSchoolCreation.js';
 import SuperAdminPhotos from './src/superadmin/SuperAdminPhotos.js';
 import SuperAdminStudents from './src/superadmin/SuperAdminStudents.js';
 import SuperAdminSettings from './src/superadmin/SuperAdminSettings.js';
-import { Provider } from "react-redux";
-import store from "./store";
 
 const Stack = createNativeStackNavigator();
 const App = () => {
@@ -64,6 +65,7 @@ const App = () => {
           <Stack.Screen name="SuperAdmin Coaches" component={SuperAdminCoaches} />
           <Stack.Screen name="SuperAdmin Coach Description" component={SuperAdminCoachDescription} />
           <Stack.Screen name="SuperAdmin Schools" component={SuperAdminSchools} />
+          <Stack.Screen name="SuperAdmin School Description" component={SuperAdminSchoolDescription} />
           <Stack.Screen name="SuperAdmin School Creation" component={SuperAdminSchoolCreation} />
           <Stack.Screen name="SuperAdmin Photos" component={SuperAdminPhotos} />
           <Stack.Screen name="SuperAdmin Students" component={SuperAdminStudents} />

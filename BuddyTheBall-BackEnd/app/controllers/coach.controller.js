@@ -1,5 +1,8 @@
 const db = require("../models");
+var bcrypt = require("bcryptjs");
 const Coach = db.coach;
+const User = db.user;
+const School = db.school;
 
 exports.getCoaches = (req, res) => {
     Coach.find()
@@ -19,6 +22,7 @@ exports.findParticularCoach = (req, res) => {
     const id = req.params.id;
 
     Coach.findById(id)
+        .populate("assigned_schools", "-__v")
         .then(data => {
             if (!data)
                 res.status(404).send({ message: "Not found Coach with id " + id });
@@ -38,21 +42,52 @@ exports.updateCoach = (req, res) => {
         });
     }
 
-    const id = req.params.id;
+    const userId = req.params.userId;
+    const coachId = req.params.coachId;
+    const password = bcrypt.hashSync(req.body.password, 8);
 
-    Coach.findByIdAndUpdate(id, req.body, { useFindAndModify: false })
+    User.findByIdAndUpdate(userId, { email: req.body.email, password: password }, { useFindAndModify: false })
         .then(data => {
             if (!data) {
                 res.status(404).send({
-                    message: `Cannot update Coach with id=${id}. Maybe Coach was not found!`
+                    message: `Cannot update User with id=${userId}. Maybe User was not found!`
                 });
-            } else res.send({ message: "Coach was updated successfully." });
+            } else {
+                School.find({ school_name: { $in: req.body.assigned_schools } })
+                    .then(school => {
+                        Coach.findByIdAndUpdate(coachId,
+                            {
+                                email: req.body.email,
+                                password: req.body.password,
+                                coach_name: req.body.coach_name,
+                                tennis_club: req.body.tennis_club,
+                                assigned_territory: req.body.assigned_territory,
+                                assigned_schools: school,
+                                favorite_pro_player: req.body.favorite_pro_player,
+                                handed: req.body.handed,
+                                favorite_drill: req.body.favorite_drill
+                            }, { useFindAndModify: false })
+                            .then(data => {
+                                if (!data) {
+                                    res.status(404).send({
+                                        message: `Cannot update Coach with id=${coachId}. Maybe Coach was not found!`
+                                    });
+                                } else res.send({ message: "User Coach was updated successfully." });
+                            })
+                            .catch(err => {
+                                res.status(500).send({
+                                    message: "Error updating Coach with id=" + coachId
+                                });
+                            });
+                    });
+            }
         })
         .catch(err => {
             res.status(500).send({
-                message: "Error updating Coach with id=" + id
+                message: "Error updating User with id=" + userId
             });
         });
+
 };
 
 exports.deleteCoach = (req, res) => {

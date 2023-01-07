@@ -91,7 +91,14 @@ const getParticularSchoolPhotos = async (req, res) => {
 };
 
 const updateCustomerPhotosOnMessage = (req, res) => {
-    CustomerPhotos.findById(id)
+    if (!req.body) {
+        return res.status(400).send({
+            message: "Data to update can not be empty!"
+        });
+    }
+
+    const id = req.params.id;
+    CustomerPhotos.findByIdAndUpdate(id, req.body, { useFindAndModify: false })
         .then(data => {
             if (!data)
                 res.status(404).send({ message: "Not found Photo with Photo id " + id });

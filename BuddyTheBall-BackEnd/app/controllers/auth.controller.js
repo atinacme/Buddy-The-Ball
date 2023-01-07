@@ -25,6 +25,9 @@ exports.signup = (req, res) => {
         if (req.body.roles) {
             if (req.body.roles[0] === "customer") {
                 const customer = new Customer({
+                    user_id: user._id,
+                    email: req.body.email,
+                    password: req.body.password,
                     parent_name: req.body.parent_name,
                     player_name: req.body.player_name,
                     player_age: req.body.player_age,
@@ -32,9 +35,7 @@ exports.signup = (req, res) => {
                     handed: req.body.handed,
                     num_buddy_books_read: req.body.num_buddy_books_read,
                     jersey_size: req.body.jersey_size,
-                    class_photos: req.body.class_photos,
-                    current_award: req.body.current_award,
-                    message: req.body.message
+                    current_award: req.body.current_award
                 });
 
                 customer.save((err, customer) => {
@@ -82,15 +83,15 @@ exports.signup = (req, res) => {
             }
             if (req.body.roles[0] === "coach") {
                 const coach = new Coach({
+                    user_id: user._id,
+                    email: req.body.email,
+                    password: req.body.password,
                     coach_name: req.body.coach_name,
                     tennis_club: req.body.tennis_club,
                     assigned_territory: req.body.assigned_territory,
                     favorite_pro_player: req.body.favorite_pro_player,
                     handed: req.body.handed,
-                    favorite_drill: req.body.favorite_drill,
-                    class_photos: req.body.class_photos,
-                    calendar_slot: req.body.calendar_slot,
-                    message: req.body.message
+                    favorite_drill: req.body.favorite_drill
                 });
 
                 coach.save((err, coach) => {
@@ -101,7 +102,7 @@ exports.signup = (req, res) => {
                     if (req.body.assigned_schools) {
                         School.find(
                             {
-                                school: { $in: req.body.assigned_schools }
+                                school_name: { $in: req.body.assigned_schools }
                             },
                             (err, school) => {
                                 if (err) {

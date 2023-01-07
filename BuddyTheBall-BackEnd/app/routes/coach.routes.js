@@ -13,7 +13,7 @@ module.exports = function (app) {
 
     app.get("/api/getParticularCoach/:id", controller.findParticularCoach);
 
-    app.put("/api/updateCoach/:id", controller.updateCoach);
+    app.put("/api/updateCoach/:userId/:coachId", controller.updateCoach);
 
     app.delete("/api/deleteCoach/:id", controller.deleteCoach);
 };

@@ -33,7 +33,7 @@ export default function SuperAdminCoaches({ navigation }) {
                 </DataTable.Header>
                 {coaches.map(item => {
                     return (
-                        <TouchableOpacity key={item._id} onPress={() => navigation.navigate("SuperAdmin Coach Description", { coachId: item._id })}>
+                        <TouchableOpacity key={item._id} onPress={() => navigation.navigate("SuperAdmin Coach Description", { coach: item })}>
                             <DataTable.Row>
                                 <DataTable.Cell>{item.coach_name}</DataTable.Cell>
                                 <DataTable.Cell>{item.assigned_territory}</DataTable.Cell>
