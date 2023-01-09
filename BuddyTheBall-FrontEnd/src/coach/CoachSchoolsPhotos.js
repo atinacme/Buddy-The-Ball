@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { SafeAreaView, Text, View, Image, TouchableOpacity, StyleSheet } from 'react-native';
+import { SafeAreaView, Text, View, Image, TouchableOpacity, StyleSheet, ScrollView, Alert } from 'react-native';
 import kids from '../assets/kids.jpg';
 import galley from '../assets/galley.png';
 import profile from '../assets/profile.png';
@@ -10,37 +10,50 @@ export default function CoachSchoolsPhotos({ navigation }) {
     const [schoolData, setSchoolData] = useState([]);
 
     useEffect(() => {
-        const result = state.authPage.auth_data.assigned_schools.filter(v => { return (v.territory == state.authPage.auth_data.assigned_territory); });
-        setSchoolData(result);
+        // const result = state.authPage.auth_data.assigned_schools.filter(v => { return (v.territory == state.authPage.auth_data.assigned_territory); });
+        setSchoolData(state.authPage.auth_data.assigned_schools);
     }, []);
     return (
         <SafeAreaView style={styles.wrapper}>
-            {schoolData.map(item => {
-                return (
-                    <TouchableOpacity key={item._id} onPress={() => navigation.navigate("Coach Particular School Photos", { schoolItem: item })} style={styles.cachpicWrap}>
-                        <View style={StyleSheet.imgWrapper}>
-                            <Image source={kids} style={{ width: 340, height: 300 }} />
-                            <Text style={styles.kidimg}>
-                                <Image source={galley} style={{ width: 40, height: 50 }} />
-                            </Text>
-                            <View style={styles.imgWrap}>
-                                <Text style={styles.imgDes}>
-                                    <Text style={styles.day}>Yesterday</Text>
-                                    <Text style={styles.title}>{item.school_name}</Text>
-                                    <Text style={styles.tmgWrap}>
-                                        <Image source={galley} style={{ width: 40, height: 50 }} />
-                                        <Text style={styles.num}>100</Text>
-                                    </Text>
-                                    <Text style={styles.tmgWrap}>
-                                        <Image source={profile} style={{ width: 40, height: 50 }} />
-                                        <Text style={styles.num}>2</Text>
-                                    </Text>
+            <ScrollView style={styles.scrollView}>
+                {schoolData.map(item => {
+                    return (
+                        <TouchableOpacity key={item._id} onPress={() => item.territory.indexOf(state.authPage.auth_data.assigned_territory) > -1 ?
+                            navigation.navigate("Coach Particular School Photos", { schoolItem: item })
+                            : Alert.alert(
+                                "Alert",
+                                "You are not assigned to this School!",
+                                [
+                                    {
+                                        text: "OK"
+                                    }
+                                ]
+                            )} style={styles.cachpicWrap}
+                        >
+                            <View style={StyleSheet.imgWrapper}>
+                                <Image source={kids} style={{ width: 340, height: 300 }} />
+                                <Text style={styles.kidimg}>
+                                    <Image source={galley} style={{ width: 40, height: 50 }} />
                                 </Text>
+                                <View style={styles.imgWrap}>
+                                    <Text style={styles.imgDes}>
+                                        <Text style={styles.day}>Yesterday</Text>
+                                        <Text style={styles.title}>{item.school_name}</Text>
+                                        <Text style={styles.tmgWrap}>
+                                            <Image source={galley} style={{ width: 40, height: 50 }} />
+                                            <Text style={styles.num}>100</Text>
+                                        </Text>
+                                        <Text style={styles.tmgWrap}>
+                                            <Image source={profile} style={{ width: 40, height: 50 }} />
+                                            <Text style={styles.num}>2</Text>
+                                        </Text>
+                                    </Text>
+                                </View>
                             </View>
-                        </View>
-                    </TouchableOpacity>
-                );
-            })}
+                        </TouchableOpacity>
+                    );
+                })}
+            </ScrollView>
         </SafeAreaView>
     );
 }
@@ -51,6 +64,9 @@ const styles = StyleSheet.create({
         bottom: 0,
         padding: 10,
         color: '#fff'
+    },
+    scrollView: {
+        marginHorizontal: 20,
     },
     imgWrapper: {
         position: 'relative',

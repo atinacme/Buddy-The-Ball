@@ -1,28 +1,73 @@
-import React from 'react';
-import { Text, View, Image, TextInput, StyleSheet } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { Text, View, Image, TextInput, StyleSheet, TouchableOpacity } from 'react-native';
 import smiley from '../assets/smiley.png';
 import message from '../assets/message.png';
 import heart from '../assets/red-heart.png';
 import clapping from '../assets/clappingHand.png';
 import profile from '../assets/profile.png';
+import send_button from '../assets/send_button.png';
+import moment from 'moment';
+import { useSelector } from "react-redux";
+import { GetCustomerParticularPhotoService, UpdateCustomerPhotosOnMessage } from '../services/CustomerService';
+import { GetParticularSchoolPhotosService } from '../services/SchoolService';
 
 export default function CustomerParticularPhoto({ navigation, route }) {
+    const state = useSelector((state) => state);
+    const [message, setMessage] = useState("");
+    const [onLoadMessages, setOnloadMessages] = useState([]);
+    const [msgResult, setMsgResult] = useState();
+    const messanger = state.authPage.auth_data.coach_name;
+
+    useEffect(() => {
+        const getCustomers = async () => {
+            const result = await GetCustomerParticularPhotoService(route.params.photo._id);
+            if (result) {
+                setOnloadMessages(result.messages);
+            }
+        };
+        getCustomers();
+    }, [msgResult]);
+
+    const handleSendMessage = async () => {
+        try {
+            const data = {
+                messanger_id: route.params.photo.user_id,
+                message: message,
+                messanger_name: messanger
+            };
+            const result = await UpdateCustomerPhotosOnMessage(route.params.photo._id, data);
+            if (result) {
+                setMsgResult(result);
+                setMessage();
+            }
+        } catch (e) { }
+    };
     return (
         <View style={styles.imgWrap}>
             <Image source={{ uri: route.params.photo.url }} style={{ width: 400, height: '100%' }} />
             <View style={styles.imgDes}>
-                <Text style={styles.DateName}>
-                    <Image source={profile} style={{ width: 40, height: 40, borderRadius: 50, backgroundColor: '#fff' }} />
-                    <Text style={styles.icontxt}>Ayan</Text>{"\n"}
-                    <Text style={styles.date}>September 26 6:26 P.M</Text>
-                    <Image source={clapping} style={{ width: 40, height: 40 }} />
-                </Text>
-                <TextInput
-                    style={styles.input}
-                    // onChangeText={onChangeText}
-                    // value={text}
-                    placeholder="Add a comment..."
-                />
+                {onLoadMessages.length > 0 && onLoadMessages.map(item => {
+                    return (
+                        <Text key={item._id} style={styles.DateName}>
+                            <Image source={profile} style={{ width: 40, height: 40, borderRadius: 50, backgroundColor: '#fff' }} />
+                            <Text style={styles.icontxt}>{item.messanger_name}</Text>
+                            <Text style={styles.date}>{moment(item.time).format('MMMM D YY, h:mm a')}</Text>
+                            <Text style={styles.date}>{item.message}</Text>
+                            {/* <Image source={clapping} style={{ width: 40, height: 40 }} /> */}
+                        </Text>
+                    );
+                })}
+                <View style={styles.message_view}>
+                    <TextInput
+                        style={styles.input}
+                        onChangeText={(e) => setMessage(e)}
+                        value={message}
+                        placeholder="Add a comment..."
+                    />
+                    <TouchableOpacity onPress={handleSendMessage} >
+                        <Image source={send_button} style={{ width: 30, height: 30 }} />
+                    </TouchableOpacity>
+                </View>
                 <View style={styles.iconWrapper}>
                     <View style={styles.iconWrap}>
                         <Image source={smiley} style={{ width: 40, height: 40 }} />
@@ -41,6 +86,7 @@ export default function CustomerParticularPhoto({ navigation, route }) {
         </View>
     );
 }
+
 const styles = StyleSheet.create({
     imgWrap: {
         position: 'relative'
@@ -56,9 +102,8 @@ const styles = StyleSheet.create({
         bottom: 0,
         left: 30
     },
-
     input: {
-        width: 300,
+        width: 250,
         borderRadius: 5,
         marginLeft: 'auto',
         marginRight: 'auto',
@@ -68,6 +113,10 @@ const styles = StyleSheet.create({
         padding: 10,
         backgroundColor: '#302f35',
         fontFamily: 'LemonJuice'
+    },
+    message_view: {
+        width: 300,
+        display: 'flex'
     },
     iconWrap: {
         display: 'flex',

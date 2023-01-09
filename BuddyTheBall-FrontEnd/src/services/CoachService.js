@@ -15,8 +15,9 @@ const GetParticularCoachService = async (id) => {
     return await HttpRequest("GET", `${baseUrl}/getParticularCoach/${id}`, null);
 };
 
-const CoachUpdateService = async (id, data) => {
-    return await HttpRequest("PUT", `${baseUrl}/api/updateCoach/${id}`, data);
+const CoachUpdateService = async (userId, coachId, data) => {
+    console.log(userId, coachId, data);
+    return await HttpRequest("PUT", `${baseUrl}/updateCoach/${userId}/${coachId}`, data);
 };
 
 export { CoachPhotoUploadService, GetAllCoachesService, GetParticularCoachService, CoachUpdateService };

@@ -1,13 +1,15 @@
 import React, { useEffect, useState } from 'react';
-import { Text, SafeAreaView, TextInput, StyleSheet, Button, Image, Alert, ScrollView } from "react-native";
+import { Text, SafeAreaView, TextInput, StyleSheet, Button, Image, Alert, ScrollView, View, TouchableOpacity } from "react-native";
 import { MultipleSelectList } from 'react-native-dropdown-select-list';
 import buddy from '../assets/buddy.png';
-import { GetParticularCoachService } from '../services/CoachService';
+import cross from '../assets/cross.jpg';
+import { CoachUpdateService, GetParticularCoachService } from '../services/CoachService';
 import { GetSchoolsService } from '../services/SchoolService';
 
-export default function SuperAdminCoachDescription({ route }) {
+export default function SuperAdminCoachDescription({ navigation, route }) {
     const [coachData, setCoachData] = useState({
         coach_id: "",
+        user_id: "",
         email: "",
         password: "",
         coach_name: "",
@@ -18,16 +20,17 @@ export default function SuperAdminCoachDescription({ route }) {
         favorite_drill: ""
     });
     const [data, setData] = useState([]);
+    const [coachSchools, setCoachSchools] = useState([]);
     const [assignedSchools, setAssignedSchools] = useState([]);
     const [selected, setSelected] = useState([]);
 
     useEffect(() => {
         const getParticularCoach = async () => {
-            console.log(route.params.coach._id);
             const result = await GetParticularCoachService(route.params.coach._id);
             if (result) {
                 setCoachData({
                     coach_id: result._id,
+                    user_id: result.user_id,
                     email: result.email,
                     password: result.password,
                     coach_name: result.coach_name,
@@ -37,38 +40,45 @@ export default function SuperAdminCoachDescription({ route }) {
                     handed: result.handed,
                     favorite_drill: result.favorite_drill
                 });
+                setCoachSchools(result.assigned_schools.map(v => v.school_name));
                 setAssignedSchools(result.assigned_schools.map(v => { return { key: v._id, value: v.school_name }; }));
             }
         };
         getParticularCoach();
+    }, []);
+
+    useEffect(() => {
         const getAllSchools = async () => {
             const result = await GetSchoolsService();
             result.map(v => Object.assign(v, { key: v._id, value: v.school_name }));
-            setData(result);
+            var res = result.filter(function (item) {
+                return !assignedSchools.find(function (school) {
+                    return item.key === school.key;
+                });
+            });
+            setData(res);
         };
         getAllSchools();
-    }, []);
-    console.log("cc---->", assignedSchools);
+    }, [assignedSchools]);
 
-    const handleSignUp = async () => {
+    const handleCoachUpdate = async () => {
         try {
             const data = {
                 email: coachData.email,
                 password: coachData.password,
-                roles: ['coach'],
                 coach_name: coachData.coach_name,
-                assigned_territory: coachData.assigned_territory,
-                assigned_schools: selected,
                 tennis_club: coachData.tennis_club,
+                assigned_territory: coachData.assigned_territory,
+                assigned_schools: coachSchools.concat(selected),
                 favorite_pro_player: coachData.favorite_pro_player,
                 handed: coachData.handed,
                 favorite_drill: coachData.favorite_drill
             };
-            const result = await SignUpService(data);
+            const result = await CoachUpdateService(coachData.user_id, coachData.coach_id, data);
             if (result) {
                 Alert.alert(
                     "Alert",
-                    "Coach Added Successfully",
+                    "Coach Updated Successfully",
                     [
                         {
                             text: "OK",
@@ -80,7 +90,7 @@ export default function SuperAdminCoachDescription({ route }) {
         } catch (e) {
             Alert.alert(
                 "Alert",
-                "Failed! Email is already in use!"
+                "Failed! Can't Update Coach!"
             );
         }
     };
@@ -113,13 +123,27 @@ export default function SuperAdminCoachDescription({ route }) {
                     value={coachData.assigned_territory}
                 />
                 <Text style={styles.label}>Assigned Schools</Text>
+                <Text>
+                    {assignedSchools.map((item) => {
+                        return (
+                            <View key={item.key} style={{ justifyContent: 'space-between' }}>
+                                <Text>{item.value}</Text>
+                                <TouchableOpacity key={item.key} onPress={() => {
+                                    setAssignedSchools(assignedSchools.filter((school) => school.key !== item.key));
+                                    setCoachSchools(coachSchools.filter((school) => school !== item.value));
+                                }}>
+                                    <Image source={cross} style={{ width: 30, height: 30 }} />
+                                </TouchableOpacity>
+                            </View>
+                        );
+                    })}
+                </Text>
                 <MultipleSelectList
                     setSelected={(val) => setSelected(val)}
                     data={data}
                     save="value"
                     onSelect={() => alert(selected)}
                     label="Selected Schools"
-                    defaultOption={{ key: assignedSchools.map(item => item.key), value: assignedSchools.map(item => item.value) }}
                 />
                 <Text style={styles.label}>Tennis Club</Text>
                 <TextInput
@@ -149,7 +173,7 @@ export default function SuperAdminCoachDescription({ route }) {
                     title="Submit"
                     color="#000"
                     style={{ marginTop: 40, marginBottom: 40 }}
-                    onPress={handleSignUp}
+                    onPress={handleCoachUpdate}
                 />
             </ScrollView>
         </SafeAreaView>

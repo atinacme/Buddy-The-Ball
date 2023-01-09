@@ -82,9 +82,11 @@ export default function CoachPhotoCreation({ route }) {
                 <View>
                     <Button onPress={openGallery} title='upload' />
                     {selectedFile !== null && selectedFile.map((ls, index) => {
-                        return (<View key={index}>
-                            <Image source={{ uri: ls.path }} style={{ height: 300, width: 300 }} />
-                        </View>);
+                        return (
+                            <View key={index}>
+                                <Image source={{ uri: ls.path }} style={{ height: 300, width: 300 }} />
+                            </View>
+                        );
                     })}
                 </View>
                 <Button

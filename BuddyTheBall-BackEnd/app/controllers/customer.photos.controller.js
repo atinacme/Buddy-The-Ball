@@ -4,6 +4,7 @@ const multer = require("multer");
 const maxSize = 2 * 1024 * 1024;
 const dbConfig = require("../config/db.config");
 const db = require("../models");
+const Customer = db.customer;
 const CustomerPhotos = db.customerPhotos;
 
 const MongoClient = require("mongodb").MongoClient;
@@ -23,8 +24,11 @@ const uploadCustomerPhotos = async (req, res) => {
                 .send({ message: "You must select at least 1 file." });
         }
 
+        const userId = await Customer.findById(req.body.customer_id);
+
         req.files.forEach(element => {
             const customerPhotos = new CustomerPhotos({
+                user_id: userId.user_id,
                 customer_id: req.body.customer_id,
                 school_id: req.body.school_id,
                 coach_id: req.body.coach_id,
@@ -73,6 +77,7 @@ const getParticularSchoolPhotos = async (req, res) => {
         photos.forEach((doc) => {
             fileInfos.push({
                 _id: doc._id,
+                user_id: doc.user_id,
                 customer_id: doc.customer_id,
                 school_id: doc.school_id,
                 coach_id: doc.coach_id,
@@ -80,9 +85,21 @@ const getParticularSchoolPhotos = async (req, res) => {
                 originalname: doc.originalname,
                 name: doc.filename,
                 url: baseUrl + doc.filename,
+                messages: doc.messages
             });
         });
         return res.status(200).send(fileInfos);
+    } catch (error) {
+        return res.status(500).send({
+            message: error.message,
+        });
+    }
+};
+
+const getParticularPhoto = async (req, res) => {
+    try {
+        var data = await CustomerPhotos.findById(req.params.id);
+        return res.status(200).send(data);
     } catch (error) {
         return res.status(500).send({
             message: error.message,
@@ -98,16 +115,26 @@ const updateCustomerPhotosOnMessage = (req, res) => {
     }
 
     const id = req.params.id;
-    CustomerPhotos.findByIdAndUpdate(id, req.body, { useFindAndModify: false })
+    const message = [{
+        messanger_id: req.body.messanger_id,
+        message: req.body.message,
+        messanger_name: req.body.messanger_name
+    }];
+
+    CustomerPhotos.findByIdAndUpdate(id, {
+        $push: {
+            messages: message
+        }
+    }, { new: true })
         .then(data => {
             if (!data)
-                res.status(404).send({ message: "Not found Photo with Photo id " + id });
+                res.status(404).send({ message: "Can't send message with Photo id " + id });
             else res.send(data);
         })
         .catch(err => {
             res
                 .status(500)
-                .send({ message: "Error retrieving Photo with Photo id=" + id });
+                .send({ message: "Error sending message with Photo id=" + id });
         });
 };
 
@@ -142,5 +169,7 @@ const download = async (req, res) => {
 
 module.exports = {
     uploadCustomerPhotos,
-    getParticularSchoolPhotos
+    getParticularSchoolPhotos,
+    updateCustomerPhotosOnMessage,
+    getParticularPhoto
 };

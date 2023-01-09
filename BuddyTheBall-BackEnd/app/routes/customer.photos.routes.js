@@ -12,5 +12,9 @@ module.exports = function (app) {
     app.post("/api/uploadCustomerPhotos", controller.uploadCustomerPhotos);
 
     app.get("/api/getParticularSchoolPhotos/:id", controller.getParticularSchoolPhotos);
+
+    app.post("/api/updateCustomerPhotosOnMessage/:id", controller.updateCustomerPhotosOnMessage);
+
+    app.get("/api/getParticularPhoto/:id", controller.getParticularPhoto);
     // app.get("/api/files/:name", controller.download);
 };

@@ -1,22 +1,20 @@
 import React, { useEffect, useState } from 'react';
 import { Text, View, Image, TouchableOpacity, StyleSheet, SafeAreaView, Button, ScrollView } from 'react-native';
-import user from '../assets/user.png';
-import { GetCustomerWithSchoolIdService } from '../services/CustomerService';
-import { GetParticularSchoolPhotosService, getParticularSchoolPhotosService } from '../services/SchoolService';
+import { GetParticularSchoolPhotosService } from '../services/SchoolService';
 
 export default function CoachParticularSchoolPhotos({ navigation, route }) {
     const [customerData, setCustomerData] = useState([]);
+
     useEffect(() => {
         const getCustomers = async () => {
             const result = await GetParticularSchoolPhotosService(route.params.schoolItem._id);
-            console.log("result--->", result);
             if (result) {
                 setCustomerData(result);
             }
         };
         getCustomers();
     }, []);
-    console.log(route.params, customerData);
+
     return (
         <SafeAreaView>
             <ScrollView style={styles.scrollView}>
@@ -27,10 +25,10 @@ export default function CoachParticularSchoolPhotos({ navigation, route }) {
                 />
                 <Text style={styles.label}>{route.params.schoolItem.school_name}</Text>
                 <View style={styles.imgWrap}>
-                    {customerData.map((item, index) => {
+                    {customerData.map((item) => {
                         return (
-                            <TouchableOpacity key={index} onPress={() => navigation.navigate("Customer Particular Photo", { photo: item })}>
-                                <Image source={{ uri: item.url }} style={{ height: 300, width: 300 }} />
+                            <TouchableOpacity key={item._id} onPress={() => navigation.navigate("Customer Particular Photo", { photo: item })}>
+                                <Image key={item._id} source={{ uri: item.url }} style={{ height: 300, width: 300 }} />
                             </TouchableOpacity>
                         );
                     })}
