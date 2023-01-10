@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Text, View, Image, TextInput, StyleSheet, TouchableOpacity } from 'react-native';
+import { Text, View, Image, TextInput, StyleSheet, TouchableOpacity, ScrollView } from 'react-native';
 import smiley from '../assets/smiley.png';
 import message from '../assets/message.png';
 import heart from '../assets/red-heart.png';
@@ -9,7 +9,9 @@ import send_button from '../assets/send_button.png';
 import moment from 'moment';
 import { useSelector } from "react-redux";
 import { GetCustomerParticularPhotoService, UpdateCustomerPhotosOnMessage } from '../services/CustomerService';
-import { GetParticularSchoolPhotosService } from '../services/SchoolService';
+import EmojiSelector from 'react-native-emoji-selector';
+import EmojiPicker from 'react-native-emoji-picker';
+import EmojiModal from 'react-native-emoji-modal';
 
 export default function CustomerParticularPhoto({ navigation, route }) {
     const state = useSelector((state) => state);
@@ -17,6 +19,7 @@ export default function CustomerParticularPhoto({ navigation, route }) {
     const [onLoadMessages, setOnloadMessages] = useState([]);
     const [msgResult, setMsgResult] = useState();
     const messanger = state.authPage.auth_data.coach_name;
+    const [show, setShow] = useState(false);
 
     useEffect(() => {
         const getCustomers = async () => {
@@ -27,6 +30,13 @@ export default function CustomerParticularPhoto({ navigation, route }) {
         };
         getCustomers();
     }, [msgResult]);
+
+    const [selectedEmoji, setSelectedEmoji] = useState("");
+
+    const onClick = emoji => {
+        console.log(emoji);
+        setSelectedEmoji(emoji);
+    };
 
     const handleSendMessage = async () => {
         try {
@@ -68,9 +78,19 @@ export default function CustomerParticularPhoto({ navigation, route }) {
                         <Image source={send_button} style={{ width: 30, height: 30 }} />
                     </TouchableOpacity>
                 </View>
+                <Text>
+                    Your selected Emoji is:
+                    {selectedEmoji ? (
+                        selectedEmoji
+                    ) : null}
+                </Text>
+                <EmojiModal onEmojiSelected={(emoji) => { setSelectedEmoji(emoji); }} />
+                {/* <EmojiPicker
+                    style={{ width: 'auto', maxHeight: 250 }}
+                    onEmojiSelected={(emoji) => setSelectedEmoji(emoji)} /> */}
                 <View style={styles.iconWrapper}>
                     <View style={styles.iconWrap}>
-                        <Image source={smiley} style={{ width: 40, height: 40 }} />
+                        {/* <Image source={smiley} style={{ width: 40, height: 40 }} /> */}
                         <Text style={styles.icontxt}>+</Text>
                     </View>
                     <View style={styles.iconWrap}>
@@ -91,6 +111,9 @@ const styles = StyleSheet.create({
     imgWrap: {
         position: 'relative'
     },
+    // scrollView: {
+    //     marginHorizontal: 20,
+    // },
     DateName: {
         display: 'flex',
         alignItems: 'flex-end',
