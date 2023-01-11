@@ -11,15 +11,21 @@ import { useSelector } from "react-redux";
 import { GetCustomerParticularPhotoService, UpdateCustomerPhotosOnMessage } from '../services/CustomerService';
 import EmojiSelector from 'react-native-emoji-selector';
 import EmojiPicker from 'react-native-emoji-picker';
-import EmojiModal from 'react-native-emoji-modal';
+// import EmojiModal from 'react-native-emoji-modal';
+import { Picker } from 'emoji-mart-native';
 
 export default function CustomerParticularPhoto({ navigation, route }) {
     const state = useSelector((state) => state);
+    const [selectedEmoji, setSelectedEmoji] = useState("");
     const [message, setMessage] = useState("");
+    const [messageAll, setMessageAll] = useState(`${message}${selectedEmoji}`);
     const [onLoadMessages, setOnloadMessages] = useState([]);
     const [msgResult, setMsgResult] = useState();
+    const [msgBottom, setMsgBottom] = useState(0);
+    const [emojiBox, setEmojiBox] = useState(false);
+    var array = [];
+    var messageEmpty = "";
     const messanger = state.authPage.auth_data.coach_name;
-    const [show, setShow] = useState(false);
 
     useEffect(() => {
         const getCustomers = async () => {
@@ -30,13 +36,6 @@ export default function CustomerParticularPhoto({ navigation, route }) {
         };
         getCustomers();
     }, [msgResult]);
-
-    const [selectedEmoji, setSelectedEmoji] = useState("");
-
-    const onClick = emoji => {
-        console.log(emoji);
-        setSelectedEmoji(emoji);
-    };
 
     const handleSendMessage = async () => {
         try {
@@ -52,6 +51,8 @@ export default function CustomerParticularPhoto({ navigation, route }) {
             }
         } catch (e) { }
     };
+
+    // console.log("msg------>", message, message.length > 0 ? message.pop() : messageEmpty);
     return (
         <View style={styles.imgWrap}>
             <Image source={{ uri: route.params.photo.url }} style={{ width: 400, height: '100%' }} />
@@ -67,10 +68,15 @@ export default function CustomerParticularPhoto({ navigation, route }) {
                         </Text>
                     );
                 })}
-                <View style={styles.message_view}>
+                <View style={{ width: 300, display: 'flex', bottom: msgBottom }}>
                     <TextInput
                         style={styles.input}
-                        onChangeText={(e) => setMessage(e)}
+                        onChangeText={(e) => {
+                            // setMessage((prevState) => [...prevState, e]);
+                            array.push(e);
+                            setMessage(array.join(""));
+                            console.log("in--->", array, array.join(""));
+                        }}
                         value={message}
                         placeholder="Add a comment..."
                     />
@@ -84,13 +90,31 @@ export default function CustomerParticularPhoto({ navigation, route }) {
                         selectedEmoji
                     ) : null}
                 </Text>
-                <EmojiModal onEmojiSelected={(emoji) => { setSelectedEmoji(emoji); }} />
-                {/* <EmojiPicker
-                    style={{ width: 'auto', maxHeight: 250 }}
-                    onEmojiSelected={(emoji) => setSelectedEmoji(emoji)} /> */}
+                {emojiBox ?
+                    <Picker set='apple'
+                        showCloseButton={true}
+                        onPressClose={() => {
+                            setEmojiBox(false);
+                            setMsgBottom(0);
+                        }}
+                        style={{ position: 'absolute', bottom: 20, right: -10 }}
+                        onSelect={(emoji) => {
+                            let prev = '';
+                            array.map(el => { el = prev + el; prev = el + emoji.native; return el; });
+                            // array.push(...array, emoji.native);
+                            console.log("emoji--->", array, array.join(""));
+                        }}
+                    />
+                    : null}
                 <View style={styles.iconWrapper}>
                     <View style={styles.iconWrap}>
-                        {/* <Image source={smiley} style={{ width: 40, height: 40 }} /> */}
+                        <TouchableOpacity onPress={() => {
+                            setEmojiBox(true);
+                            setMsgBottom(250);
+                        }}
+                        >
+                            <Image source={smiley} style={{ width: 40, height: 40 }} />
+                        </TouchableOpacity>
                         <Text style={styles.icontxt}>+</Text>
                     </View>
                     <View style={styles.iconWrap}>
@@ -139,7 +163,8 @@ const styles = StyleSheet.create({
     },
     message_view: {
         width: 300,
-        display: 'flex'
+        display: 'flex',
+        // bottom: 0
     },
     iconWrap: {
         display: 'flex',
