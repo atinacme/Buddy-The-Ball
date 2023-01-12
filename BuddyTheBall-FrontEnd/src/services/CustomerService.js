@@ -7,6 +7,14 @@ const GetCustomerWithSchoolIdService = async (id) => {
     return await HttpRequest("GET", `${baseUrl}/getCustomerWithSchoolId/${id}`, null);
 };
 
+const GetParticularCustomerPhotosService = async (id) => {
+    return await HttpRequest("GET", `${baseUrl}/getParticularCustomerPhotos/${id}`, null);
+};
+
+const GetParticularCustomerService = async (id) => {
+    return await HttpRequest("GET", `${baseUrl}/getParticularCustomer/${id}`, null);
+};
+
 const GetCustomerParticularPhotoService = async (id) => {
     return await HttpRequest("GET", `${baseUrl}/getParticularPhoto/${id}`, null);
 };
@@ -15,4 +23,4 @@ const UpdateCustomerPhotosOnMessage = async (id, data) => {
     return await HttpRequest("POST", `${baseUrl}/updateCustomerPhotosOnMessage/${id}`, data);
 };
 
-export { GetCustomerWithSchoolIdService, GetCustomerParticularPhotoService, UpdateCustomerPhotosOnMessage };
+export { GetCustomerWithSchoolIdService, GetParticularCustomerPhotosService, GetParticularCustomerService, GetCustomerParticularPhotoService, UpdateCustomerPhotosOnMessage };

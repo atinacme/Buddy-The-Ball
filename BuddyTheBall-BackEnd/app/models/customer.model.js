@@ -21,7 +21,18 @@ const Customer = mongoose.model(
             type: mongoose.Schema.Types.ObjectId,
             ref: "Coach"
         },
-        current_award: String
+        current_award: String,
+        profile_data: {
+            photo_id: String,
+            fieldname: String,
+            originalname: String,
+            encoding: String,
+            mimetype: String,
+            filename: String,
+            size: String,
+            url: String,
+            upload_date: { type: Date, default: Date.now },
+        }
     })
 );
 

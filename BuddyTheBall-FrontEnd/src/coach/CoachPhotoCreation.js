@@ -3,7 +3,6 @@ import { Text, SafeAreaView, TouchableOpacity, StyleSheet, ScrollView, Image, Al
 import { SelectList } from 'react-native-dropdown-select-list';
 import ImagePicker from 'react-native-image-crop-picker';
 import { useSelector } from "react-redux";
-import { CoachPhotoUploadService } from '../services/CoachService';
 import { GetCustomerWithSchoolIdService } from '../services/CustomerService';
 import axios from 'axios';
 import Config from '../../Config';
@@ -37,6 +36,7 @@ export default function CoachPhotoCreation({ route }) {
         formData.append('customer_id', customerId);
         formData.append('school_id', route.params.schoolId);
         formData.append('coach_id', state.authPage.auth_data._id);
+        formData.append('file_type', 'customer_photos');
         selectedFile.forEach((item) => {
             const newImageUri = "file:///" + item.path.split("file:/").join("");
             formData.append('file', {
@@ -54,7 +54,6 @@ export default function CoachPhotoCreation({ route }) {
                 'Content-Type': 'multipart/form-data',
             },
         });
-        // const res = await CoachPhotoUploadService(formData);
         if (res) {
             Alert.alert(
                 "Alert",
@@ -66,7 +65,6 @@ export default function CoachPhotoCreation({ route }) {
                     }
                 ]
             );
-            // console.log('Upload Successful', );
         }
     };
 

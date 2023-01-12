@@ -4,6 +4,7 @@ const multer = require("multer");
 const maxSize = 2 * 1024 * 1024;
 const dbConfig = require("../config/db.config");
 const db = require("../models");
+const Coach = db.coach;
 const Customer = db.customer;
 const CustomerPhotos = db.customerPhotos;
 
@@ -26,26 +27,77 @@ const uploadCustomerPhotos = async (req, res) => {
 
         const userId = await Customer.findById(req.body.customer_id);
 
-        req.files.forEach(element => {
-            const customerPhotos = new CustomerPhotos({
-                user_id: userId.user_id,
-                customer_id: req.body.customer_id,
-                school_id: req.body.school_id,
-                coach_id: req.body.coach_id,
-                photo_id: req.body.photo_id,
-                fieldname: element.fieldname,
-                originalname: element.originalname,
-                encoding: element.encoding,
-                mimetype: element.mimetype,
-                destination: element.destination,
-                filename: element.filename,
-                path: element.path,
-                size: element.size,
-                upload_date: element.uploadDate
+        if (req.body.file_type === "profile") {
+            if (req.body.role === 'ROLE_COACH') {
+                const profile_data = {
+                    photo_id: req.files[0].id,
+                    fieldname: req.files[0].fieldname,
+                    originalname: req.files[0].originalname,
+                    encoding: req.files[0].encoding,
+                    mimetype: req.files[0].mimetype,
+                    filename: req.files[0].filename,
+                    size: req.files[0].size,
+                    url: baseUrl + req.files[0].filename
+                };
+                await Coach.findByIdAndUpdate(req.body.coach_id, {
+                    $set: {
+                        profile_data: profile_data,
+                    }
+                }, { new: true }, function (err, docs) {
+                    if (err) {
+                        console.log(err);
+                    } else {
+                        // return res.status(200).send({
+                        //     message: "Profile Picture has been uploaded.",
+                        // });
+                    }
+                }).clone();
+            } else {
+                const profile_data = {
+                    photo_id: req.files[0].id,
+                    fieldname: req.files[0].fieldname,
+                    originalname: req.files[0].originalname,
+                    encoding: req.files[0].encoding,
+                    mimetype: req.files[0].mimetype,
+                    filename: req.files[0].filename,
+                    size: req.files[0].size,
+                    url: baseUrl + req.files[0].filename
+                };
+                await Customer.findByIdAndUpdate(req.body.customer_id, {
+                    $set: {
+                        profile_data: profile_data,
+                    }
+                }, { new: true }, function (err, docs) {
+                    if (err) {
+                        console.log(err);
+                    } else {
+                        // return res.status(200).send({
+                        //     message: "Profile Picture has been uploaded.",
+                        // });
+                    }
+                }).clone();
+            }
+        } else {
+            req.files.forEach(element => {
+                const customerPhotos = new CustomerPhotos({
+                    user_id: userId.user_id,
+                    customer_id: req.body.customer_id,
+                    school_id: req.body.school_id,
+                    coach_id: req.body.coach_id,
+                    photo_id: element.id,
+                    fieldname: element.fieldname,
+                    originalname: element.originalname,
+                    encoding: element.encoding,
+                    mimetype: element.mimetype,
+                    destination: element.destination,
+                    filename: element.filename,
+                    path: element.path,
+                    size: element.size,
+                    upload_date: element.uploadDate
+                });
+                customerPhotos.save(customerPhotos);
             });
-            customerPhotos.save(customerPhotos);
-        });
-
+        }
         return res.status(200).send({
             message: "Files have been uploaded.",
         });
@@ -67,6 +119,39 @@ const getParticularSchoolPhotos = async (req, res) => {
     try {
         var fileInfos = [];
         var photos = await CustomerPhotos.find({ school_id: req.params.id });
+
+        if ((photos.length) === 0) {
+            return res.status(500).send({
+                message: "No files found!",
+            });
+        }
+
+        photos.forEach((doc) => {
+            fileInfos.push({
+                _id: doc._id,
+                user_id: doc.user_id,
+                customer_id: doc.customer_id,
+                school_id: doc.school_id,
+                coach_id: doc.coach_id,
+                photo_id: doc.photo_id,
+                originalname: doc.originalname,
+                name: doc.filename,
+                url: baseUrl + doc.filename,
+                messages: doc.messages
+            });
+        });
+        return res.status(200).send(fileInfos);
+    } catch (error) {
+        return res.status(500).send({
+            message: error.message,
+        });
+    }
+};
+
+const getParticularCustomerPhotos = async (req, res) => {
+    try {
+        var fileInfos = [];
+        var photos = await CustomerPhotos.find({ customer_id: req.params.id });
 
         if ((photos.length) === 0) {
             return res.status(500).send({
@@ -171,5 +256,6 @@ module.exports = {
     uploadCustomerPhotos,
     getParticularSchoolPhotos,
     updateCustomerPhotosOnMessage,
-    getParticularPhoto
+    getParticularPhoto,
+    getParticularCustomerPhotos
 };

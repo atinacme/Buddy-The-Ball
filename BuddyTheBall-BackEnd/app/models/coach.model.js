@@ -18,6 +18,17 @@ const Coach = mongoose.model(
         favorite_pro_player: String,
         handed: String,
         favorite_drill: String,
+        profile_data: {
+            photo_id: String,
+            fieldname: String,
+            originalname: String,
+            encoding: String,
+            mimetype: String,
+            filename: String,
+            size: String,
+            url: String,
+            upload_date: { type: Date, default: Date.now },
+        }
     })
 );
 

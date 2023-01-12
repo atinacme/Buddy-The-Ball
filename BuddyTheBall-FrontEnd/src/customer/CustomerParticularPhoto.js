@@ -25,7 +25,7 @@ export default function CustomerParticularPhoto({ navigation, route }) {
     const [emojiBox, setEmojiBox] = useState(false);
     var array = [];
     var messageEmpty = "";
-    const messanger = state.authPage.auth_data.coach_name;
+    const messanger = state.authPage.roles[0] === "ROLE_CUSTOMER" ? state.authPage.auth_data.player_name : state.authPage.auth_data.coach_name;
 
     useEffect(() => {
         const getCustomers = async () => {
@@ -61,36 +61,38 @@ export default function CustomerParticularPhoto({ navigation, route }) {
                     return (
                         <Text key={item._id} style={styles.DateName}>
                             <Image source={profile} style={{ width: 40, height: 40, borderRadius: 50, backgroundColor: '#fff' }} />
-                            <Text style={styles.icontxt}>{item.messanger_name}</Text>
-                            <Text style={styles.date}>{moment(item.time).format('MMMM D YY, h:mm a')}</Text>
-                            <Text style={styles.date}>{item.message}</Text>
+                            <Text style={styles.icontxt}>&nbsp;&nbsp;{item.messanger_name}</Text>
+                            <Text style={styles.date}>&nbsp;&nbsp;{moment(item.time).format('MMMM D YY, h:mm a')}</Text>
+                            <Text style={styles.date}>&nbsp;&nbsp;&nbsp;&nbsp;{item.message}</Text>
                             {/* <Image source={clapping} style={{ width: 40, height: 40 }} /> */}
                         </Text>
                     );
                 })}
-                <View style={{ width: 300, display: 'flex', bottom: msgBottom }}>
+                <View style={styles.commentwrap}>
                     <TextInput
+                        placeholderTextColor="#000"
                         style={styles.input}
                         onChangeText={(e) => {
+                            setMessage(e);
                             // setMessage((prevState) => [...prevState, e]);
-                            array.push(e);
-                            setMessage(array.join(""));
-                            console.log("in--->", array, array.join(""));
+                            // array.push(e);
+                            // setMessage(array.join(""));
+                            // console.log("in--->", array, array.join(""));
                         }}
                         value={message}
                         placeholder="Add a comment..."
                     />
-                    <TouchableOpacity onPress={handleSendMessage} >
+                    <TouchableOpacity onPress={handleSendMessage} style={styles.photoimg} >
                         <Image source={send_button} style={{ width: 30, height: 30 }} />
                     </TouchableOpacity>
                 </View>
-                <Text>
+                {/* <Text>
                     Your selected Emoji is:
                     {selectedEmoji ? (
                         selectedEmoji
                     ) : null}
-                </Text>
-                {emojiBox ?
+                </Text> */}
+                {/* {emojiBox ?
                     <Picker set='apple'
                         showCloseButton={true}
                         onPressClose={() => {
@@ -105,8 +107,8 @@ export default function CustomerParticularPhoto({ navigation, route }) {
                             console.log("emoji--->", array, array.join(""));
                         }}
                     />
-                    : null}
-                <View style={styles.iconWrapper}>
+                    : null} */}
+                {/* <View style={styles.iconWrapper}>
                     <View style={styles.iconWrap}>
                         <TouchableOpacity onPress={() => {
                             setEmojiBox(true);
@@ -125,7 +127,7 @@ export default function CustomerParticularPhoto({ navigation, route }) {
                         <Image source={message} style={{ width: 40, height: 40 }} />
                         <Text style={styles.icontxt}>1</Text>
                     </View>
-                </View>
+                </View> */}
             </View>
         </View>
     );
@@ -140,14 +142,14 @@ const styles = StyleSheet.create({
     // },
     DateName: {
         display: 'flex',
-        alignItems: 'flex-end',
-        justifyContent: 'flex-end',
-        paddingBottom: 10
+        alignItems: 'center',
+        // justifyContent: 'space-between',
+        paddingBottom: 10,
     },
     imgDes: {
         position: 'absolute',
         bottom: 0,
-        left: 30
+        left: 5,
     },
     input: {
         width: 250,
@@ -183,7 +185,9 @@ const styles = StyleSheet.create({
     },
     icontxt: {
         color: '#fff',
-        fontFamily: 'LemonJuice'
+        fontFamily: 'LemonJuice',
+        paddingVertical: 200,
+        paddingHorizontal: 200,
     },
     iconWrapper: {
         display: 'flex',
@@ -197,5 +201,29 @@ const styles = StyleSheet.create({
         textAlign: 'right',
         float: 'right',
         fontFamily: 'LemonJuice'
+    },
+    input: {
+        backgroundColor: '#fff',
+        color: '#000',
+        borderRadius: 20,
+        placeholderTextColor: "#fff",
+        paddingLeft: 10,
+        paddingRight: 10,
+        paddingBottom: 10,
+        paddingTop: 10,
+        marginBottom: 20,
+        marginTop: 20
+    },
+    commentwrap: {
+        width: 320,
+        display: 'flex',
+        position: 'relative',
+        left: 10,
+        right: 10,
+    },
+    photoimg: {
+        position: 'absolute',
+        top: 30,
+        right: 10,
     }
 });

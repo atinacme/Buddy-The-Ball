@@ -1,19 +1,95 @@
-import React from 'react';
-import { Text, Image, SafeAreaView, View, StyleSheet, StatusBar, Button } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { Text, Image, SafeAreaView, View, StyleSheet, StatusBar, Button, Alert, TouchableOpacity } from 'react-native';
+import { useSelector } from "react-redux";
+import ImagePicker from 'react-native-image-crop-picker';
 import buddyBoy from '../assets/buddyGirl.png';
+import axios from 'axios';
+import Config from '../../Config';
 
-export default function CoachDashboard({ navigation }) {
+export default function CoachDashboard({ navigation, route }) {
+    const state = useSelector((state) => state);
+    const [selectedFile, setSelectedFile] = useState(null);
+
+    useEffect(() => {
+        // do something
+    }, [route]);
+
+    const openGallery = async () => {
+        const result = await ImagePicker.openPicker({
+            multiple: true
+        });
+        setSelectedFile(result);
+        console.log('rsss->', result);
+    };
+
+    const handleUpload = async () => {
+        const formData = new FormData();
+        formData.append('coach_id', state.authPage.auth_data._id);
+        formData.append('role', state.authPage.roles[0]);
+        formData.append('file_type', 'profile');
+        const newImageUri = "file:///" + selectedFile[0].path.split("file:/").join("");
+        formData.append('file', {
+            uri: newImageUri,
+            type: selectedFile[0].mime,
+            name: newImageUri.split("/").pop()
+        });
+        const res = await axios({
+            method: 'post',
+            url: `${Config.REACT_APP_BASE_URL}/uploadCustomerPhotos`,
+            data: formData,
+            headers: {
+                Accept: 'application/json',
+                'Content-Type': 'multipart/form-data',
+            },
+        });
+        if (res) {
+            Alert.alert(
+                "Alert",
+                "Profile Picture Uploaded Sucessfully",
+                [
+                    {
+                        text: "OK",
+                        onPress: () => navigation.navigate("Coach Dashboard")
+                    }
+                ]
+            );
+        }
+    };
     return (
         <SafeAreaView style={styles.wrapper}>
             <Text style={styles.dashimgWrap}>
-                <Image source={buddyBoy} style={{ width: 200, height: 200, marginLeft: 'auto', marginRight: 'auto' }} />
+                <TouchableOpacity onPress={openGallery}>
+                    {state.authPage.auth_data.profile_data && state.authPage.auth_data.profile_data.url ?
+                        <Image source={{ uri: state.authPage.auth_data.profile_data.url }} style={{ width: 200, height: 200, marginLeft: 'auto', marginRight: 'auto' }} />
+                        :
+                        <>
+                            {selectedFile !== null ?
+                                <Image source={{ uri: selectedFile[0].path }} style={{ width: 200, height: 150, marginLeft: 'auto', marginRight: 'auto', marginTop: 10, marginBottom: 10 }} />
+                                :
+                                <Image source={buddyBoy} style={{ width: 200, height: 150, marginLeft: 'auto', marginRight: 'auto', marginTop: 10, marginBottom: 10 }} />
+                            }
+                        </>
+                    }
+                </TouchableOpacity>
             </Text>
-            <Text style={styles.playPara}>Upload Coach Picture</Text>
-            <Text style={styles.heading}>Coach Tanner Townsend</Text>
-            <Text style={styles.txt}>Tennis Club: INDEPENDENT</Text>
-            <Text style={styles.txt}>Favorite Pro Player: ROGER FEDERER</Text>
-            <Text style={styles.txt}>Handed: LEFT</Text>
-            <Text style={styles.txt}>Favorite Drill: SELF RALLIES</Text>
+            {selectedFile !== null && (
+                <Button
+                    title="Upload"
+                    color="#000"
+                    style={{ marginTop: 40, marginBottom: 40 }}
+                    onPress={handleUpload}
+                />
+            )}
+            {state.authPage.auth_data.profile_data && state.authPage.auth_data.profile_data.url === undefined ? <Text style={styles.playPara}>Upload Player Picture</Text> : null}
+            {state.authPage.auth_data && (
+                <>
+                    <Text style={styles.heading}>Coach {state.authPage.auth_data.coach_name}</Text>
+                    <Text style={styles.txt}>Tennis Club: {state.authPage.auth_data.tennis_club}</Text>
+                    <Text style={styles.txt}>Favorite Pro Player: {state.authPage.auth_data.favorite_pro_player}</Text>
+                    <Text style={styles.txt}>Handed: {state.authPage.auth_data.handed}</Text>
+                    <Text style={styles.txt}>Favorite Drill: {state.authPage.auth_data.favorite_drill}</Text>
+                </>
+            )}
             <View style={styles.btnCta}>
                 <View style={styles.btnCtawrap}>
                     <Button
