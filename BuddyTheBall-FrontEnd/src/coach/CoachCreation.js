@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Text, SafeAreaView, TextInput, StyleSheet, Button, Image, Alert, ScrollView } from "react-native";
-import { MultipleSelectList } from 'react-native-dropdown-select-list';
+import { SelectList, MultipleSelectList } from 'react-native-dropdown-select-list';
 import buddy from '../assets/buddy.png';
 import { GetSchoolsService } from '../services/SchoolService';
 import { SignUpService } from '../services/UserAuthService';
@@ -8,6 +8,25 @@ import { SignUpService } from '../services/UserAuthService';
 export default function CoachCreation({ navigation }) {
     const [data, setData] = useState([]);
     const [selected, setSelected] = useState([]);
+
+    const territoryList = [
+        {
+            key: "Kanpur",
+            value: "Kanpur"
+        },
+        {
+            key: "Lucknow",
+            value: "Lucknow"
+        },
+        {
+            key: "Allahabad",
+            value: "Allahabad"
+        },
+        {
+            key: "Banaras",
+            value: "Banaras"
+        }
+    ];
 
     useEffect(() => {
         const getAllSchools = async () => {
@@ -87,10 +106,10 @@ export default function CoachCreation({ navigation }) {
                     value={coachData.coach_name}
                 />
                 <Text style={styles.label}>Assigned Territory</Text>
-                <TextInput
-                    style={styles.input}
-                    onChangeText={(e) => setCoachData({ ...coachData, assigned_territory: e })}
-                    value={coachData.assigned_territory}
+                <SelectList
+                    setSelected={(val) => setCoachData({ ...coachData, assigned_territory: val })}
+                    data={territoryList}
+                    save="key"
                 />
                 <Text style={styles.label}>Assigned Schools</Text>
                 <MultipleSelectList

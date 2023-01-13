@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import { Text, SafeAreaView, TextInput, StyleSheet, Button, Image, Alert, ScrollView } from "react-native";
+import { Text, SafeAreaView, TextInput, StyleSheet, Button, Image, Alert, ScrollView, View } from "react-native";
 import buddy from '../assets/buddy.png';
+import { SelectList } from 'react-native-dropdown-select-list';
 import { GetParticularSchoolService, SchoolUpdationService } from '../services/SchoolService';
 
 export default function SuperAdminSchoolDescription({ navigation, route }) {
@@ -10,6 +11,56 @@ export default function SuperAdminSchoolDescription({ navigation, route }) {
         territory: "",
         assigned_day: ""
     });
+
+    const territoryList = [
+        {
+            key: "Kanpur",
+            value: "Kanpur"
+        },
+        {
+            key: "Lucknow",
+            value: "Lucknow"
+        },
+        {
+            key: "Allahabad",
+            value: "Allahabad"
+        },
+        {
+            key: "Banaras",
+            value: "Banaras"
+        }
+    ];
+
+    const dayList = [
+        {
+            key: "Monday",
+            value: "Monday"
+        },
+        {
+            key: "Tuesday",
+            value: "Tuesday"
+        },
+        {
+            key: "Wednesday",
+            value: "Wednesday"
+        },
+        {
+            key: "Thursday",
+            value: "Thursday"
+        },
+        {
+            key: "Friday",
+            value: "Friday"
+        },
+        {
+            key: "Saturday",
+            value: "Saturday"
+        },
+        {
+            key: "Sunday",
+            value: "Sunday"
+        }
+    ];
 
     useEffect(() => {
         const getParticularCoach = async () => {
@@ -65,23 +116,26 @@ export default function SuperAdminSchoolDescription({ navigation, route }) {
                     value={schoolData.school_name}
                 />
                 <Text style={styles.label}>Territory</Text>
-                <TextInput
-                    style={styles.input}
-                    onChangeText={(e) => setSchoolData({ ...schoolData, territory: e })}
-                    value={schoolData.territory}
+                <SelectList
+                    setSelected={(val) => setSchoolData({ ...schoolData, territory: val })}
+                    data={territoryList}
+                    save="key"
+                    defaultOption={{ key: schoolData.territory, value: schoolData.territory }}
                 />
                 <Text style={styles.label}>Assigned Day</Text>
-                <TextInput
-                    style={styles.input}
-                    onChangeText={(e) => setSchoolData({ ...schoolData, assigned_day: e })}
-                    value={schoolData.assigned_day}
+                <SelectList
+                    setSelected={(val) => setSchoolData({ ...schoolData, assigned_day: val })}
+                    data={dayList}
+                    save="key"
+                    defaultOption={{ key: schoolData.assigned_day, value: schoolData.assigned_day }}
                 />
-                <Button
-                    title="Submit"
-                    color="#000"
-                    style={{ marginTop: 40, marginBottom: 40 }}
-                    onPress={handleUpdateSchool}
-                />
+                <View style={{ marginTop: 20 }}>
+                    <Button
+                        title="Submit"
+                        color="#000"
+                        onPress={handleUpdateSchool}
+                    />
+                </View>
             </ScrollView>
         </SafeAreaView>
     );

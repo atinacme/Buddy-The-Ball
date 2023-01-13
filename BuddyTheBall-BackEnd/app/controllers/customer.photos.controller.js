@@ -203,7 +203,8 @@ const updateCustomerPhotosOnMessage = (req, res) => {
     const message = [{
         messanger_id: req.body.messanger_id,
         message: req.body.message,
-        messanger_name: req.body.messanger_name
+        messanger_name: req.body.messanger_name,
+        url: req.body.url
     }];
 
     CustomerPhotos.findByIdAndUpdate(id, {

@@ -1,18 +1,31 @@
 import React, { useState, useEffect } from 'react';
 import { Text, Image, SafeAreaView, View, StyleSheet, StatusBar, Button, Alert, TouchableOpacity } from 'react-native';
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import ImagePicker from 'react-native-image-crop-picker';
 import buddyBoy from '../assets/buddyGirl.png';
 import axios from 'axios';
 import Config from '../../Config';
+import { GetParticularCoachService } from '../services/CoachService';
+import { AuthPageAction } from '../redux/Actions';
 
 export default function CoachDashboard({ navigation, route }) {
     const state = useSelector((state) => state);
     const [selectedFile, setSelectedFile] = useState(null);
+    const [uploadResult, setUploadResult] = useState(false);
+    const dispatch = useDispatch();
 
     useEffect(() => {
-        // do something
-    }, [route]);
+        const getCoachData = async () => {
+            const result = await GetParticularCoachService(state.authPage.auth_data._id);
+            if (result) {
+                dispatch(AuthPageAction(state.authPage.id, state.authPage.email, state.authPage.roles, result, state.authPage.accessToken));
+                setUploadResult(false);
+            }
+        };
+        if (uploadResult) {
+            getCoachData();
+        }
+    }, [uploadResult]);
 
     const openGallery = async () => {
         const result = await ImagePicker.openPicker({
@@ -49,7 +62,10 @@ export default function CoachDashboard({ navigation, route }) {
                 [
                     {
                         text: "OK",
-                        onPress: () => navigation.navigate("Coach Dashboard")
+                        onPress: () => {
+                            setSelectedFile(null);
+                            setUploadResult(true);
+                        }
                     }
                 ]
             );
@@ -129,6 +145,12 @@ export default function CoachDashboard({ navigation, route }) {
                     />
                 </View>
             </View>
+            <Button
+                title="Logout"
+                color="#000"
+                style={{ marginTop: 40, marginBottom: 40 }}
+                onPress={() => navigation.navigate("SignIn")}
+            />
         </SafeAreaView>
     );
 }

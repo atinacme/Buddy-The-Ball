@@ -13,7 +13,7 @@ export default function CoachParticularSchoolPhotos({ navigation, route }) {
             }
         };
         getCustomers();
-    }, []);
+    }, [navigation]);
 
     return (
         <SafeAreaView>
@@ -28,7 +28,7 @@ export default function CoachParticularSchoolPhotos({ navigation, route }) {
                     {customerData.map((item) => {
                         return (
                             <TouchableOpacity key={item._id} onPress={() => navigation.navigate("Customer Particular Photo", { photo: item })}>
-                                <Image key={item._id} source={{ uri: item.url }} style={{ height: 300, width: 300 }} />
+                                <Image key={item._id} source={{ uri: item.url }} style={{ height: 300, width: 300, marginBottom: 10 }} />
                             </TouchableOpacity>
                         );
                     })}

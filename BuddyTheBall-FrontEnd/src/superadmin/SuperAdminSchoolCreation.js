@@ -1,10 +1,61 @@
 import React, { useEffect, useState } from 'react';
-import { Text, SafeAreaView, TextInput, StyleSheet, Button, Image, Alert, ScrollView } from "react-native";
-import { MultipleSelectList } from 'react-native-dropdown-select-list';
+import { Text, SafeAreaView, TextInput, StyleSheet, Button, Image, Alert, ScrollView, View } from "react-native";
+import { SelectList } from 'react-native-dropdown-select-list';
 import buddy from '../assets/buddy.png';
 import { SchoolCreationService } from '../services/SchoolService';
 
 export default function SuperAdminSchoolCreation({ navigation }) {
+
+    const territoryList = [
+        {
+            key: "Kanpur",
+            value: "Kanpur"
+        },
+        {
+            key: "Lucknow",
+            value: "Lucknow"
+        },
+        {
+            key: "Allahabad",
+            value: "Allahabad"
+        },
+        {
+            key: "Banaras",
+            value: "Banaras"
+        }
+    ];
+
+    const dayList = [
+        {
+            key: "Monday",
+            value: "Monday"
+        },
+        {
+            key: "Tuesday",
+            value: "Tuesday"
+        },
+        {
+            key: "Wednesday",
+            value: "Wednesday"
+        },
+        {
+            key: "Thursday",
+            value: "Thursday"
+        },
+        {
+            key: "Friday",
+            value: "Friday"
+        },
+        {
+            key: "Saturday",
+            value: "Saturday"
+        },
+        {
+            key: "Sunday",
+            value: "Sunday"
+        }
+    ];
+
     const [schoolData, setSchoolData] = useState({
         school_name: "",
         territory: "",
@@ -49,23 +100,24 @@ export default function SuperAdminSchoolCreation({ navigation }) {
                     value={schoolData.school_name}
                 />
                 <Text style={styles.label}>Territory</Text>
-                <TextInput
-                    style={styles.input}
-                    onChangeText={(e) => setSchoolData({ ...schoolData, territory: e })}
-                    value={schoolData.territory}
+                <SelectList
+                    setSelected={(val) => setSchoolData({ ...schoolData, territory: val })}
+                    data={territoryList}
+                    save="key"
                 />
                 <Text style={styles.label}>Assigned Day</Text>
-                <TextInput
-                    style={styles.input}
-                    onChangeText={(e) => setSchoolData({ ...schoolData, assigned_day: e })}
-                    value={schoolData.assigned_day}
+                <SelectList
+                    setSelected={(val) => setSchoolData({ ...schoolData, assigned_day: val })}
+                    data={dayList}
+                    save="key"
                 />
-                <Button
-                    title="Submit"
-                    color="#000"
-                    style={{ marginTop: 40, marginBottom: 40 }}
-                    onPress={handleAddSchool}
-                />
+                <View style={{ marginTop: 20 }}>
+                    <Button
+                        title="Submit"
+                        color="#000"
+                        onPress={handleAddSchool}
+                    />
+                </View>
             </ScrollView>
         </SafeAreaView>
     );

@@ -1,5 +1,5 @@
 import React from 'react';
-import { SafeAreaView, Text, TouchableOpacity, StyleSheet } from 'react-native';
+import { SafeAreaView, Text, TouchableOpacity, StyleSheet, View, Button } from 'react-native';
 
 export default function SuperAdminDashboard({ navigation }) {
     return (
@@ -30,6 +30,13 @@ export default function SuperAdminDashboard({ navigation }) {
                     <Text style={styles.adminContainer}>CALENDAR</Text>
                 </TouchableOpacity>
             </Text>
+            <View style={{ margin: 20 }}>
+                <Button
+                    title="Logout"
+                    color="#000"
+                    onPress={() => navigation.navigate("SignIn")}
+                />
+            </View>
         </SafeAreaView>
     );
 }

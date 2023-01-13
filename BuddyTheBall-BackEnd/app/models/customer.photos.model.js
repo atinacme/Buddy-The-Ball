@@ -17,7 +17,7 @@ const CustomerPhotos = mongoose.model(
         path: String,
         size: String,
         upload_date: String,
-        messages: [{ messanger_id: String, message: String, time: { type: Date, default: Date.now }, messanger_name: String }]
+        messages: [{ messanger_id: String, url: String, message: String, time: { type: Date, default: Date.now }, messanger_name: String }]
     })
 );
 

@@ -46,12 +46,12 @@ const App = () => {
         <Stack.Navigator initialRouteName="SignIn">
           <Stack.Screen name="SignIn" component={SignIn} />
           <Stack.Screen name="Customer Creation" component={CustomerCreation} />
-          <Stack.Screen name="Customer Dashboard" component={CustomerDashboard} />
+          <Stack.Screen name="Customer Dashboard" options={{ headerBackVisible: false }} component={CustomerDashboard} />
           <Stack.Screen name="Customer Photos" component={CustomerPhotos} />
           <Stack.Screen name="Customer Particular Photo" component={CustomerParticularPhoto} />
           <Stack.Screen name="Customer Messages" component={CustomerMessages} />
           <Stack.Screen name="Coach Creation" component={CoachCreation} />
-          <Stack.Screen name="Coach Dashboard" component={CoachDashboard} />
+          <Stack.Screen name="Coach Dashboard" options={{ headerBackVisible: false }} component={CoachDashboard} />
           <Stack.Screen name="Coach Schools Photos" component={CoachSchoolsPhotos} />
           <Stack.Screen name="Coach Photo Creation" component={CoachPhotoCreation} />
           <Stack.Screen name="Coach Particular School Photos" component={CoachParticularSchoolPhotos} />
@@ -60,7 +60,7 @@ const App = () => {
           <Stack.Screen name="Coach Messages" component={CoachMesages} />
           <Stack.Screen name="Coach School List" component={CoachSchoolList} />
           <Stack.Screen name="Coach Particular School Students" component={CoachParticularSchoolStudents} />
-          <Stack.Screen name="SuperAdmin Dashboard" component={SuperAdminDashboard} />
+          <Stack.Screen name="SuperAdmin Dashboard" options={{ headerBackVisible: false }} component={SuperAdminDashboard} />
           <Stack.Screen name="SuperAdmin Billing" component={SuperAdminBilling} />
           <Stack.Screen name="SuperAdmin Coaches" component={SuperAdminCoaches} />
           <Stack.Screen name="SuperAdmin Coach Description" component={SuperAdminCoachDescription} />

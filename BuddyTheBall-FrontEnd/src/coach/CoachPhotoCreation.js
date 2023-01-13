@@ -7,14 +7,14 @@ import { GetCustomerWithSchoolIdService } from '../services/CustomerService';
 import axios from 'axios';
 import Config from '../../Config';
 
-export default function CoachPhotoCreation({ route }) {
+export default function CoachPhotoCreation({ navigation, route }) {
     const [customerData, setCustomerData] = useState([]);
     const [customerId, setCustomerId] = useState();
     const [selectedFile, setSelectedFile] = useState(null);
     const state = useSelector((state) => state);
 
     useEffect(() => {
-        const handleStudentList = async (id) => {
+        const handleStudentList = async () => {
             const result = await GetCustomerWithSchoolIdService(route.params.schoolId);
             if (result) {
                 setCustomerData(result.map(v => Object.assign(v, { key: v._id, value: v.player_name })));
@@ -31,7 +31,7 @@ export default function CoachPhotoCreation({ route }) {
         console.log('rsss->', result);
     };
 
-    const handleSignUp = async () => {
+    const handleAddPhoto = async () => {
         const formData = new FormData();
         formData.append('customer_id', customerId);
         formData.append('school_id', route.params.schoolId);
@@ -61,7 +61,10 @@ export default function CoachPhotoCreation({ route }) {
                 [
                     {
                         text: "OK",
-                        onPress: () => setSelectedFile(null)
+                        onPress: () => {
+                            setSelectedFile(null);
+                            navigation.navigate("Coach Schools Photos");
+                        }
                     }
                 ]
             );
@@ -77,22 +80,23 @@ export default function CoachPhotoCreation({ route }) {
                     data={customerData}
                     save="key"
                 />
-                <View>
+                <View style={{ marginTop: 20 }}>
                     <Button onPress={openGallery} title='upload' />
                     {selectedFile !== null && selectedFile.map((ls, index) => {
                         return (
                             <View key={index}>
-                                <Image source={{ uri: ls.path }} style={{ height: 300, width: 300 }} />
+                                <Image source={{ uri: ls.path }} style={{ height: 300, width: 300, marginTop: 20, marginBottom: 20 }} />
                             </View>
                         );
                     })}
                 </View>
-                <Button
-                    title="Submit"
-                    color="#000"
-                    style={{ marginTop: 40, marginBottom: 40 }}
-                    onPress={handleSignUp}
-                />
+                <View style={{ marginTop: 20 }}>
+                    <Button
+                        title="Submit"
+                        color="#000"
+                        onPress={handleAddPhoto}
+                    />
+                </View>
             </ScrollView>
         </SafeAreaView>
     );

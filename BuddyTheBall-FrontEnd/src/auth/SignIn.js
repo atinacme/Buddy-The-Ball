@@ -1,14 +1,17 @@
-import React, { useState } from 'react';
-import { Text, SafeAreaView, TextInput, StyleSheet, Button, Image } from "react-native";
+import React, { useEffect, useState } from 'react';
+import { Text, SafeAreaView, TextInput, StyleSheet, Button, Image, Alert } from "react-native";
 import buddy from '../assets/buddy.png';
 import { useDispatch } from "react-redux";
 import { AuthPageAction } from '../redux/Actions';
 import { SignInService } from '../services/UserAuthService';
 
-export default function SignIn({ navigation }) {
+export default function SignIn({ navigation, route }) {
     const [email, setEmail] = useState();
     const [password, setPassword] = useState();
     const dispatch = useDispatch();
+    useEffect(() => {
+        //
+    }, [navigation, route]);
     const handleSignIn = async () => {
         try {
             const data = {
@@ -25,7 +28,31 @@ export default function SignIn({ navigation }) {
             } else {
                 navigation.navigate("SuperAdmin Dashboard");
             }
-        } catch (e) { console.log(e.message); }
+        } catch (e) {
+            if (e.message === "Request failed with status code 404") {
+                Alert.alert(
+                    "Alert",
+                    "User Not found.",
+                    [
+                        {
+                            text: "OK"
+                        }
+                    ]
+                );
+            } else if (e.message === "Request failed with status code 401") {
+                Alert.alert(
+                    "Alert",
+                    "Invalid Password!",
+                    [
+                        {
+                            text: "OK"
+                        }
+                    ]
+                );
+            } else {
+                console.log(e.message);
+            }
+        }
     };
     return (
         <SafeAreaView style={styles.wrapper}>

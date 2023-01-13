@@ -35,14 +35,15 @@ export default function CustomerParticularPhoto({ navigation, route }) {
             }
         };
         getCustomers();
-    }, [msgResult]);
+    }, [navigation, msgResult]);
 
     const handleSendMessage = async () => {
         try {
             const data = {
                 messanger_id: route.params.photo.user_id,
                 message: message,
-                messanger_name: messanger
+                messanger_name: messanger,
+                url: state.authPage.auth_data.profile_data.url
             };
             const result = await UpdateCustomerPhotosOnMessage(route.params.photo._id, data);
             if (result) {
@@ -52,7 +53,6 @@ export default function CustomerParticularPhoto({ navigation, route }) {
         } catch (e) { }
     };
 
-    // console.log("msg------>", message, message.length > 0 ? message.pop() : messageEmpty);
     return (
         <View style={styles.imgWrap}>
             <Image source={{ uri: route.params.photo.url }} style={{ width: 400, height: '100%' }} />
@@ -60,7 +60,11 @@ export default function CustomerParticularPhoto({ navigation, route }) {
                 {onLoadMessages.length > 0 && onLoadMessages.map(item => {
                     return (
                         <Text key={item._id} style={styles.DateName}>
-                            <Image source={profile} style={{ width: 40, height: 40, borderRadius: 50, backgroundColor: '#fff' }} />
+                            {item.url ?
+                                <Image source={{ uri: item.url }} style={{ width: 40, height: 40, borderRadius: 50, backgroundColor: '#fff' }} />
+                                :
+                                <Image source={profile} style={{ width: 40, height: 40, borderRadius: 50, backgroundColor: '#fff' }} />
+                            }
                             <Text style={styles.icontxt}>&nbsp;&nbsp;{item.messanger_name}</Text>
                             <Text style={styles.date}>&nbsp;&nbsp;{moment(item.time).format('MMMM D YY, h:mm a')}</Text>
                             <Text style={styles.date}>&nbsp;&nbsp;&nbsp;&nbsp;{item.message}</Text>

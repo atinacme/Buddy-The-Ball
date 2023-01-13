@@ -13,10 +13,10 @@ export default function CustomerPhotos({ navigation }) {
             if (result) {
                 setCustomerPhotos(result);
             }
-            console.log("gfdg---->", result, customerPhotos);
         };
         getCustomerPhotos();
-    }, []);
+    }, [navigation]);
+
     return (
         <SafeAreaView>
             <Text style={styles.label}>{state.authPage.auth_data.school.school_name}</Text>
@@ -25,7 +25,7 @@ export default function CustomerPhotos({ navigation }) {
                     {customerPhotos.map(item => {
                         return (
                             <TouchableOpacity key={item._id} onPress={() => navigation.navigate("Customer Particular Photo", { photo: item })}>
-                                <Image key={item._id} source={{ uri: item.url }} style={{ height: 300, width: 300 }} />
+                                <Image key={item._id} source={{ uri: item.url }} style={{ height: 300, width: 300, marginTop: 10, marginBottom: 10 }} />
                             </TouchableOpacity>
                         );
                     })}
