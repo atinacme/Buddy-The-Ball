@@ -3,6 +3,8 @@ import { Text, SafeAreaView, TextInput, StyleSheet, Button, Image, Alert, Scroll
 import { SelectList } from 'react-native-dropdown-select-list';
 import buddy from '../assets/buddy.png';
 import { SchoolCreationService } from '../services/SchoolService';
+import { Formik } from 'formik';
+import * as yup from 'yup';
 
 export default function SuperAdminSchoolCreation({ navigation }) {
 
@@ -62,12 +64,25 @@ export default function SuperAdminSchoolCreation({ navigation }) {
         assigned_day: ""
     });
 
-    const handleAddSchool = async () => {
+    const loginValidationSchema = yup.object().shape({
+        school_name: yup
+            .string()
+            .required('School Name is Required'),
+        territory: yup
+            .string()
+            .required('Territory is required'),
+        assigned_day: yup
+            .string()
+            .required('Assigned Day is required')
+    });
+
+    const handleAddSchool = async (values) => {
+        console.log("values---->", values);
         try {
             const data = {
-                school_name: schoolData.school_name,
-                territory: schoolData.territory,
-                assigned_day: schoolData.assigned_day,
+                school_name: values.school_name,
+                territory: values.territory,
+                assigned_day: values.assigned_day,
             };
             const result = await SchoolCreationService(data);
             if (result) {
@@ -93,31 +108,61 @@ export default function SuperAdminSchoolCreation({ navigation }) {
         <SafeAreaView style={styles.wrapper}>
             <ScrollView style={styles.scrollView}>
                 <Image source={buddy} style={{ width: 200, height: 100, marginLeft: 'auto', marginRight: 'auto' }} />
-                <Text style={styles.label}>School Name</Text>
-                <TextInput
-                    style={styles.input}
-                    onChangeText={(e) => setSchoolData({ ...schoolData, school_name: e })}
-                    value={schoolData.school_name}
-                />
-                <Text style={styles.label}>Territory</Text>
-                <SelectList
-                    setSelected={(val) => setSchoolData({ ...schoolData, territory: val })}
-                    data={territoryList}
-                    save="key"
-                />
-                <Text style={styles.label}>Assigned Day</Text>
-                <SelectList
-                    setSelected={(val) => setSchoolData({ ...schoolData, assigned_day: val })}
-                    data={dayList}
-                    save="key"
-                />
-                <View style={{ marginTop: 20 }}>
-                    <Button
-                        title="Submit"
-                        color="#000"
-                        onPress={handleAddSchool}
-                    />
-                </View>
+                <Formik
+                    validationSchema={loginValidationSchema}
+                    initialValues={{ school_name: '', territory: '', assigned_day: '' }}
+                    onSubmit={(values) => handleAddSchool(values)}
+                >
+                    {({
+                        handleChange,
+                        handleBlur,
+                        handleSubmit,
+                        values,
+                        errors,
+                        isValid,
+                    }) => (
+                        <>
+                            <Text style={styles.label}>School Name</Text>
+                            <TextInput
+                                name="school_name"
+                                placeholder="School"
+                                onChangeText={handleChange('school_name')}
+                                onBlur={handleBlur('school_name')}
+                                value={values.school}
+                                style={styles.input}
+                            />
+                            {errors.school_name &&
+                                <Text style={{ fontSize: 10, color: 'red' }}>{errors.school_name}</Text>
+                            }
+                            <Text style={styles.label}>Territory</Text>
+                            <SelectList
+                                setSelected={handleChange('territory')}
+                                data={territoryList}
+                                save="key"
+                            />
+                            {errors.territory &&
+                                <Text style={{ fontSize: 10, color: 'red' }}>{errors.territory}</Text>
+                            }
+                            <Text style={styles.label}>Assigned Day</Text>
+                            <SelectList
+                                setSelected={handleChange('assigned_day')}
+                                data={dayList}
+                                save="key"
+                            />
+                            {errors.assigned_day &&
+                                <Text style={{ fontSize: 10, color: 'red' }}>{errors.assigned_day}</Text>
+                            }
+                            <View style={{ marginTop: 20 }}>
+                                <Button
+                                    disabled={!isValid}
+                                    title="Submit"
+                                    color="#000"
+                                    onPress={handleSubmit}
+                                />
+                            </View>
+                        </>
+                    )}
+                </Formik>
             </ScrollView>
         </SafeAreaView>
     );

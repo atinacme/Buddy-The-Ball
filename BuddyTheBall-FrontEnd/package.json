@@ -19,6 +19,7 @@
     "babel-plugin-transform-inline-environment-variables": "^0.4.4",
     "dotenv": "^16.0.3",
     "emoji-mart-native": "^0.6.5-beta",
+    "formik": "^2.2.9",
     "moment": "^2.29.4",
     "react": "18.1.0",
     "react-devtools-core": "^4.27.1",
@@ -35,7 +36,8 @@
     "react-redux": "^8.0.5",
     "redux": "^4.2.0",
     "redux-devtools-extension": "^2.13.9",
-    "redux-logger": "^3.0.6"
+    "redux-logger": "^3.0.6",
+    "yup": "^0.32.11"
   },
   "devDependencies": {
     "@babel/core": "^7.12.9",
