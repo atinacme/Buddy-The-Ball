@@ -47,7 +47,6 @@ export default function CoachCreation({ navigation }) {
         handed: "",
         favorite_drill: ""
     });
-    console.log("select--->", selected);
 
     const handleSignUp = async () => {
         try {

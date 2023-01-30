@@ -6,7 +6,7 @@ const dbConfig = require("../config/db.config");
 const db = require("../models");
 const Coach = db.coach;
 const Customer = db.customer;
-const CustomerPhotos = db.customerPhotos;
+const Photos = db.photos;
 
 const MongoClient = require("mongodb").MongoClient;
 const GridFSBucket = require("mongodb").GridFSBucket;
@@ -79,7 +79,7 @@ const uploadCustomerPhotos = async (req, res) => {
             }
         } else {
             req.files.forEach(element => {
-                const customerPhotos = new CustomerPhotos({
+                const customerPhotos = new Photos({
                     user_id: userId.user_id,
                     customer_id: req.body.customer_id,
                     school_id: req.body.school_id,
@@ -118,7 +118,7 @@ const uploadCustomerPhotos = async (req, res) => {
 const getParticularSchoolPhotos = async (req, res) => {
     try {
         var fileInfos = [];
-        var photos = await CustomerPhotos.find({ school_id: req.params.id });
+        var photos = await Photos.find({ school_id: req.params.id });
 
         if ((photos.length) === 0) {
             return res.status(500).send({
@@ -151,7 +151,7 @@ const getParticularSchoolPhotos = async (req, res) => {
 const getParticularCustomerPhotos = async (req, res) => {
     try {
         var fileInfos = [];
-        var photos = await CustomerPhotos.find({ customer_id: req.params.id });
+        var photos = await Photos.find({ customer_id: req.params.id });
 
         if ((photos.length) === 0) {
             return res.status(500).send({
@@ -183,7 +183,7 @@ const getParticularCustomerPhotos = async (req, res) => {
 
 const getParticularPhoto = async (req, res) => {
     try {
-        var data = await CustomerPhotos.findById(req.params.id);
+        var data = await Photos.findById(req.params.id);
         return res.status(200).send(data);
     } catch (error) {
         return res.status(500).send({
@@ -207,7 +207,7 @@ const updateCustomerPhotosOnMessage = (req, res) => {
         url: req.body.url
     }];
 
-    CustomerPhotos.findByIdAndUpdate(id, {
+    Photos.findByIdAndUpdate(id, {
         $push: {
             messages: message
         }

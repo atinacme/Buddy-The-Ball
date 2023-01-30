@@ -3,6 +3,7 @@ var bcrypt = require("bcryptjs");
 const Coach = db.coach;
 const User = db.user;
 const School = db.school;
+const Customer = db.customer;
 
 exports.getCoaches = (req, res) => {
     Coach.find()
@@ -23,6 +24,22 @@ exports.findParticularCoach = (req, res) => {
 
     Coach.findById(id)
         .populate("assigned_schools", "-__v")
+        .then(data => {
+            if (!data)
+                res.status(404).send({ message: "Not found Coach with id " + id });
+            else res.send(data);
+        })
+        .catch(err => {
+            res
+                .status(500)
+                .send({ message: "Error retrieving Coach with id=" + id });
+        });
+};
+
+exports.findCustomersOfParticularCoach = (req, res) => {
+    const id = req.params.id;
+
+    Customer.find({ coach: id })
         .then(data => {
             if (!data)
                 res.status(404).send({ message: "Not found Coach with id " + id });

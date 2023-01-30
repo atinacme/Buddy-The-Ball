@@ -1,4 +1,4 @@
-const controller = require("../controllers/customer.photos.controller");
+const controller = require("../controllers/photos.controller");
 
 module.exports = function (app) {
     app.use(function (req, res, next) {

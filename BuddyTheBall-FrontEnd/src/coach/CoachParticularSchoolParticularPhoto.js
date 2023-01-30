@@ -1,5 +1,5 @@
-import React from 'react'
-import { Text, View, Image, TextInput, StyleSheet } from 'react-native'
+import React from 'react';
+import { Text, View, Image, TextInput, StyleSheet } from 'react-native';
 import smiley from '../assets/smiley.png';
 import message from '../assets/message.png';
 import heart from '../assets/red-heart.png';
@@ -7,37 +7,37 @@ import heart from '../assets/red-heart.png';
 export default function CoachParticularSchoolParticularPhoto() {
     return (
         <View style={styles.imgWrap}>
-        <Image source={{ uri: 'https://picsum.photos/seed/picsum/200/300' }} style={{ width: 400, height: '100%' }} />
-        <View style={styles.imgDes}>
-            <Text style={styles.DateName}>
-                <Image source={profile} style={{ width: 40, height: 40, borderRadius: 50, backgroundColor: '#fff' }} />           
-                    <Text style={styles.icontxt}>Ayan</Text>{"\n"}
-                    <Image source={clapping} style={{ width: 40, height: 40 }} />         
-                <Text style={styles.date}>September 26 6:26 P.M</Text>
-            </Text>
-            <TextInput
-                style={styles.input}
-                // onChangeText={onChangeText}
-                // value={text}
-                placeholder="Add a comment..."
-            />
-            <View style={styles.iconWrapper}>
-                <View style={styles.iconWrap}>
-                    <Image source={smiley} style={{ width: 40, height: 40 }} />
-                    <Text style={styles.icontxt}>+</Text>
-                </View>
-                <View style={styles.iconWrap}>
-                    <Image source={heart} style={{ width: 40, height: 40 }} />
-                    <Text style={styles.icontxt}>1</Text>
-                </View>
-                <View style={styles.iconWrap}>
-                    <Image source={message} style={{ width: 40, height: 40 }} />
-                    <Text style={styles.icontxt}>1</Text>
+            <Image source={{ uri: 'https://picsum.photos/seed/picsum/200/300' }} style={{ width: 400, height: '100%' }} />
+            <View style={styles.imgDes}>
+                <Text style={styles.DateName}>
+                    <Image source={profile} style={{ width: 40, height: 40, borderRadius: 50, backgroundColor: '#fff' }} />
+                    <Text style={styles.icontxt}>Ayan</Text>
+                    <Image source={clapping} style={{ width: 40, height: 40 }} />
+                    <Text style={styles.date}>September 26 6:26 P.M</Text>
+                </Text>
+                <TextInput
+                    style={styles.input}
+                    // onChangeText={onChangeText}
+                    // value={text}
+                    placeholder="Add a comment..."
+                />
+                <View style={styles.iconWrapper}>
+                    <View style={styles.iconWrap}>
+                        <Image source={smiley} style={{ width: 40, height: 40 }} />
+                        <Text style={styles.icontxt}>+</Text>
+                    </View>
+                    <View style={styles.iconWrap}>
+                        <Image source={heart} style={{ width: 40, height: 40 }} />
+                        <Text style={styles.icontxt}>1</Text>
+                    </View>
+                    <View style={styles.iconWrap}>
+                        <Image source={message} style={{ width: 40, height: 40 }} />
+                        <Text style={styles.icontxt}>1</Text>
+                    </View>
                 </View>
             </View>
         </View>
-    </View>
-    )
+    );
 }
 
 

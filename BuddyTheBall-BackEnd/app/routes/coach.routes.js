@@ -13,6 +13,8 @@ module.exports = function (app) {
 
     app.get("/api/getParticularCoach/:id", controller.findParticularCoach);
 
+    app.get("/api/getCustomersOfParticularCoach/:id", controller.findCustomersOfParticularCoach);
+
     app.put("/api/updateCoach/:userId/:coachId", controller.updateCoach);
 
     app.delete("/api/deleteCoach/:id", controller.deleteCoach);

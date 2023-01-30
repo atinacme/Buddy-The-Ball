@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 
-const CustomerPhotos = mongoose.model(
-    "CustomerPhotos",
+const Photos = mongoose.model(
+    "Photos",
     new mongoose.Schema({
         user_id: String,
         customer_id: String,
@@ -21,4 +21,4 @@ const CustomerPhotos = mongoose.model(
     })
 );
 
-module.exports = CustomerPhotos;
+module.exports = Photos;

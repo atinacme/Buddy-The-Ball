@@ -25,6 +25,7 @@ import CoachParticularSchoolPhotos from './src/coach/CoachParticularSchoolPhotos
 import CoachParticularSchoolParticularPhoto from './src/coach/CoachParticularSchoolParticularPhoto.js';
 import CoachCalendar from './src/coach/CoachCalendar.js';
 import CoachMesages from './src/coach/CoachMesages.js';
+import CoachMessageCreation from './src/coach/CoachMessageCreation';
 import CoachSchoolList from './src/coach/CoachSchoolList.js';
 import CoachParticularSchoolStudents from './src/coach/CoachParticularSchoolStudents.js';
 import SuperAdminDashboard from './src/superadmin/SuperAdminDashboard.js';
@@ -58,6 +59,7 @@ const App = () => {
           <Stack.Screen name="Coach Particular School Particular Photo" component={CoachParticularSchoolParticularPhoto} />
           <Stack.Screen name="Coach Calendar" component={CoachCalendar} />
           <Stack.Screen name="Coach Messages" component={CoachMesages} />
+          <Stack.Screen name="Coach Message Creation" component={CoachMessageCreation} />
           <Stack.Screen name="Coach School List" component={CoachSchoolList} />
           <Stack.Screen name="Coach Particular School Students" component={CoachParticularSchoolStudents} />
           <Stack.Screen name="SuperAdmin Dashboard" options={{ headerBackVisible: false }} component={SuperAdminDashboard} />
