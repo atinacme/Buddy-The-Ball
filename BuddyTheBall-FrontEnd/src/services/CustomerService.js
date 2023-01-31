@@ -23,4 +23,15 @@ const UpdateCustomerPhotosOnMessage = async (id, data) => {
     return await HttpRequest("POST", `${baseUrl}/updateCustomerPhotosOnMessage/${id}`, data);
 };
 
-export { GetCustomerWithSchoolIdService, GetParticularCustomerPhotosService, GetParticularCustomerService, GetCustomerParticularPhotoService, UpdateCustomerPhotosOnMessage };
+const CreateMessage = async (data) => {
+    return await HttpRequest("POST", `${baseUrl}/createMessage`, data);
+};
+
+const GetMessagesBySenderId = async (id) => {
+    return await HttpRequest("GET", `${baseUrl}/getMessagesBySenderId/${id}`, null);
+};
+
+export {
+    GetCustomerWithSchoolIdService, GetParticularCustomerPhotosService, GetParticularCustomerService,
+    GetCustomerParticularPhotoService, UpdateCustomerPhotosOnMessage, CreateMessage, GetMessagesBySenderId
+};

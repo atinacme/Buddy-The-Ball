@@ -23,5 +23,4 @@ const SchoolUpdationService = async (id, data) => {
     return await HttpRequest("PUT", `${baseUrl}/updateSchool/${id}`, data);
 };
 
-
 export { GetSchoolsService, SchoolCreationService, GetParticularSchoolService, GetParticularSchoolPhotosService, SchoolUpdationService };

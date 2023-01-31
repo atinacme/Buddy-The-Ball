@@ -104,7 +104,6 @@ exports.updateCoach = (req, res) => {
                 message: "Error updating User with id=" + userId
             });
         });
-
 };
 
 exports.deleteCoach = (req, res) => {

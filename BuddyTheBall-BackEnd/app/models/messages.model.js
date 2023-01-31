@@ -3,11 +3,16 @@ const mongoose = require("mongoose");
 const Messages = mongoose.model(
     "Messages",
     new mongoose.Schema([{
-        messanger_id: String,
-        url: String,
+        sender_id: String,
+        sender_name: String,
+        sender_role: String,
+        sender_profile_url: String,
+        receiver_id: String,
+        receiver_name: String,
+        receiver_role: String,
+        receiver_profile_url: String,
         message: String,
-        time: { type: Date, default: Date.now },
-        messanger_name: String
+        time: { type: Date, default: Date.now }
     }])
 );
 

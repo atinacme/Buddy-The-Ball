@@ -5,12 +5,13 @@ import { SafeAreaView, Text, TextInput, StyleSheet, View, TouchableOpacity, Imag
 import { SelectList } from 'react-native-dropdown-select-list';
 import { GetCustomersOfParticularCoachService } from '../services/CoachService';
 import { RadioButton } from 'react-native-paper';
+import { CreateMessage } from '../services/CustomerService';
 
 export default function CoachMessageCreation() {
     const state = useSelector((state) => state);
-    const [role, setRole] = useState('customer');
+    const [receiverRole, setReceiverRole] = useState('customer');
     const [customers, setCustomers] = useState([]);
-    const [customerId, setCustomerId] = useState();
+    const [receiverId, setReceiverId] = useState();
     const [message, setMessage] = useState();
 
     useEffect(() => {
@@ -26,15 +27,16 @@ export default function CoachMessageCreation() {
     const handleSendMessage = async () => {
         try {
             const data = {
-                role: role,
-                messanger_id: state.authPage.auth_data._id,
+                sender_id: state.authPage.auth_data._id,
+                sender_name: state.authPage.auth_data.coach_name,
+                sender_role: 'coach',
+                sender_profile_url: state.authPage.auth_data.profile_data.url,
+                receiver_id: receiverId,
+                receiver_role: receiverRole,
                 message: message,
-                message_to_id: customerId,
-                url: state.authPage.auth_data.profile_data.url
             };
-            const result = await UpdateCustomerPhotosOnMessage(route.params.photo._id, data);
+            const result = await CreateMessage(data);
             if (result) {
-                setMsgResult(result);
                 setMessage();
             }
         } catch (e) { }
@@ -43,21 +45,21 @@ export default function CoachMessageCreation() {
     return (
         <SafeAreaView style={styles.wrapper}>
             <View style={{ display: 'flex', justifyContent: 'space-between', flexDirection: 'row' }}>
-                <RadioButton.Group onValueChange={newValue => setRole(newValue)} value={role}>
+                <RadioButton.Group onValueChange={newValue => setReceiverRole(newValue)} value={receiverRole}>
                     <View>
                         <Text>Customer</Text>
                         <RadioButton value="customer" />
                     </View>
                     <View>
                         <Text>Super Admin</Text>
-                        <RadioButton value="super_admin" />
+                        <RadioButton value="superadmin" />
                     </View>
                 </RadioButton.Group>
             </View>
             <Text style={styles.label}>Message To</Text>
-            {role === 'customer' ?
+            {receiverRole === 'customer' ?
                 <SelectList
-                    setSelected={(val) => setCustomerId(val)}
+                    setSelected={(val) => setReceiverId(val)}
                     data={customers}
                     save="key"
                 />
