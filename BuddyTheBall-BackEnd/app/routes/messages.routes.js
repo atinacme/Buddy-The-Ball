@@ -9,7 +9,9 @@ module.exports = function (app) {
         next();
     });
 
-    app.post("/api/createMessage", controller.createMessage);
+    app.post("/api/createAndUpdateMessage", controller.createAndUpdateMessage);
 
     app.get("/api/getMessagesBySenderId/:id", controller.getMessagesBySenderId);
+
+    app.get("/api/getMessagesBySenderIdReceiverId/:sender_id/:receiver_id", controller.getMessagesBySenderIdReceiverId);
 };

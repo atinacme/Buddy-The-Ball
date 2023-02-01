@@ -23,15 +23,20 @@ const UpdateCustomerPhotosOnMessage = async (id, data) => {
     return await HttpRequest("POST", `${baseUrl}/updateCustomerPhotosOnMessage/${id}`, data);
 };
 
-const CreateMessage = async (data) => {
-    return await HttpRequest("POST", `${baseUrl}/createMessage`, data);
+const CreateAndUpdateMessage = async (data) => {
+    return await HttpRequest("POST", `${baseUrl}/createAndUpdateMessage`, data);
 };
 
 const GetMessagesBySenderId = async (id) => {
     return await HttpRequest("GET", `${baseUrl}/getMessagesBySenderId/${id}`, null);
 };
 
+const GetMessagesBySenderIdReceiverId = async (sender_id, receiver_id) => {
+    return await HttpRequest("GET", `${baseUrl}/getMessagesBySenderIdReceiverId/${sender_id}/${receiver_id}`, null);
+};
+
 export {
     GetCustomerWithSchoolIdService, GetParticularCustomerPhotosService, GetParticularCustomerService,
-    GetCustomerParticularPhotoService, UpdateCustomerPhotosOnMessage, CreateMessage, GetMessagesBySenderId
+    GetCustomerParticularPhotoService, UpdateCustomerPhotosOnMessage, CreateAndUpdateMessage, GetMessagesBySenderId,
+    GetMessagesBySenderIdReceiverId
 };

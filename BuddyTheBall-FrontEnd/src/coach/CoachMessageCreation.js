@@ -5,7 +5,7 @@ import { SafeAreaView, Text, TextInput, StyleSheet, View, TouchableOpacity, Imag
 import { SelectList } from 'react-native-dropdown-select-list';
 import { GetCustomersOfParticularCoachService } from '../services/CoachService';
 import { RadioButton } from 'react-native-paper';
-import { CreateMessage } from '../services/CustomerService';
+import { CreateAndUpdateMessage } from '../services/CustomerService';
 
 export default function CoachMessageCreation() {
     const state = useSelector((state) => state);
@@ -35,7 +35,7 @@ export default function CoachMessageCreation() {
                 receiver_role: receiverRole,
                 message: message,
             };
-            const result = await CreateMessage(data);
+            const result = await CreateAndUpdateMessage(data);
             if (result) {
                 setMessage();
             }

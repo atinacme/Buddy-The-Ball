@@ -1,55 +1,55 @@
-import React from 'react'
-import { SafeAreaView, Text, Image, View, StyleSheet } from 'react-native'
-import user from '../assets/user.png'
-import rightArrow from '../assets/right-arrow.png'
+import React, { useEffect, useState } from 'react';
+import { useSelector } from "react-redux";
+import rightArrow from '../assets/right-arrow.png';
+import message from '../assets/message.png';
+import { SafeAreaView, Text, Image, View, StyleSheet, TouchableOpacity } from 'react-native';
+import { GetMessagesBySenderId } from '../services/CustomerService';
+import moment from 'moment';
 
-export default function CustomerMessages() {
-    const messages = [
-        {
-            id: 1,
-            name: 'Atin Gupta',
-            day: 'Wednesday',
-            message: 'Today is wednesday'
-        },
-        {
-            id: 2,
-            name: 'Sugam Mahendaru',
-            day: 'Yesterday',
-            message: 'Yesterday is tuesday'
-        },
-        {
-            id: 3,
-            name: 'Bhupendra Singh',
-            day: 'Monday',
-            message: 'Monday is the first day'
-        }
-    ]
+export default function CustomerMessages({ navigation }) {
+    const state = useSelector((state) => state);
+    const [senderMessages, setSenderMessages] = useState([]);
+
+    useEffect(() => {
+        const getMessagesBySenderId = async () => {
+            const result = await GetMessagesBySenderId(state.authPage.auth_data._id);
+            if (result) {
+                setSenderMessages(result);
+            }
+        };
+        getMessagesBySenderId();
+    }, []);
+
     return (
         <SafeAreaView>
-            {messages.map(item => {
+            {senderMessages.map(item => {
                 return (
-                    <View key={item.id} style={styles.messagewrap}>
-                    <Image source={user} style={{ width: 30, height: 30 }} />
-                    {/* <Text style={styles.nameDay}> */}
-                        <Text style={styles.msgName}>{item.name}</Text>
-                        <Text style={styles.msgWrap}>{item.message}</Text>
-                        <Text style={styles.rightsec}>
-                            <Text style={styles.msgDay}>{item.day}</Text>
-                            <Image source={rightArrow} style={{ width: 15, height: 15  }} />
-                        </Text>
-                       
-                    {/* </Text> */}
-                    
-                </View>
-                )
+                    <TouchableOpacity key={item._id} onPress={() => navigation.navigate("Coach Particular Message", { messages: item })}>
+                        <View key={item._id} style={styles.messagewrap}>
+                            <Image source={{ uri: item.receiver_profile_url }} style={{ width: 30, height: 30 }} />
+                            <Text style={styles.msgName}>{item.receiver_name}</Text>
+                            <Text style={styles.msgWrap}>{item.last_message}</Text>
+                            <Text style={styles.rightsec}>
+                                <Text style={styles.msgDay}>{moment(item.time).format('dddd')}</Text>
+                                <Image source={rightArrow} style={{ width: 15, height: 15 }} />
+                            </Text>
+                        </View>
+                    </TouchableOpacity>
+                );
             })}
+            <TouchableOpacity onPress={() => navigation.navigate("Coach Message Creation")}>
+                <View style={styles.messageImageHolder}>
+                    <Image resizeMode={"contain"} source={message} />
+                </View>
+            </TouchableOpacity>
         </SafeAreaView>
-    )
+    );
 }
+
 
 const styles = StyleSheet.create({
     messagewrap: {
-        display: 'flex',  
+        display: 'flex',
         flexDirection: 'row',
         justifyContent: 'space-between',
         flexWrap: 'wrap',
@@ -60,10 +60,9 @@ const styles = StyleSheet.create({
         alignItems: 'center'
     },
     msgWrap: {
-      
         paddingTop: 0,
         marginTop: 0,
-            fontFamily: 'LemonJuice'
+        fontFamily: 'LemonJuice'
     },
     msgName: {
         textAlign: 'left',
@@ -72,8 +71,20 @@ const styles = StyleSheet.create({
     },
     msgDay: {
         textAlign: 'right',
-       color: '#000',
-       marginRight: 10,
-       fontFamily: 'LemonJuice'
+        color: '#000',
+        marginRight: 10,
+        fontFamily: 'LemonJuice'
     },
+    messageImageHolder: {
+        left: '70%',
+        top: '400%',
+        width: 80,
+        height: 80,
+        aspectRatio: 1 / 1,
+        backgroundColor: '#d8d8d8',
+        padding: 20,
+        borderColor: '#d8d8d8',
+        borderRadius: 50,
+        overflow: 'hidden'
+    }
 });

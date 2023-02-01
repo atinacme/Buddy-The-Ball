@@ -1,89 +1,20 @@
 import React, { useEffect, useState } from 'react';
-import user from '../assets/user.png';
 import { useSelector } from "react-redux";
 import rightArrow from '../assets/right-arrow.png';
 import message from '../assets/message.png';
 import { SafeAreaView, Text, Image, View, StyleSheet, TouchableOpacity } from 'react-native';
 import { GetMessagesBySenderId } from '../services/CustomerService';
-import _ from "lodash";
+import moment from 'moment';
 
 export default function CoachMesages({ navigation }) {
-    const messages = [
-        {
-            id: 1,
-            name: 'Atin Gupta',
-            day: 'Wednesday',
-            message: 'Today is wednesday'
-        },
-        {
-            id: 2,
-            name: 'Sugam Mahendaru',
-            day: 'Yesterday',
-            message: 'Yesterday is tuesday'
-        },
-        {
-            id: 3,
-            name: 'Bhupendra Singh',
-            day: 'Monday',
-            message: 'Monday is the first day'
-        }
-    ];
     const state = useSelector((state) => state);
     const [senderMessages, setSenderMessages] = useState([]);
-
-    // function areEquals(a, b) {
-    //     var keys1 = Object.keys(a);
-    //     var keys2 = Object.keys(b);
-    //     if (keys1.length !== keys2.length) {
-    //         return false;
-    //     }
-    //     for (key in a) {
-    //         if (a[key] !== b[key]) return false;
-    //     }
-    //     return true;
-    // }
-
-    // function checkArray(arr) {
-    //     for (var i = 1; i < arr.length + 1; i++) {
-    //         console.log("nswdfcj--->", arr.length, arr[i]);
-    //         if (!areEquals(arr[0], arr[i])) return false;
-    //     }
-    //     return true;
-    // }
-    // console.log("result---->", checkArray(senderMessages));
-    const combinedItems = (arr = []) => {
-        const res = arr.reduce((acc, obj) => {
-            let found = false;
-            for (let i = 0; i < acc.length; i++) {
-                if (acc[i].receiver_id === obj.receiver_id) {
-                    found = true;
-                    obj.all_messages = obj.message;
-                    console.log("msg---->", obj);
-                    acc[i].push(obj);
-                    // acc[i].count++;
-                };
-            }
-            if (!found) {
-                obj.count = 1;
-                acc.push(obj);
-            }
-            return acc;
-        }, []);
-        return res;
-    };
 
     useEffect(() => {
         const getMessagesBySenderId = async () => {
             const result = await GetMessagesBySenderId(state.authPage.auth_data._id);
             if (result) {
-                console.log("combinedItems", combinedItems(result));
-                // result.forEach(obj => {
-                //     if (!_.isEqual(result[0].receiver_id, obj.receiver_id)) {
-                //         console.log("not equal----->", obj);
-                //     } else {
-                //         console.log("equal----->", obj);
-                //     }
-                // });
+                setSenderMessages(result);
             }
         };
         getMessagesBySenderId();
@@ -91,21 +22,33 @@ export default function CoachMesages({ navigation }) {
 
     return (
         <SafeAreaView>
-            {messages.map(item => {
+            {senderMessages.map(item => {
+                { console.log("wjdvg---->", item.sender_role); }
                 return (
-                    <View key={item.id} style={styles.messagewrap}>
-                        <Image source={user} style={{ width: 30, height: 30 }} />
-                        {/* <Text style={styles.nameDay}> */}
-                        <Text style={styles.msgName}>{item.name}</Text>
-                        <Text style={styles.msgWrap}>{item.message}</Text>
-                        <Text style={styles.rightsec}>
-                            <Text style={styles.msgDay}>{item.day}</Text>
-                            <Image source={rightArrow} style={{ width: 15, height: 15 }} />
-                        </Text>
+                    <TouchableOpacity key={item._id} onPress={() => navigation.navigate("Coach Particular Message", { messages: item })}>
 
-                        {/* </Text> */}
-
-                    </View>
+                        {item.sender_role === "coach" ?
+                            <View key={item._id} style={styles.messagewrap}>
+                                <Image source={{ uri: item.sender_profile_url }} style={{ width: 30, height: 30 }} />
+                                <Text style={styles.msgName}>{item.sender_name}</Text>
+                                <Text style={styles.msgWrap}>{item.last_message}</Text>
+                                <Text style={styles.rightsec}>
+                                    <Text style={styles.msgDay}>{moment(item.time).format('dddd')}</Text>
+                                    <Image source={rightArrow} style={{ width: 15, height: 15 }} />
+                                </Text>
+                            </View>
+                            :
+                            <View key={item._id} style={styles.messagewrap}>
+                                <Image source={{ uri: item.receiver_profile_url }} style={{ width: 30, height: 30 }} />
+                                <Text style={styles.msgName}>{item.receiver_name}</Text>
+                                <Text style={styles.msgWrap}>{item.last_message}</Text>
+                                <Text style={styles.rightsec}>
+                                    <Text style={styles.msgDay}>{moment(item.time).format('dddd')}</Text>
+                                    <Image source={rightArrow} style={{ width: 15, height: 15 }} />
+                                </Text>
+                            </View>
+                        }
+                    </TouchableOpacity>
                 );
             })}
             <TouchableOpacity onPress={() => navigation.navigate("Coach Message Creation")}>
