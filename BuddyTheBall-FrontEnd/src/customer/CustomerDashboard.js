@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Text, Image, SafeAreaView, View, StyleSheet, StatusBar, Button, Alert, TouchableOpacity, ScrollView } from 'react-native';
 import spark from '../assets/spark.png';
-import gallery from '../assets/gallery.png';
 import { useSelector, useDispatch } from "react-redux";
 import ImagePicker from 'react-native-image-crop-picker';
 import buddyGirl from '../assets/buddyGirl.png';
@@ -81,7 +80,7 @@ export default function CustomerDashboard({ navigation, route }) {
                 <Text style={styles.dashimgWrap}>
                     <TouchableOpacity onPress={openGallery}>
                         {state.authPage.auth_data.profile_data && state.authPage.auth_data.profile_data.url ?
-                            <Image source={{ uri: state.authPage.auth_data.profile_data.url }} style={{ width: 200, height: 200, marginLeft: 'auto', marginRight: 'auto' }} />
+                            <Image source={{ uri: state.authPage.auth_data.profile_data.url }} style={{ width: 200, height: 200, marginLeft: 'auto', marginRight: 'auto', marginTop: 20 }} />
                             :
                             <>
                                 {selectedFile !== null ?
@@ -141,7 +140,10 @@ export default function CustomerDashboard({ navigation, route }) {
                     <Button
                         title="Logout"
                         color="#000"
-                        onPress={() => navigation.navigate("SignIn")}
+                        onPress={() => {
+                            navigation.navigate("SignIn");
+                            dispatch(AuthPageAction('', '', '', '', ''));
+                        }}
                     />
                 </View>
             </ScrollView>

@@ -46,6 +46,7 @@ const createAndUpdateMessage = (req, res) => {
                                     Messages.findByIdAndUpdate(req.body.message_id, {
                                         time: new Date,
                                         last_message: req.body.message,
+                                        last_messanger: req.body.messanger_name,
                                         $push: {
                                             messages: messages
                                         }
@@ -78,7 +79,8 @@ const createAndUpdateMessage = (req, res) => {
                                         receiver_role: 'customer',
                                         receiver_profile_url: player_profile_url[0],
                                         messages: messages,
-                                        last_message: req.body.message
+                                        last_message: req.body.message,
+                                        last_messanger: req.body.sender_name
                                     });
                                     message
                                         .save(message)
@@ -111,18 +113,19 @@ const createAndUpdateMessage = (req, res) => {
                     var coach_profile_url = coach.map(coach => coach.profile_data.url);
                     Messages.find({ receiver_id: req.body.receiver_id })
                         .then(data => {
-                            console.log("coach data--->", data);
+                            console.log("coach data--->", data, req.body, coach_profile_url);
                             if (data.length > 0) {
                                 const messages = [{
-                                    messanger_id: req.body.sender_id,
-                                    role: req.body.sender_role,
-                                    url: req.body.sender_profile_url,
+                                    messanger_id: req.body.messanger_id,
+                                    role: req.body.role,
+                                    url: req.body.url,
                                     message: req.body.message,
-                                    messanger_name: req.body.sender_name
+                                    messanger_name: req.body.messanger_name
                                 }];
                                 Messages.findByIdAndUpdate(req.body.message_id, {
                                     time: new Date,
                                     last_message: req.body.message,
+                                    last_messanger: req.body.messanger_name,
                                     $push: {
                                         messages: messages
                                     }
@@ -143,7 +146,7 @@ const createAndUpdateMessage = (req, res) => {
                                     role: req.body.sender_role,
                                     url: req.body.sender_profile_url,
                                     message: req.body.message,
-                                    messanger_name: req.body.sender_name,
+                                    messanger_name: req.body.sender_name
                                 }];
                                 const message = new Messages({
                                     sender_id: req.body.sender_id,
@@ -154,8 +157,9 @@ const createAndUpdateMessage = (req, res) => {
                                     receiver_name: coach_name[0],
                                     receiver_role: 'coach',
                                     receiver_profile_url: coach_profile_url[0],
-                                    message: messages,
-                                    last_message: req.body.message
+                                    messages: messages,
+                                    last_message: req.body.message,
+                                    last_messanger: req.body.sender_name
                                 });
                                 message
                                     .save(message)
@@ -186,20 +190,21 @@ const createAndUpdateMessage = (req, res) => {
                                 res.status(500).send({ message: err });
                                 return;
                             } else {
-                                Messages.find({ receiver_id: req.body.receiver_id[0]._id })
+                                Messages.find({ receiver_id: receiver_id[0]._id })
                                     .then(data => {
                                         console.log("superadmin data--->", data);
                                         if (data.length > 0) {
                                             const messages = [{
-                                                messanger_id: req.body.sender_id,
-                                                role: req.body.sender_role,
-                                                url: req.body.sender_profile_url,
+                                                messanger_id: req.body.messanger_id,
+                                                role: req.body.role,
+                                                url: req.body.url,
                                                 message: req.body.message,
-                                                messanger_name: req.body.sender_name
+                                                messanger_name: req.body.messanger_name
                                             }];
                                             Messages.findByIdAndUpdate(req.body.message_id, {
                                                 time: new Date,
                                                 last_message: req.body.message,
+                                                last_messanger: req.body.messanger_name,
                                                 $push: {
                                                     messages: messages
                                                 }
@@ -232,8 +237,9 @@ const createAndUpdateMessage = (req, res) => {
                                                 receiver_name: 'Super Admin',
                                                 receiver_role: 'superadmin',
                                                 receiver_profile_url: null,
-                                                message: messages,
-                                                last_message: req.body.message
+                                                messages: messages,
+                                                last_message: req.body.message,
+                                                last_messanger: req.body.sender_name
                                             });
                                             message
                                                 .save(message)
@@ -287,9 +293,21 @@ const getMessagesBySenderIdReceiverId = (req, res) => {
     const receiver_id = req.params.receiver_id;
     Messages.find({ sender_id: sender_id, receiver_id: receiver_id })
         .then(data => {
-            if (!data)
-                res.status(404).send({ message: "Not found Sender with id " + id });
-            else res.send(data);
+            if (data.length > 0) {
+                res.send(data);
+            } else {
+                Messages.find({ sender_id: receiver_id, receiver_id: sender_id })
+                    .then(data => {
+                        if (!data)
+                            res.status(404).send({ message: "Not found Sender with id " + id });
+                        else res.send(data);
+                    })
+                    .catch(err => {
+                        res
+                            .status(500)
+                            .send({ message: "Error retrieving Sender with id=" + id });
+                    });
+            }
         })
         .catch(err => {
             res

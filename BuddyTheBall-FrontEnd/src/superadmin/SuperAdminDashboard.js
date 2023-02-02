@@ -1,7 +1,10 @@
 import React from 'react';
 import { SafeAreaView, Text, TouchableOpacity, StyleSheet, View, Button } from 'react-native';
+import { useDispatch } from "react-redux";
+import { AuthPageAction } from '../redux/Actions';
 
 export default function SuperAdminDashboard({ navigation }) {
+    const dispatch = useDispatch();
     return (
         <SafeAreaView>
             <Text style={styles.adminWrapper}>
@@ -23,7 +26,7 @@ export default function SuperAdminDashboard({ navigation }) {
                 <TouchableOpacity onPress={() => navigation.navigate("SuperAdmin Schools")}>
                     <Text style={styles.adminContainer}>SCHOOLS</Text>
                 </TouchableOpacity>
-                <TouchableOpacity onPress={() => navigation.navigate("SuperAdmin Billing")}>
+                <TouchableOpacity onPress={() => navigation.navigate("SuperAdmin Messages")}>
                     <Text style={styles.adminContainer}>MESSAGING</Text>
                 </TouchableOpacity>
                 <TouchableOpacity onPress={() => navigation.navigate("SuperAdmin Billing")}>
@@ -34,7 +37,10 @@ export default function SuperAdminDashboard({ navigation }) {
                 <Button
                     title="Logout"
                     color="#000"
-                    onPress={() => navigation.navigate("SignIn")}
+                    onPress={() => {
+                        navigation.navigate("SignIn");
+                        dispatch(AuthPageAction('', '', '', '', ''));
+                    }}
                 />
             </View>
         </SafeAreaView>

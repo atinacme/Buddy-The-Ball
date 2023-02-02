@@ -17,6 +17,8 @@ import CustomerDashboard from './src/customer/CustomerDashboard.js';
 import CustomerPhotos from './src/customer/CustomerPhotos.js';
 import CustomerParticularPhoto from './src/customer/CustomerParticularPhoto.js';
 import CustomerMessages from './src/customer/CustomerMessages';
+import CustomerMessageCreation from './src/customer/CustomerMessageCreation';
+import CustomerParticularMessage from './src/customer/CustomerParticularMessage';
 import CoachCreation from './src/coach/CoachCreation.js';
 import CoachDashboard from './src/coach/CoachDashboard.js';
 import CoachSchoolsPhotos from './src/coach/CoachSchoolsPhotos.js';
@@ -39,6 +41,9 @@ import SuperAdminSchoolCreation from './src/superadmin/SuperAdminSchoolCreation.
 import SuperAdminPhotos from './src/superadmin/SuperAdminPhotos.js';
 import SuperAdminStudents from './src/superadmin/SuperAdminStudents.js';
 import SuperAdminSettings from './src/superadmin/SuperAdminSettings.js';
+import SuperAdminMessages from './src/superadmin/SuperAdminMessages';
+import SuperAdminMessageCreation from './src/superadmin/SuperAdminMessageCreation';
+import SuperAdminParticularMessage from './src/superadmin/SuperAdminParticularMessage';
 
 const Stack = createNativeStackNavigator();
 const App = () => {
@@ -52,6 +57,8 @@ const App = () => {
           <Stack.Screen name="Customer Photos" component={CustomerPhotos} />
           <Stack.Screen name="Customer Particular Photo" component={CustomerParticularPhoto} />
           <Stack.Screen name="Customer Messages" component={CustomerMessages} />
+          <Stack.Screen name="Customer Message Creation" component={CustomerMessageCreation} />
+          <Stack.Screen name="Customer Particular Message" component={CustomerParticularMessage} />
           <Stack.Screen name="Coach Creation" component={CoachCreation} />
           <Stack.Screen name="Coach Dashboard" options={{ headerBackVisible: false }} component={CoachDashboard} />
           <Stack.Screen name="Coach Schools Photos" component={CoachSchoolsPhotos} />
@@ -74,6 +81,9 @@ const App = () => {
           <Stack.Screen name="SuperAdmin Photos" component={SuperAdminPhotos} />
           <Stack.Screen name="SuperAdmin Students" component={SuperAdminStudents} />
           <Stack.Screen name="SuperAdmin Settings" component={SuperAdminSettings} />
+          <Stack.Screen name="SuperAdmin Messages" component={SuperAdminMessages} />
+          <Stack.Screen name="SuperAdmin Message Creation" component={SuperAdminMessageCreation} />
+          <Stack.Screen name="SuperAdmin Particular Message" component={SuperAdminParticularMessage} />
         </Stack.Navigator>
       </NavigationContainer>
     </Provider>

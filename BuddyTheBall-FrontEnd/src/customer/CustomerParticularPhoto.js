@@ -102,7 +102,8 @@ const styles = StyleSheet.create({
         color: '#fff',
         padding: 10,
         backgroundColor: '#302f35',
-        fontFamily: 'LemonJuice'
+        fontFamily: 'LemonJuice',
+
     },
     message_view: {
         width: 300,

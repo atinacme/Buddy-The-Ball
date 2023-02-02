@@ -13,6 +13,7 @@ const Messages = mongoose.model(
         receiver_profile_url: String,
         messages: [{ messanger_id: String, role: String, message: String, url: String, time: { type: Date, default: Date.now }, messanger_name: String }],
         last_message: String,
+        last_messanger: String,
         time: { type: Date, default: Date.now }
     }])
 );

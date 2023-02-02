@@ -27,6 +27,7 @@ export default function SignIn({ navigation, route }) {
                 dispatch(AuthPageAction(result.id, result.email, result.roles, result.coach_data, result.accessToken));
             } else {
                 navigation.navigate("SuperAdmin Dashboard");
+                dispatch(AuthPageAction(result.id, result.email, result.roles, null, result.accessToken));
             }
         } catch (e) {
             if (e.message === "Request failed with status code 404") {

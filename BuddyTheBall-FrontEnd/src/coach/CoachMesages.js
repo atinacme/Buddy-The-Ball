@@ -23,14 +23,13 @@ export default function CoachMesages({ navigation }) {
     return (
         <SafeAreaView>
             {senderMessages.map(item => {
-                { console.log("wjdvg---->", item.sender_role); }
                 return (
                     <TouchableOpacity key={item._id} onPress={() => navigation.navigate("Coach Particular Message", { messages: item })}>
-
+                        {console.log("wjdvg---->", item.sender_role)}
                         {item.sender_role === "coach" ?
                             <View key={item._id} style={styles.messagewrap}>
-                                <Image source={{ uri: item.sender_profile_url }} style={{ width: 30, height: 30 }} />
-                                <Text style={styles.msgName}>{item.sender_name}</Text>
+                                <Image source={{ uri: item.receiver_profile_url }} style={{ width: 30, height: 30 }} />
+                                <Text style={styles.msgName}>{item.receiver_name}</Text>
                                 <Text style={styles.msgWrap}>{item.last_message}</Text>
                                 <Text style={styles.rightsec}>
                                     <Text style={styles.msgDay}>{moment(item.time).format('dddd')}</Text>
@@ -39,8 +38,8 @@ export default function CoachMesages({ navigation }) {
                             </View>
                             :
                             <View key={item._id} style={styles.messagewrap}>
-                                <Image source={{ uri: item.receiver_profile_url }} style={{ width: 30, height: 30 }} />
-                                <Text style={styles.msgName}>{item.receiver_name}</Text>
+                                <Image source={{ uri: item.sender_profile_url }} style={{ width: 30, height: 30 }} />
+                                <Text style={styles.msgName}>{item.sender_name}</Text>
                                 <Text style={styles.msgWrap}>{item.last_message}</Text>
                                 <Text style={styles.rightsec}>
                                     <Text style={styles.msgDay}>{moment(item.time).format('dddd')}</Text>

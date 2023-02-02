@@ -2,10 +2,11 @@ import React, { useEffect, useState } from 'react';
 import { useSelector } from "react-redux";
 import send_button from '../assets/send_button.png';
 import profile from '../assets/profile.png';
-import { SafeAreaView, Text, TextInput, StyleSheet, View, TouchableOpacity, Image } from 'react-native';
+import { SafeAreaView, Text, TextInput, StyleSheet, View, TouchableOpacity, Image, ScrollView, StatusBar } from 'react-native';
 import { CreateAndUpdateMessage, GetMessagesBySenderIdReceiverId } from '../services/CustomerService';
+import { CalendarContext } from 'react-native-calendars';
 
-export default function CoachParticularMessage({ route }) {
+export default function SuperAdminParticularMessage({ route }) {
     const state = useSelector((state) => state);
     const [senderMessages, setSenderMessages] = useState([]);
     const [message, setMessage] = useState();
@@ -15,7 +16,7 @@ export default function CoachParticularMessage({ route }) {
         const getMessagesBySenderIdReceiverId = async () => {
             console.log("fghbtgf---->", route.params.messages.sender_role, state.authPage.auth_data._id, route.params.messages.sender_id);
             var result;
-            if (route.params.messages.sender_role === 'coach') {
+            if (route.params.messages.sender_role === 'customer') {
                 result = await GetMessagesBySenderIdReceiverId(state.authPage.auth_data._id, route.params.messages.receiver_id);
             } else {
                 result = await GetMessagesBySenderIdReceiverId(state.authPage.auth_data._id, route.params.messages.sender_id);
@@ -33,7 +34,7 @@ export default function CoachParticularMessage({ route }) {
             const data = {
                 message_id: route.params.messages._id,
                 messanger_id: state.authPage.auth_data._id,
-                role: 'coach',
+                role: 'customer',
                 receiver_id: route.params.messages.receiver_id,
                 receiver_role: senderMessages.receiver_role,
                 url: state.authPage.auth_data.profile_data.url,
@@ -49,49 +50,70 @@ export default function CoachParticularMessage({ route }) {
     };
 
     return (
-        <SafeAreaView>
-            <View>
+        <SafeAreaView style={styles.container}>
+            <ScrollView style={styles.scrollView}>
                 {senderMessages?.messages?.map(item => {
                     return (
-                        <Text key={item._id} style={styles.DateName}>
+                        <View key={item._id} style={styles.DateName}>
                             {item.url ?
-                                <Image source={{ uri: item.url }} style={{ width: 40, height: 40, borderRadius: 50, backgroundColor: '#fff' }} />
+                                <View style={styles.pro_img}>
+                                    <Image resizeMode={"contain"} source={{ uri: item.url }} style={{ width: 40, height: 40 }} />
+                                </View>
                                 :
-                                <Image source={profile} style={{ width: 40, height: 40, borderRadius: 50, backgroundColor: '#fff' }} />
+                                <View style={styles.pro_img}>
+                                    <Image source={profile} style={{ width: 40, height: 40, borderRadius: 50, backgroundColor: '#fff' }} />
+                                </View>
                             }
                             <Text style={styles.date}>&nbsp;&nbsp;&nbsp;&nbsp;{item.message}</Text>
-                        </Text>
+                        </View>
                     );
                 })}
-                <View style={styles.commentwrap}>
-                    <TextInput
-                        placeholderTextColor="#000"
-                        style={styles.input}
-                        onChangeText={(e) => { setMessage(e); }}
-                        value={message}
-                        placeholder="Add a comment..."
-                    />
-                    <TouchableOpacity onPress={handleSendMessage} style={styles.photoimg} >
-                        <Image source={send_button} style={{ width: 30, height: 30 }} />
-                    </TouchableOpacity>
-                </View>
+            </ScrollView>
+            <View style={styles.commentwrap}>
+                <TextInput
+                    placeholderTextColor="#000"
+                    style={styles.input}
+                    onChangeText={(e) => { setMessage(e); }}
+                    value={message}
+                    placeholder="Add a comment..."
+                />
+                <TouchableOpacity onPress={handleSendMessage} style={styles.photoimg} >
+                    <Image source={send_button} style={{ width: 30, height: 30 }} />
+                </TouchableOpacity>
             </View>
+            {/* </ScrollView> */}
         </SafeAreaView >
     );
 }
 
 const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+        paddingTop: StatusBar.currentHeight,
+    },
     imgWrap: {
         position: 'relative'
     },
-    // scrollView: {
-    //     marginHorizontal: 20,
-    // },
+    pro_img: {
+        width: 40,
+        height: 40,
+        aspectRatio: 1 / 1,
+        borderColor: '#000',
+        borderRadius: 50,
+        overflow: 'hidden',
+        borderWidth: 1,
+        position: 'relative'
+    },
+    scrollView: {
+        marginHorizontal: 20,
+    },
     DateName: {
         display: 'flex',
         alignItems: 'center',
+        flexDirection: 'row',
         // justifyContent: 'space-between',
         paddingBottom: 10,
+        paddingLeft: 10,
     },
     imgDes: {
         position: 'absolute',
@@ -99,16 +121,18 @@ const styles = StyleSheet.create({
         left: 5,
     },
     input: {
-        width: 250,
+        width: 300,
         borderRadius: 5,
         marginLeft: 'auto',
         marginRight: 'auto',
         marginBottom: 10,
         marginTop: 10,
         color: '#fff',
-        padding: 10,
         backgroundColor: '#302f35',
-        fontFamily: 'LemonJuice'
+        fontFamily: 'LemonJuice',
+        position: 'relative',
+        left: '2px',
+        right: '2px',
     },
     message_view: {
         width: 300,
@@ -144,7 +168,7 @@ const styles = StyleSheet.create({
         paddingBottom: 20
     },
     date: {
-        color: '#fff',
+        color: '#000',
         textAlign: 'right',
         float: 'right',
         fontFamily: 'LemonJuice'
@@ -164,9 +188,10 @@ const styles = StyleSheet.create({
     commentwrap: {
         width: 320,
         display: 'flex',
-        position: 'relative',
-        left: 10,
+        position: 'absolute',
+        left: 20,
         right: 10,
+        bottom: 0
     },
     photoimg: {
         position: 'absolute',

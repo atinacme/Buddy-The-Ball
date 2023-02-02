@@ -8,7 +8,7 @@ import Config from '../../Config';
 import { GetParticularCoachService } from '../services/CoachService';
 import { AuthPageAction } from '../redux/Actions';
 
-export default function CoachDashboard({ navigation, route }) {
+export default function CoachDashboard({ navigation }) {
     const state = useSelector((state) => state);
     const [selectedFile, setSelectedFile] = useState(null);
     const [uploadResult, setUploadResult] = useState(false);
@@ -32,7 +32,6 @@ export default function CoachDashboard({ navigation, route }) {
             multiple: true
         });
         setSelectedFile(result);
-        console.log('rsss->', result);
     };
 
     const handleUpload = async () => {
@@ -149,7 +148,10 @@ export default function CoachDashboard({ navigation, route }) {
                 title="Logout"
                 color="#000"
                 style={{ marginTop: 40, marginBottom: 40 }}
-                onPress={() => navigation.navigate("SignIn")}
+                onPress={() => {
+                    navigation.navigate("SignIn");
+                    dispatch(AuthPageAction('', '', '', '', ''));
+                }}
             />
         </SafeAreaView>
     );

@@ -5,7 +5,7 @@ import profile from '../assets/profile.png';
 import { SafeAreaView, Text, TextInput, StyleSheet, View, TouchableOpacity, Image } from 'react-native';
 import { CreateAndUpdateMessage, GetMessagesBySenderIdReceiverId } from '../services/CustomerService';
 
-export default function CoachParticularMessage({ route }) {
+export default function SuperAdminParticularMessage({ route }) {
     const state = useSelector((state) => state);
     const [senderMessages, setSenderMessages] = useState([]);
     const [message, setMessage] = useState();
@@ -13,12 +13,12 @@ export default function CoachParticularMessage({ route }) {
 
     useEffect(() => {
         const getMessagesBySenderIdReceiverId = async () => {
-            console.log("fghbtgf---->", route.params.messages.sender_role, state.authPage.auth_data._id, route.params.messages.sender_id);
+            console.log("fghbtgf---->", route.params.messages, state.authPage.id, route.params.messages.sender_id);
             var result;
-            if (route.params.messages.sender_role === 'coach') {
-                result = await GetMessagesBySenderIdReceiverId(state.authPage.auth_data._id, route.params.messages.receiver_id);
+            if (route.params.messages.sender_role === 'superadmin') {
+                result = await GetMessagesBySenderIdReceiverId(state.authPage.id, route.params.messages.receiver_id);
             } else {
-                result = await GetMessagesBySenderIdReceiverId(state.authPage.auth_data._id, route.params.messages.sender_id);
+                result = await GetMessagesBySenderIdReceiverId(state.authPage.id, route.params.messages.sender_id);
             }
             if (result) {
                 console.log("log---->", result);
@@ -32,13 +32,13 @@ export default function CoachParticularMessage({ route }) {
         try {
             const data = {
                 message_id: route.params.messages._id,
-                messanger_id: state.authPage.auth_data._id,
-                role: 'coach',
+                messanger_id: state.authPage.id,
+                role: 'superadmin',
                 receiver_id: route.params.messages.receiver_id,
                 receiver_role: senderMessages.receiver_role,
-                url: state.authPage.auth_data.profile_data.url,
+                url: null,
                 message: message,
-                messanger_name: state.authPage.auth_data.coach_name
+                messanger_name: 'Super Admin'
             };
             const result = await CreateAndUpdateMessage(data);
             if (result) {

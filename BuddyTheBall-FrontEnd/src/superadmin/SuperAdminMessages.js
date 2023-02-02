@@ -6,13 +6,13 @@ import { SafeAreaView, Text, Image, View, StyleSheet, TouchableOpacity } from 'r
 import { GetMessagesBySenderId } from '../services/CustomerService';
 import moment from 'moment';
 
-export default function CustomerMessages({ navigation }) {
+export default function SuperAdminMessages({ navigation }) {
     const state = useSelector((state) => state);
     const [senderMessages, setSenderMessages] = useState([]);
 
     useEffect(() => {
         const getMessagesBySenderId = async () => {
-            const result = await GetMessagesBySenderId(state.authPage.auth_data._id);
+            const result = await GetMessagesBySenderId(state.authPage.id);
             if (result) {
                 setSenderMessages(result);
             }
@@ -24,11 +24,10 @@ export default function CustomerMessages({ navigation }) {
         <SafeAreaView>
             {senderMessages.map(item => {
                 return (
-                    <TouchableOpacity key={item._id} onPress={() => navigation.navigate("Customer Particular Message", { messages: item })}>
-                        {console.log("wjdvg---->", item.sender_role)}
+                    <TouchableOpacity key={item._id} onPress={() => navigation.navigate("SuperAdmin Particular Message", { messages: item })}>
                         {item.sender_role === "coach" ?
                             <View key={item._id} style={styles.messagewrap}>
-                                <Image source={{ uri: item.sender_profile_url }} style={{ width: 40, height: 40, borderRadius: 60 }} />
+                                <Image source={{ uri: item.sender_profile_url }} style={{ width: 30, height: 30 }} />
                                 <Text style={styles.msgName}>{item.last_messanger}</Text>
                                 <Text style={styles.msgWrap}>{item.last_message}</Text>
                                 <Text style={styles.rightsec}>
@@ -41,7 +40,6 @@ export default function CustomerMessages({ navigation }) {
                                 <Image source={{ uri: item.receiver_profile_url }} style={{ width: 30, height: 30 }} />
                                 <Text style={styles.msgName}>{item.receiver_name}</Text>
                                 <Text style={styles.msgWrap}>{item.last_message}</Text>
-
                                 <Text style={styles.rightsec}>
                                     <Text style={styles.msgDay}>{moment(item.time).format('dddd')}</Text>
                                     <Image source={rightArrow} style={{ width: 15, height: 15 }} />
@@ -51,14 +49,15 @@ export default function CustomerMessages({ navigation }) {
                     </TouchableOpacity>
                 );
             })}
-            <TouchableOpacity onPress={() => navigation.navigate("Customer Message Creation")}>
+            <TouchableOpacity onPress={() => navigation.navigate("SuperAdmin Message Creation")}>
                 <View style={styles.messageImageHolder}>
-                    <Image resizeMode={"contain"} source={message} style={{ width: 40, height: 40 }} />
+                    <Image resizeMode={"contain"} source={message} />
                 </View>
             </TouchableOpacity>
         </SafeAreaView>
     );
 }
+
 
 const styles = StyleSheet.create({
     messagewrap: {
@@ -89,8 +88,8 @@ const styles = StyleSheet.create({
         fontFamily: 'LemonJuice'
     },
     messageImageHolder: {
-        // left: '70%',
-        // top: '500%',
+        left: '70%',
+        top: '400%',
         width: 80,
         height: 80,
         aspectRatio: 1 / 1,
@@ -98,8 +97,6 @@ const styles = StyleSheet.create({
         padding: 20,
         borderColor: '#d8d8d8',
         borderRadius: 50,
-        overflow: 'hidden',
-        position: 'relative',
-        bottom: 0
+        overflow: 'hidden'
     }
 });
