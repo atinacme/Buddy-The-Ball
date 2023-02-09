@@ -9,7 +9,7 @@ import Config from '../../Config';
 import { GetParticularCustomerService } from '../services/CustomerService';
 import { AuthPageAction } from '../redux/Actions';
 
-export default function CustomerDashboard({ navigation, route }) {
+export default function CustomerDashboard({ navigation }) {
     const state = useSelector((state) => state);
     const [selectedFile, setSelectedFile] = useState(null);
     const [uploadResult, setUploadResult] = useState(false);
@@ -33,7 +33,6 @@ export default function CustomerDashboard({ navigation, route }) {
             multiple: true
         });
         setSelectedFile(result);
-        console.log('rsss->', result);
     };
 
     const handleUpload = async () => {
@@ -64,7 +63,6 @@ export default function CustomerDashboard({ navigation, route }) {
                     {
                         text: "OK",
                         onPress: () => {
-                            // navigation.navigate("Customer Dashboard");
                             setSelectedFile(null);
                             setUploadResult(true);
                         }

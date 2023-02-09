@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
     SafeAreaView, TouchableOpacity, StyleSheet, Text, Modal, View, Pressable, TextInput, ScrollView
 } from 'react-native';
@@ -6,15 +6,71 @@ import { useSelector } from "react-redux";
 import { SelectList } from 'react-native-dropdown-select-list';
 import { Agenda } from 'react-native-calendars';
 import moment from 'moment';
+import { CreateAgendaService, GetAgendaByDateService, UpdateAgendaService } from '../services/CalendarService';
 
 export default function CoachCalendar() {
     const state = useSelector((state) => state);
-    const schoolData = state.authPage.auth_data.assigned_schools.map(v => Object.assign(v, { key: v._id, value: v.school_name }));
+    const [schoolData, setSchoolData] = useState(state.authPage.auth_data.assigned_schools.map(v => Object.assign(v, { key: v._id, value: v.school_name })));
     const [modalVisible, setModalVisible] = useState(false);
     const [newDay, setNewDay] = useState();
     const [agendaData, setAgendaData] = useState([]);
+    const [updateAgenda, setUpdateAgenda] = useState(false);
     const [items, setItems] = useState({});
     const today = moment().format("YYYY-MM-DD");
+    const [loadResult, setLoadResult] = useState([]);
+
+    useEffect(() => {
+        const handleOnLoadAgenda = async () => {
+            const data = { agenda_date: today };
+            const result = await GetAgendaByDateService(data);
+            if (result) {
+                setItems(result[0] ? result[0].agenda : {});
+                setLoadResult(result[0]);
+            }
+        };
+        handleOnLoadAgenda();
+    }, [newDay, updateAgenda]);
+
+    const handleRenderAgenda = () => {
+        setUpdateAgenda(false);
+        setModalVisible(!modalVisible);
+        setNewDay(loadResult.agenda_date);
+        setAgendaData(loadResult.agenda_data);
+    };
+
+    const handleAgenda = async (key) => {
+        if (key !== 1) {
+            try {
+                const data = {
+                    user_id: state.authPage.auth_data.user_id,
+                    agenda_date: newDay,
+                    agenda_data: agendaData
+                };
+                const result = await UpdateAgendaService(key, data);
+                if (result) {
+                    console.log("update---->", result);
+                    setItems(result.agenda);
+                    setUpdateAgenda(true);
+                    setModalVisible(!modalVisible);
+                }
+            } catch (e) { }
+        } else {
+            try {
+                const data = {
+                    user_id: state.authPage.auth_data.user_id,
+                    agenda_date: newDay,
+                    agenda_data: agendaData
+                };
+                const result = await CreateAgendaService(data);
+                if (result) {
+                    console.log(result);
+                    setItems(result.data.agenda);
+                    setModalVisible(!modalVisible);
+                }
+            } catch (e) { }
+        }
+    };
+
     console.log("outside---->", agendaData, items);
     return (
         <>
@@ -22,14 +78,18 @@ export default function CoachCalendar() {
                 <Agenda
                     // selected="2022-12-01"
                     minDate={today}
+                    pastScrollRange='0'
+                    futureScrollRange='12'
+                    dayLoading={false}
                     items={items}
                     renderItem={(item) => (
-                        <TouchableOpacity style={styles.item}>
+                        <TouchableOpacity style={styles.item} onPress={handleRenderAgenda}>
                             <Text style={styles.itemTextFirst}>School:</Text><Text style={styles.itemText}>{item.school}</Text>
                             <Text style={styles.itemTextFirst}>Agenda:</Text><Text style={styles.itemText}>{item.name}</Text>
                         </TouchableOpacity>
                     )}
                     onDayPress={day => {
+                        setUpdateAgenda(false);
                         if (Object.keys(items).indexOf(day.dateString) > -1) {
                             setModalVisible(false);
                             setNewDay(day.dateString);
@@ -67,17 +127,24 @@ export default function CoachCalendar() {
                                         return (
                                             <View>
                                                 <Text>Agenda {index + 1}</Text>
-                                                <View style={styles.schoolList}>
-                                                    <SelectList
-                                                        setSelected={(val) => {
-                                                            let newArr = [...agendaData];
-                                                            newArr[index].school = val;
-                                                            setAgendaData(newArr);
-                                                        }}
-                                                        data={schoolData}
-                                                        save="value"
+                                                {loadResult && item.school ?
+                                                    <TextInput
+                                                        style={styles.input}
+                                                        value={item.school}
                                                     />
-                                                </View>
+                                                    :
+                                                    <View style={styles.schoolList}>
+                                                        <SelectList
+                                                            setSelected={(val) => {
+                                                                let newArr = [...agendaData];
+                                                                newArr[index].school = val;
+                                                                setAgendaData(newArr);
+                                                            }}
+                                                            data={schoolData}
+                                                            save="value"
+                                                        />
+                                                    </View>
+                                                }
                                                 <View style={{
                                                     alignItems: 'center',
                                                     flexDirection: 'row',
@@ -111,11 +178,8 @@ export default function CoachCalendar() {
                                     })}
                                     <Pressable
                                         style={[styles.button, styles.buttonOpen]}
-                                        onPress={() => {
-                                            setItems({ ...items, [newDay]: agendaData });
-                                            setModalVisible(!modalVisible);
-                                        }}>
-                                        <Text style={styles.textStyle}>Create</Text>
+                                        onPress={() => handleAgenda(key = loadResult._id ? loadResult._id : 1)}>
+                                        <Text style={styles.textStyle}>{loadResult ? 'Update' : 'Create'}</Text>
                                     </Pressable>
                                     <Pressable
                                         style={[styles.button, styles.buttonClose]}
@@ -123,7 +187,7 @@ export default function CoachCalendar() {
                                             setModalVisible(!modalVisible);
                                             setAgendaData([]);
                                         }}>
-                                        <Text style={styles.textStyle}>Don't Create !!</Text>
+                                        <Text style={styles.textStyle}>{loadResult ? "Don't Update !!" : "Don't Update !!"}</Text>
                                     </Pressable>
                                 </ScrollView>
                             </View>

@@ -25,7 +25,6 @@ export default function CustomerMessages({ navigation }) {
             {senderMessages.map(item => {
                 return (
                     <TouchableOpacity key={item._id} onPress={() => navigation.navigate("Customer Particular Message", { messages: item })}>
-                        {console.log("wjdvg---->", item.sender_role)}
                         {item.sender_role === "coach" ?
                             <View key={item._id} style={styles.messagewrap}>
                                 <Image source={{ uri: item.sender_profile_url }} style={{ width: 40, height: 40, borderRadius: 60 }} />
@@ -89,8 +88,6 @@ const styles = StyleSheet.create({
         fontFamily: 'LemonJuice'
     },
     messageImageHolder: {
-        // left: '70%',
-        // top: '500%',
         width: 80,
         height: 80,
         aspectRatio: 1 / 1,

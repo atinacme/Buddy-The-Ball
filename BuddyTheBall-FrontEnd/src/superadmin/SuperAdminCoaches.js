@@ -5,6 +5,7 @@ import { GetAllCoachesService } from '../services/CoachService';
 
 export default function SuperAdminCoaches({ navigation }) {
     const [coaches, setCoaches] = useState([]);
+
     useEffect(() => {
         const getCoaches = async () => {
             const result = await GetAllCoachesService();
@@ -15,6 +16,7 @@ export default function SuperAdminCoaches({ navigation }) {
         };
         getCoaches();
     }, []);
+
     return (
         <SafeAreaView>
             <View>

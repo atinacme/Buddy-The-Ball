@@ -16,7 +16,6 @@ export default function SuperAdminMessageCreation() {
     useEffect(() => {
         const getCoaches = async () => {
             const result = await GetAllCoachesService();
-            console.log(result);
             if (result) {
                 setCoaches(result.map(v => Object.assign(v, { key: v._id, value: v.coach_name })));
             }

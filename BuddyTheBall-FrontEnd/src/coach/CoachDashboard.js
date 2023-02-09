@@ -70,6 +70,7 @@ export default function CoachDashboard({ navigation }) {
             );
         }
     };
+
     return (
         <SafeAreaView style={styles.wrapper}>
             <Text style={styles.dashimgWrap}>

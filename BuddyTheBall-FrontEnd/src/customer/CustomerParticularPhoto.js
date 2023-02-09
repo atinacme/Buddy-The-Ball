@@ -78,13 +78,9 @@ const styles = StyleSheet.create({
     imgWrap: {
         position: 'relative'
     },
-    // scrollView: {
-    //     marginHorizontal: 20,
-    // },
     DateName: {
         display: 'flex',
         alignItems: 'center',
-        // justifyContent: 'space-between',
         paddingBottom: 10,
     },
     imgDes: {
@@ -108,7 +104,6 @@ const styles = StyleSheet.create({
     message_view: {
         width: 300,
         display: 'flex',
-        // bottom: 0
     },
     iconWrap: {
         display: 'flex',

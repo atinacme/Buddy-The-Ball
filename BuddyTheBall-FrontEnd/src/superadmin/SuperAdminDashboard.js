@@ -5,6 +5,7 @@ import { AuthPageAction } from '../redux/Actions';
 
 export default function SuperAdminDashboard({ navigation }) {
     const dispatch = useDispatch();
+
     return (
         <SafeAreaView>
             <Text style={styles.adminWrapper}>

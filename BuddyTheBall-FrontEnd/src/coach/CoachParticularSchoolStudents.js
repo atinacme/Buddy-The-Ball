@@ -20,6 +20,7 @@ export default function CoachParticularSchoolStudents() {
             school: 'Chirst Church'
         }
     ];
+
     return (
         <SafeAreaView>
             <Text>Lucknow Public School</Text>

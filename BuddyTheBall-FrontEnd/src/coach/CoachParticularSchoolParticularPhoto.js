@@ -40,8 +40,6 @@ export default function CoachParticularSchoolParticularPhoto() {
     );
 }
 
-
-
 const styles = StyleSheet.create({
     imgWrap: {
         position: 'relative'

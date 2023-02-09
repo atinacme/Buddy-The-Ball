@@ -37,6 +37,7 @@ export default function CoachParticularSchoolPhotos({ navigation, route }) {
         </SafeAreaView>
     );
 }
+
 const styles = StyleSheet.create({
     wrapper: {
         padding: 20

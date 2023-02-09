@@ -1,5 +1,5 @@
-import React from 'react'
-import { SafeAreaView, StyleSheet, Text } from 'react-native'
+import React from 'react';
+import { SafeAreaView, StyleSheet } from 'react-native';
 import { DataTable } from 'react-native-paper';
 
 export default function SuperAdminBilling() {
@@ -28,7 +28,7 @@ export default function SuperAdminBilling() {
             school: '7306',
             class_date: 'Aug/September'
         },
-    ]
+    ];
     return (
         <SafeAreaView>
             <DataTable style={styles.container}>
@@ -41,16 +41,16 @@ export default function SuperAdminBilling() {
                 {billingList.map(item => {
                     return (
                         <DataTable.Row key={item.child_id}>
-                         <DataTable.Cell>{item.child_id}</DataTable.Cell>
+                            <DataTable.Cell>{item.child_id}</DataTable.Cell>
                             <DataTable.Cell>{item.child_name}</DataTable.Cell>
                             <DataTable.Cell>{item.school}</DataTable.Cell>
                             <DataTable.Cell>{item.class_date}</DataTable.Cell>
                         </DataTable.Row>
-                    )
+                    );
                 })}
             </DataTable>
         </SafeAreaView>
-    )
+    );
 }
 
 const styles = StyleSheet.create({

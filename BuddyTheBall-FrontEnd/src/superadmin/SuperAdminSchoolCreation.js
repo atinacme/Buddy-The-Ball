@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { Text, SafeAreaView, TextInput, StyleSheet, Button, Image, Alert, ScrollView, View } from "react-native";
 import { SelectList } from 'react-native-dropdown-select-list';
 import buddy from '../assets/buddy.png';
@@ -7,7 +7,6 @@ import { Formik } from 'formik';
 import * as yup from 'yup';
 
 export default function SuperAdminSchoolCreation({ navigation }) {
-
     const territoryList = [
         {
             key: "Kanpur",
@@ -26,7 +25,6 @@ export default function SuperAdminSchoolCreation({ navigation }) {
             value: "Banaras"
         }
     ];
-
     const dayList = [
         {
             key: "Monday",
@@ -57,13 +55,6 @@ export default function SuperAdminSchoolCreation({ navigation }) {
             value: "Sunday"
         }
     ];
-
-    const [schoolData, setSchoolData] = useState({
-        school_name: "",
-        territory: "",
-        assigned_day: ""
-    });
-
     const loginValidationSchema = yup.object().shape({
         school_name: yup
             .string()
@@ -77,7 +68,6 @@ export default function SuperAdminSchoolCreation({ navigation }) {
     });
 
     const handleAddSchool = async (values) => {
-        console.log("values---->", values);
         try {
             const data = {
                 school_name: values.school_name,
@@ -104,6 +94,7 @@ export default function SuperAdminSchoolCreation({ navigation }) {
             );
         }
     };
+
     return (
         <SafeAreaView style={styles.wrapper}>
             <ScrollView style={styles.scrollView}>

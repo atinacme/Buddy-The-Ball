@@ -4,7 +4,6 @@ import send_button from '../assets/send_button.png';
 import profile from '../assets/profile.png';
 import { SafeAreaView, Text, TextInput, StyleSheet, View, TouchableOpacity, Image, ScrollView, StatusBar } from 'react-native';
 import { CreateAndUpdateMessage, GetMessagesBySenderIdReceiverId } from '../services/CustomerService';
-import { CalendarContext } from 'react-native-calendars';
 
 export default function SuperAdminParticularMessage({ route }) {
     const state = useSelector((state) => state);
@@ -14,7 +13,6 @@ export default function SuperAdminParticularMessage({ route }) {
 
     useEffect(() => {
         const getMessagesBySenderIdReceiverId = async () => {
-            console.log("fghbtgf---->", route.params.messages.sender_role, state.authPage.auth_data._id, route.params.messages.sender_id);
             var result;
             if (route.params.messages.sender_role === 'customer') {
                 result = await GetMessagesBySenderIdReceiverId(state.authPage.auth_data._id, route.params.messages.receiver_id);
@@ -22,7 +20,6 @@ export default function SuperAdminParticularMessage({ route }) {
                 result = await GetMessagesBySenderIdReceiverId(state.authPage.auth_data._id, route.params.messages.sender_id);
             }
             if (result) {
-                console.log("log---->", result);
                 setSenderMessages(result[0]);
             }
         };
@@ -111,7 +108,6 @@ const styles = StyleSheet.create({
         display: 'flex',
         alignItems: 'center',
         flexDirection: 'row',
-        // justifyContent: 'space-between',
         paddingBottom: 10,
         paddingLeft: 10,
     },
@@ -137,7 +133,6 @@ const styles = StyleSheet.create({
     message_view: {
         width: 300,
         display: 'flex',
-        // bottom: 0
     },
     iconWrap: {
         display: 'flex',

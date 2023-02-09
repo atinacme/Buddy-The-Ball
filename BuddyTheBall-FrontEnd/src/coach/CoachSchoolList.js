@@ -11,6 +11,7 @@ export default function CoachSchoolList({ navigation }) {
         const result = state.authPage.auth_data.assigned_schools.filter(v => { return (v.territory == state.authPage.auth_data.assigned_territory); });
         setSchoolData(result);
     }, []);
+
     return (
         <SafeAreaView>
             <Text>TERRITORY: LAS VEGAS</Text>

@@ -5,6 +5,7 @@ import { GetSchoolsService } from '../services/SchoolService';
 
 export default function SuperAdminSchools({ navigation }) {
     const [schools, setSchools] = useState([]);
+
     useEffect(() => {
         const getSchools = async () => {
             const result = await GetSchoolsService();
@@ -14,6 +15,7 @@ export default function SuperAdminSchools({ navigation }) {
         };
         getSchools();
     }, []);
+
     return (
         <SafeAreaView>
             <View>

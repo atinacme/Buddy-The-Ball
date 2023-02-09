@@ -23,7 +23,6 @@ export default function SuperAdminCoachDescription({ navigation, route }) {
     const [coachSchools, setCoachSchools] = useState([]);
     const [assignedSchools, setAssignedSchools] = useState([]);
     const [selected, setSelected] = useState([]);
-
     const territoryList = [
         {
             key: "Kanpur",
@@ -80,8 +79,6 @@ export default function SuperAdminCoachDescription({ navigation, route }) {
         getAllSchools();
     }, [assignedSchools]);
 
-    console.log("djchd--->", coachData);
-
     const handleCoachUpdate = async () => {
         try {
             const data = {
@@ -95,7 +92,6 @@ export default function SuperAdminCoachDescription({ navigation, route }) {
                 handed: coachData.handed,
                 favorite_drill: coachData.favorite_drill
             };
-            console.log("data--->", data);
             const result = await CoachUpdateService(coachData.user_id, coachData.coach_id, data);
             if (result) {
                 Alert.alert(
@@ -116,6 +112,7 @@ export default function SuperAdminCoachDescription({ navigation, route }) {
             );
         }
     };
+
     return (
         <SafeAreaView style={styles.wrapper}>
             <ScrollView style={styles.scrollView}>

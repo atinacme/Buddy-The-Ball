@@ -8,7 +8,16 @@ import { SignUpService } from '../services/UserAuthService';
 export default function CoachCreation({ navigation }) {
     const [data, setData] = useState([]);
     const [selected, setSelected] = useState([]);
-
+    const [coachData, setCoachData] = useState({
+        email: "",
+        password: "",
+        coach_name: "",
+        assigned_territory: "",
+        tennis_club: "",
+        favorite_pro_player: "",
+        handed: "",
+        favorite_drill: ""
+    });
     const territoryList = [
         {
             key: "Kanpur",
@@ -37,16 +46,6 @@ export default function CoachCreation({ navigation }) {
         getAllSchools();
     }, []);
 
-    const [coachData, setCoachData] = useState({
-        email: "",
-        password: "",
-        coach_name: "",
-        assigned_territory: "",
-        tennis_club: "",
-        favorite_pro_player: "",
-        handed: "",
-        favorite_drill: ""
-    });
 
     const handleSignUp = async () => {
         try {
@@ -82,6 +81,7 @@ export default function CoachCreation({ navigation }) {
             );
         }
     };
+
     return (
         <SafeAreaView style={styles.wrapper}>
             <ScrollView style={styles.scrollView}>

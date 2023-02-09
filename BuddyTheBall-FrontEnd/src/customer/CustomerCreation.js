@@ -18,21 +18,6 @@ export default function CustomerCreation({ navigation }) {
         setData(result);
     }, []);
 
-    const [customerData, setCustomerData] = useState({
-        email: "",
-        password: "",
-        parent_name: "",
-        player_name: "",
-        player_age: "",
-        wristband_level: "",
-        handed: "",
-        num_buddy_books_read: "",
-        jersey_size: "",
-        class_photos: "",
-        current_award: "",
-        message: ""
-    });
-
     const loginValidationSchema = yup.object().shape({
         email: yup
             .string()
@@ -54,9 +39,6 @@ export default function CustomerCreation({ navigation }) {
         wristband_level: yup
             .string()
             .required('Wrist Band Level is required'),
-        // schools: yup
-        //     .string()
-        //     .required('School Selection is required'),
         handed: yup
             .string()
             .required('Handed is required'),
@@ -89,7 +71,6 @@ export default function CustomerCreation({ navigation }) {
                 current_award: values.current_award
             };
             const result = await SignUpService(data);
-            console.log("ingo----->", data);
             if (result) {
                 Alert.alert(
                     "Alert",
@@ -109,6 +90,7 @@ export default function CustomerCreation({ navigation }) {
             );
         }
     };
+
     return (
         <SafeAreaView style={styles.wrapper}>
             <ScrollView style={styles.scrollView}>
@@ -122,7 +104,6 @@ export default function CustomerCreation({ navigation }) {
                         player_name: '',
                         player_age: '',
                         wristband_level: '',
-                        // schools: '',
                         handed: '',
                         num_buddy_books_read: '',
                         jersey_size: '',

@@ -12,6 +12,7 @@ export default function CoachSchoolsPhotos({ navigation }) {
     useEffect(() => {
         setSchoolData(state.authPage.auth_data.assigned_schools);
     }, []);
+
     return (
         <SafeAreaView style={styles.wrapper}>
             <ScrollView style={styles.scrollView}>

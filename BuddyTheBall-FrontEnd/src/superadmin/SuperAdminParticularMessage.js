@@ -13,7 +13,6 @@ export default function SuperAdminParticularMessage({ route }) {
 
     useEffect(() => {
         const getMessagesBySenderIdReceiverId = async () => {
-            console.log("fghbtgf---->", route.params.messages, state.authPage.id, route.params.messages.sender_id);
             var result;
             if (route.params.messages.sender_role === 'superadmin') {
                 result = await GetMessagesBySenderIdReceiverId(state.authPage.id, route.params.messages.receiver_id);
@@ -21,7 +20,6 @@ export default function SuperAdminParticularMessage({ route }) {
                 result = await GetMessagesBySenderIdReceiverId(state.authPage.id, route.params.messages.sender_id);
             }
             if (result) {
-                console.log("log---->", result);
                 setSenderMessages(result[0]);
             }
         };
@@ -84,13 +82,9 @@ const styles = StyleSheet.create({
     imgWrap: {
         position: 'relative'
     },
-    // scrollView: {
-    //     marginHorizontal: 20,
-    // },
     DateName: {
         display: 'flex',
         alignItems: 'center',
-        // justifyContent: 'space-between',
         paddingBottom: 10,
     },
     imgDes: {
@@ -113,7 +107,6 @@ const styles = StyleSheet.create({
     message_view: {
         width: 300,
         display: 'flex',
-        // bottom: 0
     },
     iconWrap: {
         display: 'flex',

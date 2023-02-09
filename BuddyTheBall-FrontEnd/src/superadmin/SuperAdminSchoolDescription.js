@@ -11,7 +11,6 @@ export default function SuperAdminSchoolDescription({ navigation, route }) {
         territory: "",
         assigned_day: ""
     });
-
     const territoryList = [
         {
             key: "Kanpur",
@@ -30,7 +29,6 @@ export default function SuperAdminSchoolDescription({ navigation, route }) {
             value: "Banaras"
         }
     ];
-
     const dayList = [
         {
             key: "Monday",

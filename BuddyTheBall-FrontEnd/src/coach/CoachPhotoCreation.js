@@ -28,7 +28,6 @@ export default function CoachPhotoCreation({ navigation, route }) {
             multiple: true
         });
         setSelectedFile(result);
-        console.log('rsss->', result);
     };
 
     const handleAddPhoto = async () => {

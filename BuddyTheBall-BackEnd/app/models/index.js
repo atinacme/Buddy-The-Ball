@@ -12,6 +12,7 @@ db.coach = require("./coach.model");
 db.customer = require("./customer.model");
 db.photos = require("./photos.model");
 db.messages = require("./messages.model");
+db.calendar = require("./calendar.model");
 db.dbConfig = require("../config/db.config");
 db.ROLES = ["customer", "superadmin", "coach"];
 
