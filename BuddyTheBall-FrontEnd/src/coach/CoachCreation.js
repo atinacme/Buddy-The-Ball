@@ -4,6 +4,7 @@ import { SelectList, MultipleSelectList } from 'react-native-dropdown-select-lis
 import buddy from '../assets/buddy.png';
 import { GetSchoolsService } from '../services/SchoolService';
 import { SignUpService } from '../services/UserAuthService';
+import { Link } from '@react-navigation/native';
 
 export default function CoachCreation({ navigation }) {
     const [data, setData] = useState([]);
@@ -118,6 +119,9 @@ export default function CoachCreation({ navigation }) {
                     onSelect={() => alert(selected)}
                     label="Selected Schools"
                 />
+                <Link to={{ screen: 'Coach Assign Period' }}>
+                    Go to Assign Period
+                </Link>
                 <Text style={styles.label}>Tennis Club</Text>
                 <TextInput
                     style={styles.input}

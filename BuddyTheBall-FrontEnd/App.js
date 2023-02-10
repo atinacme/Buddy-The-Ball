@@ -20,6 +20,7 @@ import CustomerMessages from './src/customer/CustomerMessages';
 import CustomerMessageCreation from './src/customer/CustomerMessageCreation';
 import CustomerParticularMessage from './src/customer/CustomerParticularMessage';
 import CoachCreation from './src/coach/CoachCreation.js';
+import CoachAssignPeriod from './src/coach/CoachAssignPeriod';
 import CoachDashboard from './src/coach/CoachDashboard.js';
 import CoachSchoolsPhotos from './src/coach/CoachSchoolsPhotos.js';
 import CoachPhotoCreation from './src/coach/CoachPhotoCreation.js';
@@ -60,6 +61,7 @@ const App = () => {
           <Stack.Screen name="Customer Message Creation" component={CustomerMessageCreation} />
           <Stack.Screen name="Customer Particular Message" component={CustomerParticularMessage} />
           <Stack.Screen name="Coach Creation" component={CoachCreation} />
+          <Stack.Screen name="Coach Assign Period" options={{ headerBackVisible: false }} component={CoachAssignPeriod} />
           <Stack.Screen name="Coach Dashboard" options={{ headerBackVisible: false }} component={CoachDashboard} />
           <Stack.Screen name="Coach Schools Photos" component={CoachSchoolsPhotos} />
           <Stack.Screen name="Coach Photo Creation" component={CoachPhotoCreation} />
