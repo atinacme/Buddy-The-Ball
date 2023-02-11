@@ -15,6 +15,7 @@ const Coach = mongoose.model(
                 ref: "School"
             }
         ],
+        assign_slot: Array,
         favorite_pro_player: String,
         handed: String,
         favorite_drill: String,

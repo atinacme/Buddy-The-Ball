@@ -9,30 +9,16 @@ import moment from 'moment';
 import { CreateAgendaService, GetAgendaByDateService, UpdateAgendaService } from '../services/CalendarService';
 
 export default function CoachAssignPeriod() {
-    const state = useSelector((state) => state);
-    // const [schoolData, setSchoolData] = useState(state.authPage.auth_data.assigned_schools.map(v => Object.assign(v, { key: v._id, value: v.school_name })));
-    const [modalVisible, setModalVisible] = useState(false);
-    const [newDay, setNewDay] = useState();
-    const [agendaData, setAgendaData] = useState([]);
-    const [updateAgenda, setUpdateAgenda] = useState(false);
-    const [items, setItems] = useState({});
-    const today = moment().format("YYYY-MM-DD");
-    const [loadResult, setLoadResult] = useState([]);
     const [markedDates, setMarkedDates] = useState({});
     const [isStartDatePicked, setIsStartDatePicked] = useState(false);
-    const [isEndDatePicked, setIsEndDatePicked] = useState(false);
     const [startDate, setStartDate] = useState('');
 
     function dateRange(startDate, endDate, steps = 1) {
         const dateArray = [];
         let currentDate = new Date(startDate);
-
         while (currentDate <= new Date(endDate)) {
-            // dateArray.push(new Date(currentDate));
             let dateNew = moment(new Date(currentDate)).format('YYYY-MM-DD');
             dateArray.push(dateNew);
-            console.log("date---->", dateNew, dateArray);
-            // Use UTC date to prevent problems with time zones and DST
             currentDate.setUTCDate(currentDate.getUTCDate() + steps);
         }
         dateArray.shift();
@@ -43,15 +29,8 @@ export default function CoachAssignPeriod() {
         if (isStartDatePicked == false) {
             let markedDates = {};
             markedDates[day.dateString] = { startingDay: true, color: '#00B0BF', textColor: '#FFFFFF' };
-            // this.setState({
-            //     markedDates: markedDates,
-            //     isStartDatePicked: true,
-            //     isEndDatePicked: false,
-            //     startDate: day.dateString,
-            // });
             setMarkedDates(markedDates);
             setIsStartDatePicked(true);
-            setIsEndDatePicked(false);
             setStartDate(day.dateString);
         } else {
             let endDate = moment(day.dateString);
@@ -61,33 +40,13 @@ export default function CoachAssignPeriod() {
             let utcEndDate = currentDate.setUTCDate(currentDate.getUTCDate());
             let newDate = moment(new Date(utcEndDate)).format('YYYY-MM-DD');
             allRange.push(newDate);
-            console.log("gsxdh--->", allRange);
             if (range > 0) {
-                // markedDates[allRange[0]] = { color: '#00B0BF', textColor: '#FFFFFF' };
-                // if (allRange.findIndex(1)) {
-                //     markedDates[allRange[0]] = { color: '#00B0BF', textColor: '#FFFFFF' };
-                // } else if () {
-                // allRange.forEach(element => {
-                //     if (element[0]) {
-                //         markedDates[element] = { color: '#00B0BF', textColor: '#FFFFFF' };
-                //     } else {
-                //         markedDates[element] = { endingDay: true, color: '#00B0BF', textColor: '#FFFFFF' };
-                //     }
-                // })
-
                 for (let i = 0; i <= allRange.length - 1; i++) {
-                    markedDates[allRange[i]] = { color: '#00B0BF', textColor: '#FFFFFF' };
+                    markedDates[allRange[i]] = { color: '#50cebb', textColor: '#FFFFFF' };
                 }
-                console.log("i less--->", Object.keys(markedDates).length, markedDates[2]);
-                // this.setState({
-                //     markedDates: markedDates,
-                //     isStartDatePicked: false,
-                //     isEndDatePicked: true,
-                //     startDate: ''
-                // });
+                markedDates[Object.keys(markedDates)[Object.keys(markedDates).length - 1]] = { endingDay: true, color: '#00B0BF', textColor: '#FFFFFF' };
                 setMarkedDates(markedDates);
                 setIsStartDatePicked(false);
-                setIsEndDatePicked(true);
                 setStartDate('');
             } else {
                 alert('Select an upcomming date!');

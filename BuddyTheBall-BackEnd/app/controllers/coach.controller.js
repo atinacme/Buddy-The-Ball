@@ -80,6 +80,7 @@ exports.updateCoach = (req, res) => {
                                 tennis_club: req.body.tennis_club,
                                 assigned_territory: req.body.assigned_territory,
                                 assigned_schools: school,
+                                assign_slot: req.body.assign_slot,
                                 favorite_pro_player: req.body.favorite_pro_player,
                                 handed: req.body.handed,
                                 favorite_drill: req.body.favorite_drill
