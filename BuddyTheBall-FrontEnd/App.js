@@ -27,7 +27,7 @@ import CoachPhotoCreation from './src/coach/CoachPhotoCreation.js';
 import CoachParticularSchoolPhotos from './src/coach/CoachParticularSchoolPhotos.js';
 import CoachParticularSchoolParticularPhoto from './src/coach/CoachParticularSchoolParticularPhoto.js';
 import CoachCalendar from './src/coach/CoachCalendar.js';
-import CoachMesages from './src/coach/CoachMesages.js';
+import CoachMessages from './src/coach/CoachMessages.js';
 import CoachMessageCreation from './src/coach/CoachMessageCreation';
 import CoachParticularMessage from './src/coach/CoachParticularMessage';
 import CoachSchoolList from './src/coach/CoachSchoolList.js';
@@ -68,7 +68,7 @@ const App = () => {
           <Stack.Screen name="Coach Particular School Photos" component={CoachParticularSchoolPhotos} />
           <Stack.Screen name="Coach Particular School Particular Photo" component={CoachParticularSchoolParticularPhoto} />
           <Stack.Screen name="Coach Calendar" component={CoachCalendar} />
-          <Stack.Screen name="Coach Messages" component={CoachMesages} />
+          <Stack.Screen name="Coach Messages" component={CoachMessages} />
           <Stack.Screen name="Coach Message Creation" component={CoachMessageCreation} />
           <Stack.Screen name="Coach Particular Message" component={CoachParticularMessage} />
           <Stack.Screen name="Coach School List" component={CoachSchoolList} />

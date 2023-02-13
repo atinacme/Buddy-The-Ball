@@ -1,5 +1,7 @@
 import React from 'react';
-import { SafeAreaView, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import { SafeAreaView, Text, StyleSheet, TouchableOpacity, TextInput, View, Image } from 'react-native';
+import search from '../assets/search.png';
+import Icon from 'react-native-vector-icons/FontAwesome5';
 import { DataTable } from 'react-native-paper';
 
 export default function CoachParticularSchoolStudents() {
@@ -22,8 +24,22 @@ export default function CoachParticularSchoolStudents() {
     ];
 
     return (
-        <SafeAreaView>
-            <Text>Lucknow Public School</Text>
+        <SafeAreaView style={styles.wrapper}>
+            <View style={styles.searchSection}>
+                <TextInput
+                    style={styles.input}
+                    placeholder="Student Attendance"
+                    placeholderTextColor="#fff"
+                    underlineColorAndroid="transparent"
+                />
+                <Icon style={styles.searchIcon} name="search" size={20} color="#fff" />
+            </View>
+            <View style={styles.calendarSection}>
+                <Text>wdfwew</Text>
+                <View style={styles.verticleLine}></View>
+                <Text>degdfe</Text>
+            </View>
+            {/* <Text>Lucknow Public School</Text>
             <DataTable style={styles.container}>
                 <DataTable.Header style={styles.tableHeader}>
                     <DataTable.Title>AT-</DataTable.Title>
@@ -55,16 +71,54 @@ export default function CoachParticularSchoolStudents() {
                         </TouchableOpacity>
                     );
                 })}
-            </DataTable>
+            </DataTable> */}
         </SafeAreaView>
     );
 }
 
 const styles = StyleSheet.create({
+    wrapper: {
+        padding: 10,
+    },
     container: {
         padding: 15,
     },
     tableHeader: {
         backgroundColor: '#DCDCDC',
+    },
+    searchSection: {
+        flexDirection: 'row',
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor: '#fff'
+    },
+    calendarSection: {
+        padding: 10,
+        alignItems: 'center',
+        flexDirection: 'row',
+        justifyContent: 'space-evenly',
+        width: '100%',
+        marginBottom: 20,
+        backgroundColor: 'blue',
+        borderTopWidth: 1,
+        borderTopColor: '#fff'
+    },
+    verticleLine: {
+        height: 30,
+        width: 1,
+        backgroundColor: '#fff',
+    },
+    searchIcon: {
+        padding: 13.3,
+        backgroundColor: 'blue',
+        color: '#fff',
+        borderTopRightRadius: 10
+    },
+    input: {
+        flex: 1,
+        padding: 10,
+        backgroundColor: 'blue',
+        color: '#fff',
+        borderTopLeftRadius: 10
     },
 });

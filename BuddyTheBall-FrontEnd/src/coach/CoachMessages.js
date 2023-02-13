@@ -6,7 +6,7 @@ import { SafeAreaView, Text, Image, View, StyleSheet, TouchableOpacity } from 'r
 import { GetMessagesBySenderId } from '../services/CustomerService';
 import moment from 'moment';
 
-export default function CoachMesages({ navigation }) {
+export default function CoachMessages({ navigation }) {
     const state = useSelector((state) => state);
     const [senderMessages, setSenderMessages] = useState([]);
 
@@ -58,7 +58,6 @@ export default function CoachMesages({ navigation }) {
         </SafeAreaView>
     );
 }
-
 
 const styles = StyleSheet.create({
     messagewrap: {
