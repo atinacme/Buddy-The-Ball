@@ -16,7 +16,7 @@ export default function CoachDashboard({ navigation }) {
 
     useEffect(() => {
         const getCoachData = async () => {
-            const result = await GetParticularCoachService(state.authPage.auth_data._id);
+            const result = await GetParticularCoachService(state.authPage.auth_data?._id);
             if (result) {
                 dispatch(AuthPageAction(state.authPage.id, state.authPage.email, state.authPage.roles, result, state.authPage.accessToken));
                 setUploadResult(false);
@@ -36,7 +36,7 @@ export default function CoachDashboard({ navigation }) {
 
     const handleUpload = async () => {
         const formData = new FormData();
-        formData.append('coach_id', state.authPage.auth_data._id);
+        formData.append('coach_id', state.authPage.auth_data?._id);
         formData.append('role', state.authPage.roles[0]);
         formData.append('file_type', 'profile');
         const newImageUri = "file:///" + selectedFile[0].path.split("file:/").join("");
@@ -75,8 +75,8 @@ export default function CoachDashboard({ navigation }) {
         <SafeAreaView style={styles.wrapper}>
             <Text style={styles.dashimgWrap}>
                 <TouchableOpacity onPress={openGallery}>
-                    {state.authPage.auth_data.profile_data && state.authPage.auth_data.profile_data.url ?
-                        <Image source={{ uri: state.authPage.auth_data.profile_data.url }} style={{ width: 200, height: 200, marginLeft: 'auto', marginRight: 'auto' }} />
+                    {state.authPage.auth_data?.profile_data && state.authPage.auth_data?.profile_data.url ?
+                        <Image source={{ uri: state.authPage.auth_data?.profile_data.url }} style={{ width: 200, height: 200, marginLeft: 'auto', marginRight: 'auto' }} />
                         :
                         <>
                             {selectedFile !== null ?
@@ -96,14 +96,14 @@ export default function CoachDashboard({ navigation }) {
                     onPress={handleUpload}
                 />
             )}
-            {state.authPage.auth_data.profile_data && state.authPage.auth_data.profile_data.url === undefined ? <Text style={styles.playPara}>Upload Player Picture</Text> : null}
+            {state.authPage.auth_data?.profile_data && state.authPage.auth_data?.profile_data.url === undefined ? <Text style={styles.playPara}>Upload Player Picture</Text> : null}
             {state.authPage.auth_data && (
                 <>
-                    <Text style={styles.heading}>Coach {state.authPage.auth_data.coach_name}</Text>
-                    <Text style={styles.txt}>Tennis Club: {state.authPage.auth_data.tennis_club}</Text>
-                    <Text style={styles.txt}>Favorite Pro Player: {state.authPage.auth_data.favorite_pro_player}</Text>
-                    <Text style={styles.txt}>Handed: {state.authPage.auth_data.handed}</Text>
-                    <Text style={styles.txt}>Favorite Drill: {state.authPage.auth_data.favorite_drill}</Text>
+                    <Text style={styles.heading}>Coach {state.authPage.auth_data?.coach_name}</Text>
+                    <Text style={styles.txt}>Tennis Club: {state.authPage.auth_data?.tennis_club}</Text>
+                    <Text style={styles.txt}>Favorite Pro Player: {state.authPage.auth_data?.favorite_pro_player}</Text>
+                    <Text style={styles.txt}>Handed: {state.authPage.auth_data?.handed}</Text>
+                    <Text style={styles.txt}>Favorite Drill: {state.authPage.auth_data?.favorite_drill}</Text>
                 </>
             )}
             <View style={styles.btnCta}>

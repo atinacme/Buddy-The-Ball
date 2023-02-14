@@ -12,24 +12,29 @@ export default function CoachCalendar() {
     const state = useSelector((state) => state);
     const [schoolData, setSchoolData] = useState(state.authPage.auth_data.assigned_schools.map(v => Object.assign(v, { key: v._id, value: v.school_name })));
     const [modalVisible, setModalVisible] = useState(false);
-    const [newDay, setNewDay] = useState();
     const [agendaData, setAgendaData] = useState([]);
     const [updateAgenda, setUpdateAgenda] = useState(false);
     const [items, setItems] = useState({});
     const today = moment().format("YYYY-MM-DD");
-    const [loadResult, setLoadResult] = useState([]);
+    const [newDay, setNewDay] = useState(today);
+    const [loadResult, setLoadResult] = useState();
 
     useEffect(() => {
         const handleOnLoadAgenda = async () => {
-            const data = { agenda_date: today };
-            const result = await GetAgendaByDateService(data);
-            if (result) {
-                setItems(result[0] ? result[0].agenda : {});
-                setLoadResult(result[0]);
-            }
+            try {
+                const data = { agenda_date: newDay };
+                const result = await GetAgendaByDateService(data);
+                if (result) {
+                    console.log("result---->", result);
+                    setItems(result[0] ? result[0].agenda : {});
+                    setLoadResult(result[0]);
+                }
+            } catch (e) { }
         };
         handleOnLoadAgenda();
     }, [newDay, updateAgenda]);
+
+    console.log("loadResult---->", loadResult);
 
     const handleRenderAgenda = () => {
         setUpdateAgenda(false);
@@ -78,8 +83,8 @@ export default function CoachCalendar() {
                 <Agenda
                     // selected="2022-12-01"
                     minDate={today}
-                    pastScrollRange='0'
-                    futureScrollRange='12'
+                    pastScrollRange={0}
+                    futureScrollRange={12}
                     dayLoading={false}
                     items={items}
                     renderItem={(item) => (
@@ -98,6 +103,7 @@ export default function CoachCalendar() {
                             setNewDay(day.dateString);
                         }
                         setAgendaData([]);
+                        setLoadResult();
                     }}
                 />
                 <View style={styles.centeredView}>
@@ -178,7 +184,7 @@ export default function CoachCalendar() {
                                     })}
                                     <Pressable
                                         style={[styles.button, styles.buttonOpen]}
-                                        onPress={() => handleAgenda(key = loadResult._id ? loadResult._id : 1)}>
+                                        onPress={() => handleAgenda(key = loadResult?._id ? loadResult?._id : 1)}>
                                         <Text style={styles.textStyle}>{loadResult ? 'Update' : 'Create'}</Text>
                                     </Pressable>
                                     <Pressable
@@ -187,7 +193,7 @@ export default function CoachCalendar() {
                                             setModalVisible(!modalVisible);
                                             setAgendaData([]);
                                         }}>
-                                        <Text style={styles.textStyle}>{loadResult ? "Don't Update !!" : "Don't Update !!"}</Text>
+                                        <Text style={styles.textStyle}>{loadResult ? "Don't Update !!" : "Don't Create !!"}</Text>
                                     </Pressable>
                                 </ScrollView>
                             </View>

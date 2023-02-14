@@ -9,6 +9,15 @@ export default function CoachSchoolList({ navigation }) {
     const allSchoolData = state.authPage.auth_data.assigned_schools;
     const [allDates, setAllDates] = useState([]);
 
+    const mergeByProperty = (target, source) => {
+        source.forEach(sourceElement => {
+            let targetElement = target.find(targetElement => {
+                return sourceElement.school === targetElement.school_name;
+            });
+            targetElement ? Object.assign(targetElement, sourceElement) : target.push(sourceElement);
+        });
+    };
+
     useEffect(() => {
         const result = state.authPage.auth_data.assigned_schools.filter(v => { return (v.territory == state.authPage.auth_data.assigned_territory); });
         const assign_school = result[0].school_name;
@@ -19,7 +28,10 @@ export default function CoachSchoolList({ navigation }) {
                 setAllDates([timeStartStamp, timeEndStamp]);
             }
         });
+        mergeByProperty(allSchoolData, state.authPage.auth_data.assign_slot);
     }, []);
+
+    console.log("hdgs--->", allSchoolData);
 
     return (
         <SafeAreaView>

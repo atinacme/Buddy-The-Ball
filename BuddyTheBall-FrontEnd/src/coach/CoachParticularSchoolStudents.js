@@ -1,27 +1,30 @@
-import React from 'react';
-import { SafeAreaView, Text, StyleSheet, TouchableOpacity, TextInput, View, Image } from 'react-native';
-import search from '../assets/search.png';
+import React, { useEffect, useState } from 'react';
+import { SafeAreaView, Text, StyleSheet, TouchableOpacity, TextInput, View, Image, FlatList, ScrollView } from 'react-native';
+import { SelectList } from 'react-native-dropdown-select-list';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import { DataTable } from 'react-native-paper';
+import moment from 'moment';
 
-export default function CoachParticularSchoolStudents() {
-    const schools = [
-        {
-            id: 1,
-            day: 'Wednesday',
-            school: 'Lucknow Public School'
-        },
-        {
-            id: 2,
-            day: 'Yesterday',
-            school: 'Melinium'
-        },
-        {
-            id: 3,
-            day: 'Monday',
-            school: 'Chirst Church'
+export default function CoachParticularSchoolStudents({ route }) {
+    const [allDates, setAllDates] = useState({ key: '', value: '' });
+    const [selectedDate, setSelectedDate] = useState();
+
+    function dateRange(startDate, endDate, steps = 1) {
+        const dateArray = [];
+        let currentDate = new Date(startDate);
+        while (currentDate <= new Date(endDate)) {
+            let dateNew = moment(new Date(currentDate)).format('YYYY-MM-DD');
+            dateArray.push(dateNew);
+            currentDate.setUTCDate(currentDate.getUTCDate() + steps);
         }
-    ];
+        return dateArray;
+    }
+
+    useEffect(() => {
+        let range = dateRange(route.params.schoolItem.startDate, route.params.schoolItem.endDate);
+        setAllDates({ key: range, value: range });
+        console.log('route--->', range, allDates);
+    }, []);
 
     return (
         <SafeAreaView style={styles.wrapper}>
@@ -35,7 +38,17 @@ export default function CoachParticularSchoolStudents() {
                 <Icon style={styles.searchIcon} name="search" size={20} color="#fff" />
             </View>
             <View style={styles.calendarSection}>
-                <Text>wdfwew</Text>
+                <View style={styles.calendarSectionLeft}>
+                    <Icon style={styles.searchIcon} name="calendar" size={20} color="#fff" />
+                    <SelectList
+                        setSelected={(val) => { setSelectedDate(val); }}
+                        data={allDates?.value}
+                        save="value"
+                        search={false}
+                        boxStyles={{ borderWidth: 0 }}
+                    // style={styles.dateList}
+                    />
+                </View>
                 <View style={styles.verticleLine}></View>
                 <Text>degdfe</Text>
             </View>
@@ -81,7 +94,11 @@ const styles = StyleSheet.create({
         padding: 10,
     },
     container: {
-        padding: 15,
+        flex: 1,
+        padding: 22,
+    },
+    scrollView: {
+        marginHorizontal: 20,
     },
     tableHeader: {
         backgroundColor: '#DCDCDC',
@@ -103,6 +120,9 @@ const styles = StyleSheet.create({
         borderTopWidth: 1,
         borderTopColor: '#fff'
     },
+    calendarSectionLeft: {
+        flexDirection: 'row'
+    },
     verticleLine: {
         height: 30,
         width: 1,
@@ -121,4 +141,12 @@ const styles = StyleSheet.create({
         color: '#fff',
         borderTopLeftRadius: 10
     },
+    item: {
+        padding: 10,
+        fontSize: 18,
+        height: 44,
+    },
+    dateList: {
+        width: 20
+    }
 });
