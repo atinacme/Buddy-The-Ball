@@ -1,12 +1,7 @@
-import React, { useEffect, useState } from 'react';
-import {
-    SafeAreaView, TouchableOpacity, StyleSheet, Text, Modal, View, Pressable, TextInput, ScrollView
-} from 'react-native';
-import { useSelector } from "react-redux";
-import { SelectList } from 'react-native-dropdown-select-list';
-import { Agenda, Calendar } from 'react-native-calendars';
+import React, { useState } from 'react';
+import { SafeAreaView, StyleSheet } from 'react-native';
+import { Calendar } from 'react-native-calendars';
 import moment from 'moment';
-import { CreateAgendaService, GetAgendaByDateService, UpdateAgendaService } from '../services/CalendarService';
 
 export default function CoachAssignPeriod() {
     const [markedDates, setMarkedDates] = useState({});
@@ -54,7 +49,6 @@ export default function CoachAssignPeriod() {
         }
     };
 
-    console.log("marked dates--->", markedDates);
     return (
         <SafeAreaView style={styles.container}>
             <Calendar

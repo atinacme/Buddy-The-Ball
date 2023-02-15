@@ -12,7 +12,7 @@ export default function CoachMessages({ navigation }) {
 
     useEffect(() => {
         const getMessagesBySenderId = async () => {
-            const result = await GetMessagesBySenderId(state.authPage.auth_data._id);
+            const result = await GetMessagesBySenderId(state.authPage.auth_data?._id);
             if (result) {
                 setSenderMessages(result);
             }
@@ -25,10 +25,9 @@ export default function CoachMessages({ navigation }) {
             {senderMessages.map(item => {
                 return (
                     <TouchableOpacity key={item._id} onPress={() => navigation.navigate("Coach Particular Message", { messages: item })}>
-                        {console.log("wjdvg---->", item.sender_role)}
                         {item.sender_role === "coach" ?
                             <View key={item._id} style={styles.messagewrap}>
-                                <Image source={{ uri: item.receiver_profile_url }} style={{ width: 30, height: 30 }} />
+                                <Image source={{ uri: item.receiver_profile_url }} style={{ width: 40, height: 40, borderRadius: 60 }} />
                                 <Text style={styles.msgName}>{item.receiver_name}</Text>
                                 <Text style={styles.msgWrap}>{item.last_message}</Text>
                                 <Text style={styles.rightsec}>

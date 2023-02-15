@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Text, Image, SafeAreaView, View, StyleSheet, StatusBar, Button, Alert, TouchableOpacity, ScrollView } from 'react-native';
+import { Text, Image, SafeAreaView, View, StyleSheet, Button, Alert, TouchableOpacity, ScrollView } from 'react-native';
 import spark from '../assets/spark.png';
 import { useSelector, useDispatch } from "react-redux";
 import ImagePicker from 'react-native-image-crop-picker';
@@ -17,7 +17,7 @@ export default function CustomerDashboard({ navigation }) {
 
     useEffect(() => {
         const getCustomerData = async () => {
-            const result = await GetParticularCustomerService(state.authPage.auth_data._id);
+            const result = await GetParticularCustomerService(state.authPage.auth_data?._id);
             if (result) {
                 dispatch(AuthPageAction(state.authPage.id, state.authPage.email, state.authPage.roles, result, state.authPage.accessToken));
                 setUploadResult(false);
@@ -37,7 +37,7 @@ export default function CustomerDashboard({ navigation }) {
 
     const handleUpload = async () => {
         const formData = new FormData();
-        formData.append('customer_id', state.authPage.auth_data._id);
+        formData.append('customer_id', state.authPage.auth_data?._id);
         formData.append('role', state.authPage.roles[0]);
         formData.append('file_type', 'profile');
         const newImageUri = "file:///" + selectedFile[0].path.split("file:/").join("");
@@ -76,9 +76,9 @@ export default function CustomerDashboard({ navigation }) {
         <SafeAreaView style={styles.wrapper}>
             <ScrollView style={styles.scrollView}>
                 <Text style={styles.dashimgWrap}>
-                    <TouchableOpacity onPress={openGallery}>
-                        {state.authPage.auth_data.profile_data && state.authPage.auth_data.profile_data.url ?
-                            <Image source={{ uri: state.authPage.auth_data.profile_data.url }} style={{ width: 200, height: 200, marginLeft: 'auto', marginRight: 'auto', marginTop: 20 }} />
+                    <TouchableOpacity onPress={openGallery} style={styles.profileImgContainer}>
+                        {state.authPage.auth_data?.profile_data && state.authPage.auth_data?.profile_data.url ?
+                            <Image source={{ uri: state.authPage.auth_data?.profile_data.url }} style={styles.profileImg} />
                             :
                             <>
                                 {selectedFile !== null ?
@@ -98,18 +98,18 @@ export default function CustomerDashboard({ navigation }) {
                         onPress={handleUpload}
                     />
                 )}
-                {state.authPage.auth_data.profile_data && state.authPage.auth_data.profile_data.url === undefined ? <Text style={styles.playPara}>Upload Player Picture</Text> : null}
+                {state.authPage.auth_data?.profile_data && state.authPage.auth_data?.profile_data.url === undefined ? <Text style={styles.playPara}>Upload Player Picture</Text> : null}
                 {state.authPage.auth_data && (
                     <>
-                        <Text style={styles.heading}>{state.authPage.auth_data.player_name}</Text>
-                        <Text>Parent Name: {state.authPage.auth_data.parent_name}</Text>
-                        <Text>Player Age: {state.authPage.auth_data.player_age}</Text>
-                        <Text>Wristband Level: {state.authPage.auth_data.wristband_level}</Text>
-                        <Text>Handed: {state.authPage.auth_data.handed}</Text>
-                        <Text>Number of Buddy Books Read: {state.authPage.auth_data.num_buddy_books_read}</Text>
-                        <Text>Jersey Size: {state.authPage.auth_data.jersey_size}</Text>
-                        <Text>School Name: {state.authPage.auth_data.school && state.authPage.auth_data.school.school_name ? state.authPage.auth_data.school.school_name : null}</Text>
-                        <Text>Coach Name: {state.authPage.auth_data.coach && state.authPage.auth_data.coach.coach_name ? state.authPage.auth_data.coach.coach_name : null}</Text>
+                        <Text style={styles.heading}>{state.authPage.auth_data?.player_name}</Text>
+                        <Text>Parent Name: {state.authPage.auth_data?.parent_name}</Text>
+                        <Text>Player Age: {state.authPage.auth_data?.player_age}</Text>
+                        <Text>Wristband Level: {state.authPage.auth_data?.wristband_level}</Text>
+                        <Text>Handed: {state.authPage.auth_data?.handed}</Text>
+                        <Text>Number of Buddy Books Read: {state.authPage.auth_data?.num_buddy_books_read}</Text>
+                        <Text>Jersey Size: {state.authPage.auth_data?.jersey_size}</Text>
+                        <Text>School Name: {state.authPage.auth_data?.school && state.authPage.auth_data?.school.school_name ? state.authPage.auth_data?.school.school_name : null}</Text>
+                        <Text>Coach Name: {state.authPage.auth_data?.coach && state.authPage.auth_data?.coach.coach_name ? state.authPage.auth_data?.coach.coach_name : null}</Text>
                     </>
                 )}
                 <View style={styles.dashContentWrap}>
@@ -150,27 +150,8 @@ export default function CustomerDashboard({ navigation }) {
 }
 
 const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        paddingTop: StatusBar.currentHeight,
-        marginHorizontal: 16
-    },
     scrollView: {
         marginHorizontal: 20,
-    },
-    item: {
-        backgroundColor: "#f9c2ff",
-        padding: 20,
-        marginVertical: 8
-    },
-    header: {
-        fontSize: 32,
-        backgroundColor: "#fff"
-    },
-    title: {
-        fontSize: 24,
-        color: '#000',
-        paddingBottom: 20
     },
     wrapper: {
         paddingTop: 0,
@@ -188,7 +169,8 @@ const styles = StyleSheet.create({
         padding: 20
     },
     dashimgWrap: {
-        textAlign: 'center'
+        textAlign: 'center',
+        marginTop: 10
     },
     label: {
         fontSize: 18,
@@ -204,5 +186,16 @@ const styles = StyleSheet.create({
     },
     dashContent: {
         width: 180
+    },
+    profileImgContainer: {
+        marginLeft: 8,
+        height: 150,
+        width: 150,
+        borderRadius: 100,
+    },
+    profileImg: {
+        height: 150,
+        width: 150,
+        borderRadius: 100,
     }
 });

@@ -12,7 +12,7 @@ export default function CustomerMessages({ navigation }) {
 
     useEffect(() => {
         const getMessagesBySenderId = async () => {
-            const result = await GetMessagesBySenderId(state.authPage.auth_data._id);
+            const result = await GetMessagesBySenderId(state.authPage.auth_data?._id);
             if (result) {
                 setSenderMessages(result);
             }
@@ -52,7 +52,7 @@ export default function CustomerMessages({ navigation }) {
             })}
             <TouchableOpacity onPress={() => navigation.navigate("Customer Message Creation")}>
                 <View style={styles.messageImageHolder}>
-                    <Image resizeMode={"contain"} source={message} style={{ width: 40, height: 40 }} />
+                    <Image resizeMode={"contain"} source={message} />
                 </View>
             </TouchableOpacity>
         </SafeAreaView>
@@ -88,6 +88,8 @@ const styles = StyleSheet.create({
         fontFamily: 'LemonJuice'
     },
     messageImageHolder: {
+        left: '70%',
+        top: '400%',
         width: 80,
         height: 80,
         aspectRatio: 1 / 1,
@@ -95,8 +97,6 @@ const styles = StyleSheet.create({
         padding: 20,
         borderColor: '#d8d8d8',
         borderRadius: 50,
-        overflow: 'hidden',
-        position: 'relative',
-        bottom: 0
+        overflow: 'hidden'
     }
 });

@@ -319,28 +319,9 @@ const styles = StyleSheet.create({
         paddingTop: 10,
         paddingBottom: 0
     },
-    labeLink: {
-        fontSize: 14,
-        textAlign: 'center',
-        color: "#000",
-        padding: 10,
-        cursor: 'pointer'
-    },
     container: {
         flex: 1,
         justifyContent: 'center'
-    },
-    item: {
-        backgroundColor: '#fff',
-        flex: 1,
-        borderRadius: 5,
-        padding: 10,
-        marginRight: 10,
-        marginTop: 17
-    },
-    itemText: {
-        color: '#888',
-        fontSize: 16,
     },
     centeredView: {
         flex: 1,
@@ -390,9 +371,6 @@ const styles = StyleSheet.create({
         height: 30,
         alignItems: 'center'
     },
-    mainText: {
-        marginRight: 40
-    },
     textPlus: {
         fontSize: 20,
     },
@@ -404,16 +382,9 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
         textAlign: 'center'
     },
-    modalText: {
-        marginBottom: 15,
-        flexDirection: 'row'
-    },
     schoolList: {
         width: 225,
         marginTop: 10,
         marginBottom: 10
-    },
-    itemTextFirst: {
-        color: 'black'
     }
 });

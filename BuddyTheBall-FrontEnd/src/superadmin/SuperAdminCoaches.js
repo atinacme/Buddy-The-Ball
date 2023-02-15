@@ -9,7 +9,6 @@ export default function SuperAdminCoaches({ navigation }) {
     useEffect(() => {
         const getCoaches = async () => {
             const result = await GetAllCoachesService();
-            console.log(result);
             if (result) {
                 setCoaches(result);
             }
@@ -67,6 +66,5 @@ const styles = StyleSheet.create({
         textAlign: 'center',
         fontFamily: 'LemonJuice',
         color: '#fff'
-    },
-
+    }
 });

@@ -10,7 +10,7 @@ export default function CoachSchoolsPhotos({ navigation }) {
     const [schoolData, setSchoolData] = useState([]);
 
     useEffect(() => {
-        setSchoolData(state.authPage.auth_data.assigned_schools);
+        setSchoolData(state.authPage.auth_data?.assigned_schools);
     }, []);
 
     return (
@@ -18,7 +18,7 @@ export default function CoachSchoolsPhotos({ navigation }) {
             <ScrollView style={styles.scrollView}>
                 {schoolData.map(item => {
                     return (
-                        <TouchableOpacity key={item._id} onPress={() => item.territory.indexOf(state.authPage.auth_data.assigned_territory) > -1 ?
+                        <TouchableOpacity key={item._id} onPress={() => item.territory.indexOf(state.authPage.auth_data?.assigned_territory) > -1 ?
                             navigation.navigate("Coach Particular School Photos", { schoolItem: item })
                             : Alert.alert(
                                 "Alert",

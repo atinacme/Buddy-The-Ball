@@ -11,11 +11,11 @@ export default function CustomerMessageCreation() {
     const handleSendMessage = async () => {
         try {
             const data = {
-                sender_id: state.authPage.auth_data._id,
-                sender_name: state.authPage.auth_data.player_name,
+                sender_id: state.authPage.auth_data?._id,
+                sender_name: state.authPage.auth_data?.player_name,
                 sender_role: 'customer',
-                sender_profile_url: state.authPage.auth_data.profile_data.url,
-                receiver_id: state.authPage.auth_data.coach._id,
+                sender_profile_url: state.authPage.auth_data?.profile_data.url,
+                receiver_id: state.authPage.auth_data?.coach._id,
                 receiver_role: 'coach',
                 message: message
             };

@@ -158,12 +158,5 @@ const styles = StyleSheet.create({
         color: '#000',
         paddingTop: 10,
         paddingBottom: 0
-    },
-    labeLink: {
-        fontSize: 14,
-        textAlign: 'center',
-        color: "#000",
-        padding: 10,
-        cursor: 'pointer'
     }
 });

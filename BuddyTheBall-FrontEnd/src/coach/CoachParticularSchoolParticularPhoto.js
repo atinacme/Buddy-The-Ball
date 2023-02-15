@@ -17,8 +17,6 @@ export default function CoachParticularSchoolParticularPhoto() {
                 </Text>
                 <TextInput
                     style={styles.input}
-                    // onChangeText={onChangeText}
-                    // value={text}
                     placeholder="Add a comment..."
                 />
                 <View style={styles.iconWrapper}>
@@ -55,7 +53,6 @@ const styles = StyleSheet.create({
         bottom: 0,
         left: 30
     },
-
     input: {
         width: 300,
         borderRadius: 5,

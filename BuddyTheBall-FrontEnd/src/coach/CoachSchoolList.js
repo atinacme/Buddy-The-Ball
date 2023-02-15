@@ -6,7 +6,7 @@ import moment from 'moment';
 
 export default function CoachSchoolList({ navigation }) {
     const state = useSelector((state) => state);
-    const allSchoolData = state.authPage.auth_data.assigned_schools;
+    const allSchoolData = state.authPage.auth_data?.assigned_schools;
     const [allDates, setAllDates] = useState([]);
 
     const mergeByProperty = (target, source) => {
@@ -19,23 +19,21 @@ export default function CoachSchoolList({ navigation }) {
     };
 
     useEffect(() => {
-        const result = state.authPage.auth_data.assigned_schools.filter(v => { return (v.territory == state.authPage.auth_data.assigned_territory); });
+        const result = state.authPage.auth_data?.assigned_schools.filter(v => { return (v.territory == state.authPage.auth_data?.assigned_territory); });
         const assign_school = result[0].school_name;
-        state.authPage.auth_data.assign_slot.filter(element => {
+        state.authPage.auth_data?.assign_slot.filter(element => {
             if (element.school === assign_school) {
                 let timeStartStamp = moment(element.startDate);
                 let timeEndStamp = moment(element.endDate);
                 setAllDates([timeStartStamp, timeEndStamp]);
             }
         });
-        mergeByProperty(allSchoolData, state.authPage.auth_data.assign_slot);
+        mergeByProperty(allSchoolData, state.authPage.auth_data?.assign_slot);
     }, []);
-
-    console.log("hdgs--->", allSchoolData);
 
     return (
         <SafeAreaView>
-            <Text>CURRENT TERRITORY: {state.authPage.auth_data.assigned_territory}</Text>
+            <Text>CURRENT TERRITORY: {state.authPage.auth_data?.assigned_territory}</Text>
             <Text>CURRENT SEASON: FALL - {moment(allDates[0]).format("MMM D")} - {moment(allDates[1]).format("MMM D")}</Text>
             <DataTable style={styles.container}>
                 <DataTable.Header style={styles.tableHeader}>
@@ -44,7 +42,7 @@ export default function CoachSchoolList({ navigation }) {
                 </DataTable.Header>
                 {allSchoolData.map(item => {
                     return (
-                        <TouchableOpacity key={item._id} onPress={() => item.territory.indexOf(state.authPage.auth_data.assigned_territory) > -1 ?
+                        <TouchableOpacity key={item._id} onPress={() => item.territory.indexOf(state.authPage.auth_data?.assigned_territory) > -1 ?
                             navigation.navigate("Coach Particular School Students", { schoolItem: item })
                             : Alert.alert(
                                 "Alert",

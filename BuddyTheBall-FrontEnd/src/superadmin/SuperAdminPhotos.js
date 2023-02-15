@@ -1,5 +1,5 @@
 import React from 'react';
-import { SafeAreaView, Text, StyleSheet, View, TouchableOpacity, Image, ScrollView } from 'react-native';
+import { SafeAreaView, Text, StyleSheet, View, TouchableOpacity, Image } from 'react-native';
 import user from '../assets/user.png';
 
 export default function SuperAdminPhotos({ navigation }) {

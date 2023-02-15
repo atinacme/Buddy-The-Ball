@@ -98,7 +98,6 @@ const styles = StyleSheet.create({
         paddingTop: 10,
         paddingBottom: 0
     },
-
     labeLink: {
         fontSize: 14,
         textAlign: 'center',

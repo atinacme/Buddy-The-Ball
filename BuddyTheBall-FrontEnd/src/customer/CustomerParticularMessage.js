@@ -15,9 +15,9 @@ export default function SuperAdminParticularMessage({ route }) {
         const getMessagesBySenderIdReceiverId = async () => {
             var result;
             if (route.params.messages.sender_role === 'customer') {
-                result = await GetMessagesBySenderIdReceiverId(state.authPage.auth_data._id, route.params.messages.receiver_id);
+                result = await GetMessagesBySenderIdReceiverId(state.authPage.auth_data?._id, route.params.messages.receiver_id);
             } else {
-                result = await GetMessagesBySenderIdReceiverId(state.authPage.auth_data._id, route.params.messages.sender_id);
+                result = await GetMessagesBySenderIdReceiverId(state.authPage.auth_data?._id, route.params.messages.sender_id);
             }
             if (result) {
                 setSenderMessages(result[0]);
@@ -30,13 +30,13 @@ export default function SuperAdminParticularMessage({ route }) {
         try {
             const data = {
                 message_id: route.params.messages._id,
-                messanger_id: state.authPage.auth_data._id,
+                messanger_id: state.authPage.auth_data?._id,
                 role: 'customer',
                 receiver_id: route.params.messages.receiver_id,
                 receiver_role: senderMessages.receiver_role,
-                url: state.authPage.auth_data.profile_data.url,
+                url: state.authPage.auth_data?.profile_data.url,
                 message: message,
-                messanger_name: state.authPage.auth_data.coach_name
+                messanger_name: state.authPage.auth_data?.coach_name
             };
             const result = await CreateAndUpdateMessage(data);
             if (result) {
@@ -54,11 +54,11 @@ export default function SuperAdminParticularMessage({ route }) {
                         <View key={item._id} style={styles.DateName}>
                             {item.url ?
                                 <View style={styles.pro_img}>
-                                    <Image resizeMode={"contain"} source={{ uri: item.url }} style={{ width: 40, height: 40 }} />
+                                    <Image source={{ uri: item.url }} style={{ width: 40, height: 40 }} />
                                 </View>
                                 :
                                 <View style={styles.pro_img}>
-                                    <Image source={profile} style={{ width: 40, height: 40, borderRadius: 50, backgroundColor: '#fff' }} />
+                                    <Image source={profile} style={{ width: 40, height: 40 }} />
                                 </View>
                             }
                             <Text style={styles.date}>&nbsp;&nbsp;&nbsp;&nbsp;{item.message}</Text>
@@ -78,7 +78,6 @@ export default function SuperAdminParticularMessage({ route }) {
                     <Image source={send_button} style={{ width: 30, height: 30 }} />
                 </TouchableOpacity>
             </View>
-            {/* </ScrollView> */}
         </SafeAreaView >
     );
 }
@@ -88,18 +87,11 @@ const styles = StyleSheet.create({
         flex: 1,
         paddingTop: StatusBar.currentHeight,
     },
-    imgWrap: {
-        position: 'relative'
-    },
     pro_img: {
         width: 40,
         height: 40,
-        aspectRatio: 1 / 1,
-        borderColor: '#000',
         borderRadius: 50,
-        overflow: 'hidden',
-        borderWidth: 1,
-        position: 'relative'
+        overflow: 'hidden'
     },
     scrollView: {
         marginHorizontal: 20,
@@ -110,57 +102,6 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         paddingBottom: 10,
         paddingLeft: 10,
-    },
-    imgDes: {
-        position: 'absolute',
-        bottom: 0,
-        left: 5,
-    },
-    input: {
-        width: 300,
-        borderRadius: 5,
-        marginLeft: 'auto',
-        marginRight: 'auto',
-        marginBottom: 10,
-        marginTop: 10,
-        color: '#fff',
-        backgroundColor: '#302f35',
-        fontFamily: 'LemonJuice',
-        position: 'relative',
-        left: '2px',
-        right: '2px',
-    },
-    message_view: {
-        width: 300,
-        display: 'flex',
-    },
-    iconWrap: {
-        display: 'flex',
-        flexWrap: 'wrap',
-        flexDirection: 'row',
-        alignItems: 'center',
-        backgroundColor: '#302f35',
-        marginBottom: 10,
-        width: 90,
-        paddingLeft: 10,
-        paddingRight: 10,
-        paddingTop: 5,
-        paddingBottom: 5,
-        justifyContent: 'space-between',
-        borderRadius: 20,
-    },
-    icontxt: {
-        color: '#fff',
-        fontFamily: 'LemonJuice',
-        paddingVertical: 200,
-        paddingHorizontal: 200,
-    },
-    iconWrapper: {
-        display: 'flex',
-        flexWrap: 'wrap',
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        paddingBottom: 20
     },
     date: {
         color: '#000',

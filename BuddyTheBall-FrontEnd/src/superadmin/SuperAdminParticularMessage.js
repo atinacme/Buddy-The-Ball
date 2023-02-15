@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useSelector } from "react-redux";
 import send_button from '../assets/send_button.png';
 import profile from '../assets/profile.png';
-import { SafeAreaView, Text, TextInput, StyleSheet, View, TouchableOpacity, Image } from 'react-native';
+import { SafeAreaView, Text, TextInput, StyleSheet, View, TouchableOpacity, Image, ScrollView, StatusBar } from 'react-native';
 import { CreateAndUpdateMessage, GetMessagesBySenderIdReceiverId } from '../services/CustomerService';
 
 export default function SuperAdminParticularMessage({ route }) {
@@ -47,97 +47,64 @@ export default function SuperAdminParticularMessage({ route }) {
     };
 
     return (
-        <SafeAreaView>
-            <View>
+        <SafeAreaView style={styles.container}>
+            <ScrollView style={styles.scrollView}>
                 {senderMessages?.messages?.map(item => {
                     return (
-                        <Text key={item._id} style={styles.DateName}>
+                        <View key={item._id} style={styles.DateName}>
                             {item.url ?
-                                <Image source={{ uri: item.url }} style={{ width: 40, height: 40, borderRadius: 50, backgroundColor: '#fff' }} />
+                                <View style={styles.pro_img}>
+                                    <Image source={{ uri: item.url }} style={{ width: 40, height: 40 }} />
+                                </View>
                                 :
-                                <Image source={profile} style={{ width: 40, height: 40, borderRadius: 50, backgroundColor: '#fff' }} />
+                                <View style={styles.pro_img}>
+                                    <Image source={profile} style={{ width: 40, height: 40 }} />
+                                </View>
                             }
                             <Text style={styles.date}>&nbsp;&nbsp;&nbsp;&nbsp;{item.message}</Text>
-                        </Text>
+                        </View>
                     );
                 })}
-                <View style={styles.commentwrap}>
-                    <TextInput
-                        placeholderTextColor="#000"
-                        style={styles.input}
-                        onChangeText={(e) => { setMessage(e); }}
-                        value={message}
-                        placeholder="Add a comment..."
-                    />
-                    <TouchableOpacity onPress={handleSendMessage} style={styles.photoimg} >
-                        <Image source={send_button} style={{ width: 30, height: 30 }} />
-                    </TouchableOpacity>
-                </View>
+            </ScrollView>
+            <View style={styles.commentwrap}>
+                <TextInput
+                    placeholderTextColor="#000"
+                    style={styles.input}
+                    onChangeText={(e) => { setMessage(e); }}
+                    value={message}
+                    placeholder="Add a comment..."
+                />
+                <TouchableOpacity onPress={handleSendMessage} style={styles.photoimg} >
+                    <Image source={send_button} style={{ width: 30, height: 30 }} />
+                </TouchableOpacity>
             </View>
         </SafeAreaView >
     );
 }
 
 const styles = StyleSheet.create({
-    imgWrap: {
-        position: 'relative'
+    container: {
+        flex: 1,
+        paddingTop: StatusBar.currentHeight,
+    },
+    pro_img: {
+        width: 40,
+        height: 40,
+        borderRadius: 50,
+        overflow: 'hidden'
+    },
+    scrollView: {
+        marginHorizontal: 20,
     },
     DateName: {
         display: 'flex',
         alignItems: 'center',
+        flexDirection: 'row',
         paddingBottom: 10,
-    },
-    imgDes: {
-        position: 'absolute',
-        bottom: 0,
-        left: 5,
-    },
-    input: {
-        width: 250,
-        borderRadius: 5,
-        marginLeft: 'auto',
-        marginRight: 'auto',
-        marginBottom: 10,
-        marginTop: 10,
-        color: '#fff',
-        padding: 10,
-        backgroundColor: '#302f35',
-        fontFamily: 'LemonJuice'
-    },
-    message_view: {
-        width: 300,
-        display: 'flex',
-    },
-    iconWrap: {
-        display: 'flex',
-        flexWrap: 'wrap',
-        flexDirection: 'row',
-        alignItems: 'center',
-        backgroundColor: '#302f35',
-        marginBottom: 10,
-        width: 90,
         paddingLeft: 10,
-        paddingRight: 10,
-        paddingTop: 5,
-        paddingBottom: 5,
-        justifyContent: 'space-between',
-        borderRadius: 20,
-    },
-    icontxt: {
-        color: '#fff',
-        fontFamily: 'LemonJuice',
-        paddingVertical: 200,
-        paddingHorizontal: 200,
-    },
-    iconWrapper: {
-        display: 'flex',
-        flexWrap: 'wrap',
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        paddingBottom: 20
     },
     date: {
-        color: '#fff',
+        color: '#000',
         textAlign: 'right',
         float: 'right',
         fontFamily: 'LemonJuice'
@@ -157,9 +124,10 @@ const styles = StyleSheet.create({
     commentwrap: {
         width: 320,
         display: 'flex',
-        position: 'relative',
-        left: 10,
+        position: 'absolute',
+        left: 20,
         right: 10,
+        bottom: 0
     },
     photoimg: {
         position: 'absolute',

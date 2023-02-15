@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Text, Image, SafeAreaView, View, StyleSheet, StatusBar, Button, Alert, TouchableOpacity } from 'react-native';
+import { Text, Image, SafeAreaView, View, StyleSheet, Button, Alert, TouchableOpacity } from 'react-native';
 import { useSelector, useDispatch } from "react-redux";
 import ImagePicker from 'react-native-image-crop-picker';
 import buddyBoy from '../assets/buddyGirl.png';
@@ -74,9 +74,9 @@ export default function CoachDashboard({ navigation }) {
     return (
         <SafeAreaView style={styles.wrapper}>
             <Text style={styles.dashimgWrap}>
-                <TouchableOpacity onPress={openGallery}>
+                <TouchableOpacity onPress={openGallery} style={styles.profileImgContainer}>
                     {state.authPage.auth_data?.profile_data && state.authPage.auth_data?.profile_data.url ?
-                        <Image source={{ uri: state.authPage.auth_data?.profile_data.url }} style={{ width: 200, height: 200, marginLeft: 'auto', marginRight: 'auto' }} />
+                        <Image source={{ uri: state.authPage.auth_data?.profile_data.url }} style={styles.profileImg} />
                         :
                         <>
                             {selectedFile !== null ?
@@ -159,49 +159,14 @@ export default function CoachDashboard({ navigation }) {
 }
 
 const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        paddingTop: StatusBar.currentHeight,
-        marginHorizontal: 16
-    },
-    item: {
-        backgroundColor: "#f9c2ff",
-        padding: 20,
-        marginVertical: 8
-    },
-    header: {
-        fontSize: 32,
-        backgroundColor: "#fff",
-        fontFamily: 'LemonJuice'
-    },
-    title: {
-        fontSize: 24,
-        fontFamily: 'LemonJuice'
-    },
     txt: {
         fontFamily: 'LemonJuice',
         textAlign: 'center',
         fontSize: 18,
     },
     dashimgWrap: {
-        textAlign: 'center'
-    },
-    label: {
-        fontSize: 18,
-        color: '#000',
-        paddingTop: 10,
-        paddingBottom: 10,
-        fontFamily: 'LemonJuice'
-    },
-    dashContentWrap: {
-        display: 'flex',
-        flexWrap: 'wrap',
-        flexDirection: 'row',
-        justifyContent: 'space-between'
-    },
-
-    dashContent: {
-        width: 180
+        textAlign: 'center',
+        marginTop: 10
     },
     heading: {
         fontSize: 25,
@@ -243,5 +208,16 @@ const styles = StyleSheet.create({
         width: 160,
         marginBottom: 10,
         fontFamily: 'LemonJuice'
+    },
+    profileImgContainer: {
+        marginLeft: 8,
+        height: 150,
+        width: 150,
+        borderRadius: 100,
+    },
+    profileImg: {
+        height: 150,
+        width: 150,
+        borderRadius: 100,
     }
 });

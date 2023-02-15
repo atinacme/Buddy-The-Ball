@@ -16,7 +16,7 @@ export default function CoachMessageCreation() {
 
     useEffect(() => {
         const getCustomersOfCoach = async () => {
-            const result = await GetCustomersOfParticularCoachService(state.authPage.auth_data._id);
+            const result = await GetCustomersOfParticularCoachService(state.authPage.auth_data?._id);
             if (result) {
                 setCustomers(result.map(v => Object.assign(v, { key: v._id, value: v.player_name })));
             }
@@ -27,10 +27,10 @@ export default function CoachMessageCreation() {
     const handleSendMessage = async () => {
         try {
             const data = {
-                sender_id: state.authPage.auth_data._id,
-                sender_name: state.authPage.auth_data.coach_name,
+                sender_id: state.authPage.auth_data?._id,
+                sender_name: state.authPage.auth_data?.coach_name,
                 sender_role: 'coach',
-                sender_profile_url: state.authPage.auth_data.profile_data.url,
+                sender_profile_url: state.authPage.auth_data?.profile_data.url,
                 receiver_id: receiverId,
                 receiver_role: receiverRole,
                 message: message

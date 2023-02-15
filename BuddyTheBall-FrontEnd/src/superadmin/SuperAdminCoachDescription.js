@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Text, SafeAreaView, TextInput, StyleSheet, Button, Image, Alert, ScrollView, View, TouchableOpacity, Pressable, Modal } from "react-native";
+import { Text, SafeAreaView, TextInput, StyleSheet, Button, Image, Alert, ScrollView, View, Pressable, Modal } from "react-native";
 import { SelectList, MultipleSelectList } from 'react-native-dropdown-select-list';
 import buddy from '../assets/buddy.png';
 import { CoachUpdateService, GetParticularCoachService } from '../services/CoachService';
@@ -160,7 +160,7 @@ export default function SuperAdminCoachDescription({ navigation, route }) {
             school: ''
         });
     };
-    console.log("slot---->", assignedSlots);
+
     const handleCoachUpdate = async () => {
         try {
             const data = {
@@ -387,28 +387,9 @@ const styles = StyleSheet.create({
         paddingTop: 10,
         paddingBottom: 0
     },
-    labeLink: {
-        fontSize: 14,
-        textAlign: 'center',
-        color: "#000",
-        padding: 10,
-        cursor: 'pointer'
-    },
     container: {
         flex: 1,
         justifyContent: 'center'
-    },
-    item: {
-        backgroundColor: '#fff',
-        flex: 1,
-        borderRadius: 5,
-        padding: 10,
-        marginRight: 10,
-        marginTop: 17
-    },
-    itemText: {
-        color: '#888',
-        fontSize: 16,
     },
     centeredView: {
         flex: 1,
@@ -458,9 +439,6 @@ const styles = StyleSheet.create({
         height: 30,
         alignItems: 'center'
     },
-    mainText: {
-        marginRight: 40
-    },
     textPlus: {
         fontSize: 20,
     },
@@ -472,16 +450,9 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
         textAlign: 'center'
     },
-    modalText: {
-        marginBottom: 15,
-        flexDirection: 'row'
-    },
     schoolList: {
         width: 225,
         marginTop: 10,
         marginBottom: 10
-    },
-    itemTextFirst: {
-        color: 'black'
     }
 });

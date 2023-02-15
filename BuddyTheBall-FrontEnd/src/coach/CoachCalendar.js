@@ -10,7 +10,7 @@ import { CreateAgendaService, GetAgendaByDateService, UpdateAgendaService } from
 
 export default function CoachCalendar() {
     const state = useSelector((state) => state);
-    const [schoolData, setSchoolData] = useState(state.authPage.auth_data.assigned_schools.map(v => Object.assign(v, { key: v._id, value: v.school_name })));
+    const schoolData = state.authPage.auth_data?.assigned_schools.map(v => Object.assign(v, { key: v._id, value: v.school_name }));
     const [modalVisible, setModalVisible] = useState(false);
     const [agendaData, setAgendaData] = useState([]);
     const [updateAgenda, setUpdateAgenda] = useState(false);
@@ -25,7 +25,6 @@ export default function CoachCalendar() {
                 const data = { agenda_date: newDay };
                 const result = await GetAgendaByDateService(data);
                 if (result) {
-                    console.log("result---->", result);
                     setItems(result[0] ? result[0].agenda : {});
                     setLoadResult(result[0]);
                 }
@@ -33,8 +32,6 @@ export default function CoachCalendar() {
         };
         handleOnLoadAgenda();
     }, [newDay, updateAgenda]);
-
-    console.log("loadResult---->", loadResult);
 
     const handleRenderAgenda = () => {
         setUpdateAgenda(false);
@@ -47,13 +44,12 @@ export default function CoachCalendar() {
         if (key !== 1) {
             try {
                 const data = {
-                    user_id: state.authPage.auth_data.user_id,
+                    user_id: state.authPage.auth_data?.user_id,
                     agenda_date: newDay,
                     agenda_data: agendaData
                 };
                 const result = await UpdateAgendaService(key, data);
                 if (result) {
-                    console.log("update---->", result);
                     setItems(result.agenda);
                     setUpdateAgenda(true);
                     setModalVisible(!modalVisible);
@@ -62,13 +58,12 @@ export default function CoachCalendar() {
         } else {
             try {
                 const data = {
-                    user_id: state.authPage.auth_data.user_id,
+                    user_id: state.authPage.auth_data?.user_id,
                     agenda_date: newDay,
                     agenda_data: agendaData
                 };
                 const result = await CreateAgendaService(data);
                 if (result) {
-                    console.log(result);
                     setItems(result.data.agenda);
                     setModalVisible(!modalVisible);
                 }
@@ -76,12 +71,10 @@ export default function CoachCalendar() {
         }
     };
 
-    console.log("outside---->", agendaData, items);
     return (
         <>
             <SafeAreaView style={styles.container}>
                 <Agenda
-                    // selected="2022-12-01"
                     minDate={today}
                     pastScrollRange={0}
                     futureScrollRange={12}
@@ -170,7 +163,6 @@ export default function CoachCalendar() {
                                                         onPress={() => {
                                                             var array = [...agendaData];
                                                             var indexData = array.indexOf(item);
-                                                            console.log('index', indexData);
                                                             if (indexData !== -1) {
                                                                 array.splice(indexData, 1);
                                                                 setAgendaData(array);
@@ -265,7 +257,6 @@ const styles = StyleSheet.create({
     agendaButton: {
         borderRadius: 50,
         elevation: 2,
-        // marginLeft: 30,
         width: 30,
         height: 30,
         justifyContent: 'center',

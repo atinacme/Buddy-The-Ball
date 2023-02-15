@@ -39,9 +39,6 @@ export default function CoachParticularSchoolPhotos({ navigation, route }) {
 }
 
 const styles = StyleSheet.create({
-    wrapper: {
-        padding: 20
-    },
     scrollView: {
         marginHorizontal: 20,
     },

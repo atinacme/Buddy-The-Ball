@@ -59,7 +59,6 @@ const styles = StyleSheet.create({
         fontFamily: 'LemonJuice',
         paddingBottom: 20
     },
-
     content: {
         fontSize: 14,
         padding: 10,

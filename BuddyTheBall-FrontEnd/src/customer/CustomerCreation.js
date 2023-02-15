@@ -13,8 +13,8 @@ export default function CustomerCreation({ navigation }) {
     const state = useSelector((state) => state);
 
     useEffect(() => {
-        const added = state.authPage.auth_data.assigned_schools.map(v => Object.assign(v, { key: v._id, value: v.school_name }));
-        const result = added.filter(v => { return (v.territory == state.authPage.auth_data.assigned_territory); });
+        const added = state.authPage.auth_data?.assigned_schools.map(v => Object.assign(v, { key: v._id, value: v.school_name }));
+        const result = added.filter(v => { return (v.territory == state.authPage.auth_data?.assigned_territory); });
         setData(result);
     }, []);
 
@@ -64,7 +64,7 @@ export default function CustomerCreation({ navigation }) {
                 player_age: values.player_age,
                 wristband_level: values.wristband_level,
                 school: selected,
-                coach: state.authPage.auth_data.coach_name,
+                coach: state.authPage.auth_data?.coach_name,
                 handed: values.handed,
                 num_buddy_books_read: values.num_buddy_books_read,
                 jersey_size: values.jersey_size,
@@ -200,9 +200,6 @@ export default function CustomerCreation({ navigation }) {
                                 onSelect={() => alert(selected)}
                                 label="Selected Schools"
                             />
-                            {/* {errors.schools &&
-                                <Text style={{ fontSize: 10, color: 'red' }}>{errors.schools}</Text>
-                            } */}
                             <Text style={styles.label}>Handed</Text>
                             <TextInput
                                 name="handed"
@@ -281,12 +278,5 @@ const styles = StyleSheet.create({
         color: '#000',
         paddingTop: 10,
         paddingBottom: 0
-    },
-    labeLink: {
-        fontSize: 14,
-        textAlign: 'center',
-        color: "#000",
-        padding: 10,
-        cursor: 'pointer'
     }
 });

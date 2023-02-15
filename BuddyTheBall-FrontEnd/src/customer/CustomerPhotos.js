@@ -9,7 +9,7 @@ export default function CustomerPhotos({ navigation }) {
 
     useEffect(() => {
         const getCustomerPhotos = async () => {
-            const result = await GetParticularCustomerPhotosService(state.authPage.auth_data._id);
+            const result = await GetParticularCustomerPhotosService(state.authPage.auth_data?._id);
             if (result) {
                 setCustomerPhotos(result);
             }
@@ -19,7 +19,7 @@ export default function CustomerPhotos({ navigation }) {
 
     return (
         <SafeAreaView>
-            <Text style={styles.label}>{state.authPage.auth_data.school.school_name}</Text>
+            <Text style={styles.label}>{state.authPage.auth_data?.school.school_name}</Text>
             <View style={styles.imgWrap}>
                 <ScrollView style={styles.scrollView}>
                     {customerPhotos.map(item => {

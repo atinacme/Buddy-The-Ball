@@ -27,7 +27,7 @@ export default function SuperAdminMessages({ navigation }) {
                     <TouchableOpacity key={item._id} onPress={() => navigation.navigate("SuperAdmin Particular Message", { messages: item })}>
                         {item.sender_role === "coach" ?
                             <View key={item._id} style={styles.messagewrap}>
-                                <Image source={{ uri: item.sender_profile_url }} style={{ width: 30, height: 30 }} />
+                                <Image source={{ uri: item.sender_profile_url }} style={{ width: 40, height: 40, borderRadius: 60 }} />
                                 <Text style={styles.msgName}>{item.last_messanger}</Text>
                                 <Text style={styles.msgWrap}>{item.last_message}</Text>
                                 <Text style={styles.rightsec}>
@@ -57,7 +57,6 @@ export default function SuperAdminMessages({ navigation }) {
         </SafeAreaView>
     );
 }
-
 
 const styles = StyleSheet.create({
     messagewrap: {

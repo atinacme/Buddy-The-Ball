@@ -11,7 +11,7 @@ export default function CustomerParticularPhoto({ navigation, route }) {
     const [message, setMessage] = useState("");
     const [onLoadMessages, setOnloadMessages] = useState([]);
     const [msgResult, setMsgResult] = useState();
-    const messanger = state.authPage.roles[0] === "ROLE_CUSTOMER" ? state.authPage.auth_data.player_name : state.authPage.auth_data.coach_name;
+    const messanger = state.authPage.roles[0] === "ROLE_CUSTOMER" ? state.authPage.auth_data?.player_name : state.authPage.auth_data?.coach_name;
 
     useEffect(() => {
         const getCustomers = async () => {
@@ -29,7 +29,7 @@ export default function CustomerParticularPhoto({ navigation, route }) {
                 messanger_id: route.params.photo.user_id,
                 message: message,
                 messanger_name: messanger,
-                url: state.authPage.auth_data.profile_data.url
+                url: state.authPage.auth_data?.profile_data.url
             };
             const result = await UpdateCustomerPhotosOnMessage(route.params.photo._id, data);
             if (result) {
@@ -99,26 +99,6 @@ const styles = StyleSheet.create({
         padding: 10,
         backgroundColor: '#302f35',
         fontFamily: 'LemonJuice',
-
-    },
-    message_view: {
-        width: 300,
-        display: 'flex',
-    },
-    iconWrap: {
-        display: 'flex',
-        flexWrap: 'wrap',
-        flexDirection: 'row',
-        alignItems: 'center',
-        backgroundColor: '#302f35',
-        marginBottom: 10,
-        width: 90,
-        paddingLeft: 10,
-        paddingRight: 10,
-        paddingTop: 5,
-        paddingBottom: 5,
-        justifyContent: 'space-between',
-        borderRadius: 20,
     },
     icontxt: {
         color: '#fff',
@@ -126,30 +106,11 @@ const styles = StyleSheet.create({
         paddingVertical: 200,
         paddingHorizontal: 200,
     },
-    iconWrapper: {
-        display: 'flex',
-        flexWrap: 'wrap',
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        paddingBottom: 20
-    },
     date: {
         color: '#fff',
         textAlign: 'right',
         float: 'right',
         fontFamily: 'LemonJuice'
-    },
-    input: {
-        backgroundColor: '#fff',
-        color: '#000',
-        borderRadius: 20,
-        placeholderTextColor: "#fff",
-        paddingLeft: 10,
-        paddingRight: 10,
-        paddingBottom: 10,
-        paddingTop: 10,
-        marginBottom: 20,
-        marginTop: 20
     },
     commentwrap: {
         width: 320,

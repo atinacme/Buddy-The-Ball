@@ -4,7 +4,6 @@ import send_button from '../assets/send_button.png';
 import { SafeAreaView, Text, TextInput, StyleSheet, View, TouchableOpacity, Image } from 'react-native';
 import { SelectList } from 'react-native-dropdown-select-list';
 import { CreateAndUpdateMessage } from '../services/CustomerService';
-import CoachMessageCreation from '../coach/CoachMessageCreation';
 import { GetAllCoachesService } from '../services/CoachService';
 
 export default function SuperAdminMessageCreation() {
