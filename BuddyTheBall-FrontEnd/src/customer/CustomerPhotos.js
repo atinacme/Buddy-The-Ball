@@ -8,13 +8,15 @@ export default function CustomerPhotos({ navigation }) {
     const [customerPhotos, setCustomerPhotos] = useState([]);
 
     useEffect(() => {
-        const getCustomerPhotos = async () => {
-            const result = await GetParticularCustomerPhotosService(state.authPage.auth_data?._id);
-            if (result) {
-                setCustomerPhotos(result);
-            }
-        };
-        getCustomerPhotos();
+        try {
+            const getCustomerPhotos = async () => {
+                const result = await GetParticularCustomerPhotosService(state.authPage.auth_data?._id);
+                if (result) {
+                    setCustomerPhotos(result);
+                }
+            };
+            getCustomerPhotos();
+        } catch (e) { }
     }, [navigation]);
 
     return (

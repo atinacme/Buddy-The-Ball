@@ -4,7 +4,7 @@ import send_button from '../assets/send_button.png';
 import { SafeAreaView, Text, TextInput, StyleSheet, View, TouchableOpacity, Image } from 'react-native';
 import { CreateAndUpdateMessage } from '../services/CustomerService';
 
-export default function CustomerMessageCreation() {
+export default function CustomerMessageCreation({ navigation, route }) {
     const state = useSelector((state) => state);
     const [message, setMessage] = useState();
 
@@ -22,6 +22,7 @@ export default function CustomerMessageCreation() {
             const result = await CreateAndUpdateMessage(data);
             if (result) {
                 setMessage();
+                navigation.navigate("Customer Dashboard");
             }
         } catch (e) { }
     };

@@ -7,13 +7,15 @@ export default function SuperAdminSchools({ navigation }) {
     const [schools, setSchools] = useState([]);
 
     useEffect(() => {
-        const getSchools = async () => {
-            const result = await GetSchoolsService();
-            if (result) {
-                setSchools(result);
-            }
-        };
-        getSchools();
+        try {
+            const getSchools = async () => {
+                const result = await GetSchoolsService();
+                if (result) {
+                    setSchools(result);
+                }
+            };
+            getSchools();
+        } catch (e) { }
     }, []);
 
     return (

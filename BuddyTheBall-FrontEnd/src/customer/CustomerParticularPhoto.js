@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import { Text, View, Image, TextInput, StyleSheet, TouchableOpacity } from 'react-native';
+import { Text, View, Image, TextInput, StyleSheet, TouchableOpacity, ScrollView, StatusBar } from 'react-native';
 import profile from '../assets/profile.png';
 import send_button from '../assets/send_button.png';
 import moment from 'moment';
 import { useSelector } from "react-redux";
 import { GetCustomerParticularPhotoService, UpdateCustomerPhotosOnMessage } from '../services/CustomerService';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 export default function CustomerParticularPhoto({ navigation, route }) {
     const state = useSelector((state) => state);
@@ -14,13 +15,15 @@ export default function CustomerParticularPhoto({ navigation, route }) {
     const messanger = state.authPage.roles[0] === "ROLE_CUSTOMER" ? state.authPage.auth_data?.player_name : state.authPage.auth_data?.coach_name;
 
     useEffect(() => {
-        const getCustomers = async () => {
-            const result = await GetCustomerParticularPhotoService(route.params.photo._id);
-            if (result) {
-                setOnloadMessages(result.messages);
-            }
-        };
-        getCustomers();
+        try {
+            const getCustomers = async () => {
+                const result = await GetCustomerParticularPhotoService(route.params.photo._id);
+                if (result) {
+                    setOnloadMessages(result.messages);
+                }
+            };
+            getCustomers();
+        } catch (e) { }
     }, [navigation, msgResult]);
 
     const handleSendMessage = async () => {
@@ -40,84 +43,92 @@ export default function CustomerParticularPhoto({ navigation, route }) {
     };
 
     return (
-        <View style={styles.imgWrap}>
-            <Image source={{ uri: route.params.photo.url }} style={{ width: 400, height: '100%' }} />
-            <View style={styles.imgDes}>
+        <SafeAreaView style={styles.container}>
+            <ScrollView style={styles.scrollView}>
                 {onLoadMessages.length > 0 && onLoadMessages.map(item => {
                     return (
-                        <Text key={item._id} style={styles.DateName}>
+                        <View key={item._id} style={styles.DateName}>
                             {item.url ?
-                                <Image source={{ uri: item.url }} style={{ width: 40, height: 40, borderRadius: 50, backgroundColor: '#fff' }} />
+                                <View style={styles.pro_img}>
+                                    <Image source={{ uri: item.url }} style={{ width: 40, height: 40 }} />
+                                </View>
                                 :
-                                <Image source={profile} style={{ width: 40, height: 40, borderRadius: 50, backgroundColor: '#fff' }} />
+                                <View style={styles.pro_img}>
+                                    <Image source={profile} style={{ width: 40, height: 40 }} />
+                                </View>
                             }
-                            <Text style={styles.icontxt}>&nbsp;&nbsp;{item.messanger_name}</Text>
-                            <Text style={styles.date}>&nbsp;&nbsp;{moment(item.time).format('MMMM D YY, h:mm a')}</Text>
-                            <Text style={styles.date}>&nbsp;&nbsp;&nbsp;&nbsp;{item.message}</Text>
-                        </Text>
+                            <View style={styles.msgData}>
+                                <Text style={styles.date}>&nbsp;&nbsp;{item.messanger_name}</Text>
+                                <Text style={styles.date}>&nbsp;&nbsp;{moment(item.time).format('MMMM D YY, h:mm a')}</Text>
+                                <Text style={styles.date}>&nbsp;&nbsp;&nbsp;&nbsp;{item.message}</Text>
+                            </View>
+                        </View>
                     );
                 })}
-                <View style={styles.commentwrap}>
-                    <TextInput
-                        placeholderTextColor="#000"
-                        style={styles.input}
-                        onChangeText={(e) => { setMessage(e); }}
-                        value={message}
-                        placeholder="Add a comment..."
-                    />
-                    <TouchableOpacity onPress={handleSendMessage} style={styles.photoimg} >
-                        <Image source={send_button} style={{ width: 30, height: 30 }} />
-                    </TouchableOpacity>
-                </View>
+            </ScrollView>
+            <View style={styles.commentwrap}>
+                <TextInput
+                    placeholderTextColor="#000"
+                    style={styles.input}
+                    onChangeText={(e) => setMessage(e)}
+                    value={message}
+                    placeholder="Add a comment..."
+                />
+                <TouchableOpacity onPress={handleSendMessage} style={styles.photoimg} >
+                    <Image source={send_button} style={{ width: 30, height: 30 }} />
+                </TouchableOpacity>
             </View>
-        </View>
+        </SafeAreaView>
     );
 }
 
 const styles = StyleSheet.create({
-    imgWrap: {
-        position: 'relative'
+    container: {
+        flex: 1,
+        paddingTop: StatusBar.currentHeight,
+    },
+    pro_img: {
+        width: 40,
+        height: 40,
+        borderRadius: 50,
+        overflow: 'hidden'
+    },
+    scrollView: {
+        marginHorizontal: 20,
+    },
+    msgData: {
+        flexDirection: 'row'
     },
     DateName: {
-        display: 'flex',
         alignItems: 'center',
+        flexDirection: 'row',
         paddingBottom: 10,
-    },
-    imgDes: {
-        position: 'absolute',
-        bottom: 0,
-        left: 5,
-    },
-    input: {
-        width: 250,
-        borderRadius: 5,
-        marginLeft: 'auto',
-        marginRight: 'auto',
-        marginBottom: 10,
-        marginTop: 10,
-        color: '#fff',
-        padding: 10,
-        backgroundColor: '#302f35',
-        fontFamily: 'LemonJuice',
-    },
-    icontxt: {
-        color: '#fff',
-        fontFamily: 'LemonJuice',
-        paddingVertical: 200,
-        paddingHorizontal: 200,
+        paddingLeft: 10,
     },
     date: {
-        color: '#fff',
-        textAlign: 'right',
-        float: 'right',
+        color: '#000',
+        fontFamily: 'LemonJuice'
+    },
+    input: {
+        backgroundColor: '#fff',
+        color: '#000',
+        borderRadius: 20,
+        placeholderTextColor: "#fff",
+        paddingLeft: 10,
+        paddingRight: 10,
+        paddingBottom: 10,
+        paddingTop: 10,
+        marginBottom: 20,
+        marginTop: 20,
         fontFamily: 'LemonJuice'
     },
     commentwrap: {
         width: 320,
         display: 'flex',
-        position: 'relative',
-        left: 10,
+        position: 'absolute',
+        left: 20,
         right: 10,
+        bottom: 0
     },
     photoimg: {
         position: 'absolute',

@@ -6,13 +6,15 @@ export default function CoachParticularSchoolPhotos({ navigation, route }) {
     const [customerData, setCustomerData] = useState([]);
 
     useEffect(() => {
-        const getCustomers = async () => {
-            const result = await GetParticularSchoolPhotosService(route.params.schoolItem._id);
-            if (result) {
-                setCustomerData(result);
-            }
-        };
-        getCustomers();
+        try {
+            const getCustomers = async () => {
+                const result = await GetParticularSchoolPhotosService(route.params.schoolItem._id);
+                if (result) {
+                    setCustomerData(result);
+                }
+            };
+            getCustomers();
+        } catch (e) { }
     }, [navigation]);
 
     return (

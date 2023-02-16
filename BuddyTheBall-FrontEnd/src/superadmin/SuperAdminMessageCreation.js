@@ -6,20 +6,22 @@ import { SelectList } from 'react-native-dropdown-select-list';
 import { CreateAndUpdateMessage } from '../services/CustomerService';
 import { GetAllCoachesService } from '../services/CoachService';
 
-export default function SuperAdminMessageCreation() {
+export default function SuperAdminMessageCreation({ navigation, route }) {
     const state = useSelector((state) => state);
     const [coaches, setCoaches] = useState([]);
     const [receiverId, setReceiverId] = useState();
     const [message, setMessage] = useState();
 
     useEffect(() => {
-        const getCoaches = async () => {
-            const result = await GetAllCoachesService();
-            if (result) {
-                setCoaches(result.map(v => Object.assign(v, { key: v._id, value: v.coach_name })));
-            }
-        };
-        getCoaches();
+        try {
+            const getCoaches = async () => {
+                const result = await GetAllCoachesService();
+                if (result) {
+                    setCoaches(result.map(v => Object.assign(v, { key: v._id, value: v.coach_name })));
+                }
+            };
+            getCoaches();
+        } catch (e) { }
     }, []);
 
     const handleSendMessage = async () => {
@@ -36,6 +38,7 @@ export default function SuperAdminMessageCreation() {
             const result = await CreateAndUpdateMessage(data);
             if (result) {
                 setMessage();
+                navigation.navigate("SuperAdmin Dashboard");
             }
         } catch (e) { }
     };

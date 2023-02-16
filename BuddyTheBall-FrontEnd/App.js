@@ -20,12 +20,10 @@ import CustomerMessages from './src/customer/CustomerMessages';
 import CustomerMessageCreation from './src/customer/CustomerMessageCreation';
 import CustomerParticularMessage from './src/customer/CustomerParticularMessage';
 import CoachCreation from './src/coach/CoachCreation.js';
-import CoachAssignPeriod from './src/coach/CoachAssignPeriod';
 import CoachDashboard from './src/coach/CoachDashboard.js';
 import CoachSchoolsPhotos from './src/coach/CoachSchoolsPhotos.js';
 import CoachPhotoCreation from './src/coach/CoachPhotoCreation.js';
 import CoachParticularSchoolPhotos from './src/coach/CoachParticularSchoolPhotos.js';
-import CoachParticularSchoolParticularPhoto from './src/coach/CoachParticularSchoolParticularPhoto.js';
 import CoachCalendar from './src/coach/CoachCalendar.js';
 import CoachMessages from './src/coach/CoachMessages.js';
 import CoachMessageCreation from './src/coach/CoachMessageCreation';
@@ -61,12 +59,10 @@ const App = () => {
           <Stack.Screen name="Customer Message Creation" component={CustomerMessageCreation} />
           <Stack.Screen name="Customer Particular Message" component={CustomerParticularMessage} />
           <Stack.Screen name="Coach Creation" component={CoachCreation} />
-          <Stack.Screen name="Coach Assign Period" options={{ headerBackVisible: false }} component={CoachAssignPeriod} />
           <Stack.Screen name="Coach Dashboard" options={{ headerBackVisible: false }} component={CoachDashboard} />
           <Stack.Screen name="Coach Schools Photos" component={CoachSchoolsPhotos} />
           <Stack.Screen name="Coach Photo Creation" component={CoachPhotoCreation} />
           <Stack.Screen name="Coach Particular School Photos" component={CoachParticularSchoolPhotos} />
-          <Stack.Screen name="Coach Particular School Particular Photo" component={CoachParticularSchoolParticularPhoto} />
           <Stack.Screen name="Coach Calendar" component={CoachCalendar} />
           <Stack.Screen name="Coach Messages" component={CoachMessages} />
           <Stack.Screen name="Coach Message Creation" component={CoachMessageCreation} />

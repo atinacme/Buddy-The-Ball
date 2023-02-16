@@ -11,13 +11,15 @@ export default function CoachMessages({ navigation }) {
     const [senderMessages, setSenderMessages] = useState([]);
 
     useEffect(() => {
-        const getMessagesBySenderId = async () => {
-            const result = await GetMessagesBySenderId(state.authPage.auth_data?._id);
-            if (result) {
-                setSenderMessages(result);
-            }
-        };
-        getMessagesBySenderId();
+        try {
+            const getMessagesBySenderId = async () => {
+                const result = await GetMessagesBySenderId(state.authPage.auth_data?._id);
+                if (result) {
+                    setSenderMessages(result);
+                }
+            };
+            getMessagesBySenderId();
+        } catch (e) { }
     }, []);
 
     return (

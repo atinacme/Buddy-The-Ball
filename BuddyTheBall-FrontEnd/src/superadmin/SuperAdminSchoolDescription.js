@@ -61,18 +61,20 @@ export default function SuperAdminSchoolDescription({ navigation, route }) {
     ];
 
     useEffect(() => {
-        const getParticularCoach = async () => {
-            const result = await GetParticularSchoolService(route.params.school._id);
-            if (result) {
-                setSchoolData({
-                    school_id: result._id,
-                    school_name: result.school_name,
-                    territory: result.territory,
-                    assigned_day: result.assigned_day
-                });
-            }
-        };
-        getParticularCoach();
+        try {
+            const getParticularCoach = async () => {
+                const result = await GetParticularSchoolService(route.params.school._id);
+                if (result) {
+                    setSchoolData({
+                        school_id: result._id,
+                        school_name: result.school_name,
+                        territory: result.territory,
+                        assigned_day: result.assigned_day
+                    });
+                }
+            };
+            getParticularCoach();
+        } catch (e) { }
     }, []);
 
     const handleUpdateSchool = async () => {

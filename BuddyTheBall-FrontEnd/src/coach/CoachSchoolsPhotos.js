@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { SafeAreaView, Text, View, Image, TouchableOpacity, StyleSheet, ScrollView, Alert } from 'react-native';
 import kids from '../assets/kids.jpg';
 import galley from '../assets/galley.png';
@@ -7,11 +7,7 @@ import { useSelector } from "react-redux";
 
 export default function CoachSchoolsPhotos({ navigation }) {
     const state = useSelector((state) => state);
-    const [schoolData, setSchoolData] = useState([]);
-
-    useEffect(() => {
-        setSchoolData(state.authPage.auth_data?.assigned_schools);
-    }, []);
+    const schoolData = state.authPage.auth_data?.assigned_schools;
 
     return (
         <SafeAreaView style={styles.wrapper}>

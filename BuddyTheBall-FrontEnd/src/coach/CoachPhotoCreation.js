@@ -14,13 +14,15 @@ export default function CoachPhotoCreation({ navigation, route }) {
     const state = useSelector((state) => state);
 
     useEffect(() => {
-        const handleStudentList = async () => {
-            const result = await GetCustomerWithSchoolIdService(route.params.schoolId);
-            if (result) {
-                setCustomerData(result.map(v => Object.assign(v, { key: v._id, value: v.player_name })));
-            }
-        };
-        handleStudentList();
+        try {
+            const handleStudentList = async () => {
+                const result = await GetCustomerWithSchoolIdService(route.params.schoolId);
+                if (result) {
+                    setCustomerData(result.map(v => Object.assign(v, { key: v._id, value: v.player_name })));
+                }
+            };
+            handleStudentList();
+        } catch (e) { }
     }, []);
 
     const openGallery = async () => {

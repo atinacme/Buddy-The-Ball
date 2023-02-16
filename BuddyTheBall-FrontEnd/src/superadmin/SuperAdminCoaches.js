@@ -7,13 +7,15 @@ export default function SuperAdminCoaches({ navigation }) {
     const [coaches, setCoaches] = useState([]);
 
     useEffect(() => {
-        const getCoaches = async () => {
-            const result = await GetAllCoachesService();
-            if (result) {
-                setCoaches(result);
-            }
-        };
-        getCoaches();
+        try {
+            const getCoaches = async () => {
+                const result = await GetAllCoachesService();
+                if (result) {
+                    setCoaches(result);
+                }
+            };
+            getCoaches();
+        } catch (e) { }
     }, []);
 
     return (

@@ -15,16 +15,18 @@ export default function CoachDashboard({ navigation }) {
     const dispatch = useDispatch();
 
     useEffect(() => {
-        const getCoachData = async () => {
-            const result = await GetParticularCoachService(state.authPage.auth_data?._id);
-            if (result) {
-                dispatch(AuthPageAction(state.authPage.id, state.authPage.email, state.authPage.roles, result, state.authPage.accessToken));
-                setUploadResult(false);
+        try {
+            const getCoachData = async () => {
+                const result = await GetParticularCoachService(state.authPage.auth_data?._id);
+                if (result) {
+                    dispatch(AuthPageAction(state.authPage.id, state.authPage.email, state.authPage.roles, result, state.authPage.accessToken));
+                    setUploadResult(false);
+                }
+            };
+            if (uploadResult) {
+                getCoachData();
             }
-        };
-        if (uploadResult) {
-            getCoachData();
-        }
+        } catch (e) { }
     }, [uploadResult]);
 
     const openGallery = async () => {

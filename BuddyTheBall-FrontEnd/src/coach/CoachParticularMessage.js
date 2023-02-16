@@ -5,25 +5,27 @@ import profile from '../assets/profile.png';
 import { SafeAreaView, Text, TextInput, StyleSheet, View, TouchableOpacity, Image, StatusBar, ScrollView } from 'react-native';
 import { CreateAndUpdateMessage, GetMessagesBySenderIdReceiverId } from '../services/CustomerService';
 
-export default function CoachParticularMessage({ route }) {
+export default function CoachParticularMessage({ navigation, route }) {
     const state = useSelector((state) => state);
     const [senderMessages, setSenderMessages] = useState([]);
     const [message, setMessage] = useState();
     const [msgResult, setMsgResult] = useState();
 
     useEffect(() => {
-        const getMessagesBySenderIdReceiverId = async () => {
-            var result;
-            if (route.params.messages.sender_role === 'coach') {
-                result = await GetMessagesBySenderIdReceiverId(state.authPage.auth_data?._id, route.params.messages.receiver_id);
-            } else {
-                result = await GetMessagesBySenderIdReceiverId(state.authPage.auth_data?._id, route.params.messages.sender_id);
-            }
-            if (result) {
-                setSenderMessages(result[0]);
-            }
-        };
-        getMessagesBySenderIdReceiverId();
+        try {
+            const getMessagesBySenderIdReceiverId = async () => {
+                var result;
+                if (route.params.messages.sender_role === 'coach') {
+                    result = await GetMessagesBySenderIdReceiverId(state.authPage.auth_data?._id, route.params.messages.receiver_id);
+                } else {
+                    result = await GetMessagesBySenderIdReceiverId(state.authPage.auth_data?._id, route.params.messages.sender_id);
+                }
+                if (result) {
+                    setSenderMessages(result[0]);
+                }
+            };
+            getMessagesBySenderIdReceiverId();
+        } catch (e) { }
     }, [msgResult]);
 
     const handleSendMessage = async () => {
@@ -42,6 +44,7 @@ export default function CoachParticularMessage({ route }) {
             if (result) {
                 setMsgResult(result);
                 setMessage();
+                // navigation.navigate("Coach Dashboard");
             }
         } catch (e) { }
     };

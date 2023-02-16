@@ -51,12 +51,14 @@ export default function CoachCreation({ navigation }) {
     ];
 
     useEffect(() => {
-        const getAllSchools = async () => {
-            const result = await GetSchoolsService();
-            result.map(v => Object.assign(v, { key: v._id, value: v.school_name }));
-            setData(result);
-        };
-        getAllSchools();
+        try {
+            const getAllSchools = async () => {
+                const result = await GetSchoolsService();
+                result.map(v => Object.assign(v, { key: v._id, value: v.school_name }));
+                setData(result);
+            };
+            getAllSchools();
+        } catch (e) { }
     }, []);
 
     function dateRange(startDate, endDate, steps = 1) {

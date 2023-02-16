@@ -55,55 +55,61 @@ export default function SuperAdminCoachDescription({ navigation, route }) {
     ];
 
     useEffect(() => {
-        const getParticularCoach = async () => {
-            const result = await GetParticularCoachService(route.params.coach._id);
-            if (result) {
-                setCoachData({
-                    coach_id: result._id,
-                    user_id: result.user_id,
-                    email: result.email,
-                    password: result.password,
-                    coach_name: result.coach_name,
-                    assigned_territory: result.assigned_territory,
-                    tennis_club: result.tennis_club,
-                    favorite_pro_player: result.favorite_pro_player,
-                    handed: result.handed,
-                    favorite_drill: result.favorite_drill
-                });
-                setCoachSchools(result.assigned_schools.map(v => v.school_name));
-                setAssignedSchools(result.assigned_schools.map(v => { return { key: v._id, value: v.school_name }; }));
-                setAssignedSlots(result.assign_slot);
-            }
-        };
-        getParticularCoach();
+        try {
+            const getParticularCoach = async () => {
+                const result = await GetParticularCoachService(route.params.coach._id);
+                if (result) {
+                    setCoachData({
+                        coach_id: result._id,
+                        user_id: result.user_id,
+                        email: result.email,
+                        password: result.password,
+                        coach_name: result.coach_name,
+                        assigned_territory: result.assigned_territory,
+                        tennis_club: result.tennis_club,
+                        favorite_pro_player: result.favorite_pro_player,
+                        handed: result.handed,
+                        favorite_drill: result.favorite_drill
+                    });
+                    setCoachSchools(result.assigned_schools.map(v => v.school_name));
+                    setAssignedSchools(result.assigned_schools.map(v => { return { key: v._id, value: v.school_name }; }));
+                    setAssignedSlots(result.assign_slot);
+                }
+            };
+            getParticularCoach();
+        } catch (e) { }
     }, []);
 
     useEffect(() => {
-        const getAllSchools = async () => {
-            const result = await GetSchoolsService();
-            result.map(v => Object.assign(v, { key: v._id, value: v.school_name }));
-            var res = result.filter(function (item) {
-                return !assignedSchools.find(function (school) {
-                    return item.key === school.key;
+        try {
+            const getAllSchools = async () => {
+                const result = await GetSchoolsService();
+                result.map(v => Object.assign(v, { key: v._id, value: v.school_name }));
+                var res = result.filter(function (item) {
+                    return !assignedSchools.find(function (school) {
+                        return item.key === school.key;
+                    });
                 });
-            });
-            setData(res);
-        };
-        getAllSchools();
+                setData(res);
+            };
+            getAllSchools();
+        } catch (e) { }
     }, [assignedSchools]);
 
     useEffect(() => {
-        const getAllSlots = async () => {
-            const result = await GetSchoolsService();
-            result.map(v => Object.assign(v, { key: v._id, value: v.school_name }));
-            var res = result.filter(function (item) {
-                return !assignedSchools.find(function (school) {
-                    return item.key === school.key;
+        try {
+            const getAllSlots = async () => {
+                const result = await GetSchoolsService();
+                result.map(v => Object.assign(v, { key: v._id, value: v.school_name }));
+                var res = result.filter(function (item) {
+                    return !assignedSchools.find(function (school) {
+                        return item.key === school.key;
+                    });
                 });
-            });
-            setData(res);
-        };
-        getAllSlots();
+                setData(res);
+            };
+            getAllSlots();
+        } catch (e) { }
     }, [assignedSchools]);
 
     function dateRange(startDate, endDate, steps = 1) {

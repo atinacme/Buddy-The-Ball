@@ -7,7 +7,7 @@ import { GetCustomersOfParticularCoachService } from '../services/CoachService';
 import { RadioButton } from 'react-native-paper';
 import { CreateAndUpdateMessage } from '../services/CustomerService';
 
-export default function CoachMessageCreation() {
+export default function CoachMessageCreation({ navigation, route }) {
     const state = useSelector((state) => state);
     const [receiverRole, setReceiverRole] = useState('customer');
     const [customers, setCustomers] = useState([]);
@@ -15,13 +15,15 @@ export default function CoachMessageCreation() {
     const [message, setMessage] = useState();
 
     useEffect(() => {
-        const getCustomersOfCoach = async () => {
-            const result = await GetCustomersOfParticularCoachService(state.authPage.auth_data?._id);
-            if (result) {
-                setCustomers(result.map(v => Object.assign(v, { key: v._id, value: v.player_name })));
-            }
-        };
-        getCustomersOfCoach();
+        try {
+            const getCustomersOfCoach = async () => {
+                const result = await GetCustomersOfParticularCoachService(state.authPage.auth_data?._id);
+                if (result) {
+                    setCustomers(result.map(v => Object.assign(v, { key: v._id, value: v.player_name })));
+                }
+            };
+            getCustomersOfCoach();
+        } catch (e) { }
     }, []);
 
     const handleSendMessage = async () => {
@@ -38,6 +40,7 @@ export default function CoachMessageCreation() {
             const result = await CreateAndUpdateMessage(data);
             if (result) {
                 setMessage();
+                navigation.navigate("Coach Dashboard");
             }
         } catch (e) { }
     };

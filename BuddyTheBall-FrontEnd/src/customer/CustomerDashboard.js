@@ -16,16 +16,18 @@ export default function CustomerDashboard({ navigation }) {
     const dispatch = useDispatch();
 
     useEffect(() => {
-        const getCustomerData = async () => {
-            const result = await GetParticularCustomerService(state.authPage.auth_data?._id);
-            if (result) {
-                dispatch(AuthPageAction(state.authPage.id, state.authPage.email, state.authPage.roles, result, state.authPage.accessToken));
-                setUploadResult(false);
+        try {
+            const getCustomerData = async () => {
+                const result = await GetParticularCustomerService(state.authPage.auth_data?._id);
+                if (result) {
+                    dispatch(AuthPageAction(state.authPage.id, state.authPage.email, state.authPage.roles, result, state.authPage.accessToken));
+                    setUploadResult(false);
+                }
+            };
+            if (uploadResult) {
+                getCustomerData();
             }
-        };
-        if (uploadResult) {
-            getCustomerData();
-        }
+        } catch (e) { }
     }, [uploadResult]);
 
     const openGallery = async () => {
