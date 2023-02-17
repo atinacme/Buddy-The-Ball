@@ -211,6 +211,7 @@ export default function CoachCreation({ navigation }) {
                                     <View>
                                         <View style={styles.schoolList}>
                                             <SelectList
+                                                key="key"
                                                 setSelected={(val) => setAssignCal({ ...assignCal, school: val })}
                                                 data={data}
                                                 save="value"

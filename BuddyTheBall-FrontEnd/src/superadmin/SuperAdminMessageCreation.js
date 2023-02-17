@@ -3,7 +3,7 @@ import { useSelector } from "react-redux";
 import send_button from '../assets/send_button.png';
 import { SafeAreaView, Text, TextInput, StyleSheet, View, TouchableOpacity, Image } from 'react-native';
 import { SelectList } from 'react-native-dropdown-select-list';
-import { CreateAndUpdateMessage } from '../services/CustomerService';
+import { CreateAndUpdateMessageService } from '../services/CustomerService';
 import { GetAllCoachesService } from '../services/CoachService';
 
 export default function SuperAdminMessageCreation({ navigation, route }) {
@@ -35,7 +35,7 @@ export default function SuperAdminMessageCreation({ navigation, route }) {
                 receiver_role: 'coach',
                 message: message
             };
-            const result = await CreateAndUpdateMessage(data);
+            const result = await CreateAndUpdateMessageService(data);
             if (result) {
                 setMessage();
                 navigation.navigate("SuperAdmin Dashboard");

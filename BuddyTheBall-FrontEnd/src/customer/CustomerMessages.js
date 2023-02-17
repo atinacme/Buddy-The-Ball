@@ -3,7 +3,7 @@ import { useSelector } from "react-redux";
 import rightArrow from '../assets/right-arrow.png';
 import message from '../assets/message.png';
 import { SafeAreaView, Text, Image, View, StyleSheet, TouchableOpacity } from 'react-native';
-import { GetMessagesBySenderId } from '../services/CustomerService';
+import { GetMessagesBySenderIdService } from '../services/CustomerService';
 import moment from 'moment';
 
 export default function CustomerMessages({ navigation }) {
@@ -13,7 +13,7 @@ export default function CustomerMessages({ navigation }) {
     useEffect(() => {
         try {
             const getMessagesBySenderId = async () => {
-                const result = await GetMessagesBySenderId(state.authPage.auth_data?._id);
+                const result = await GetMessagesBySenderIdService(state.authPage.auth_data?._id);
                 if (result) {
                     setSenderMessages(result);
                 }

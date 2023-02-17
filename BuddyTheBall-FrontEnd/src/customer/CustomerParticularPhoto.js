@@ -4,7 +4,7 @@ import profile from '../assets/profile.png';
 import send_button from '../assets/send_button.png';
 import moment from 'moment';
 import { useSelector } from "react-redux";
-import { GetCustomerParticularPhotoService, UpdateCustomerPhotosOnMessage } from '../services/CustomerService';
+import { GetCustomerParticularPhotoService, UpdateCustomerPhotosOnMessageService } from '../services/CustomerService';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 export default function CustomerParticularPhoto({ navigation, route }) {
@@ -34,7 +34,7 @@ export default function CustomerParticularPhoto({ navigation, route }) {
                 messanger_name: messanger,
                 url: state.authPage.auth_data?.profile_data.url
             };
-            const result = await UpdateCustomerPhotosOnMessage(route.params.photo._id, data);
+            const result = await UpdateCustomerPhotosOnMessageService(route.params.photo._id, data);
             if (result) {
                 setMsgResult(result);
                 setMessage();

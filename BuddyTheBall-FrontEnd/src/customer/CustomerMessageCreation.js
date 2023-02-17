@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useSelector } from "react-redux";
 import send_button from '../assets/send_button.png';
 import { SafeAreaView, Text, TextInput, StyleSheet, View, TouchableOpacity, Image } from 'react-native';
-import { CreateAndUpdateMessage } from '../services/CustomerService';
+import { CreateAndUpdateMessageService } from '../services/CustomerService';
 
 export default function CustomerMessageCreation({ navigation, route }) {
     const state = useSelector((state) => state);
@@ -19,7 +19,7 @@ export default function CustomerMessageCreation({ navigation, route }) {
                 receiver_role: 'coach',
                 message: message
             };
-            const result = await CreateAndUpdateMessage(data);
+            const result = await CreateAndUpdateMessageService(data);
             if (result) {
                 setMessage();
                 navigation.navigate("Customer Dashboard");

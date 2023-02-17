@@ -3,7 +3,7 @@ import { useSelector } from "react-redux";
 import send_button from '../assets/send_button.png';
 import profile from '../assets/profile.png';
 import { SafeAreaView, Text, TextInput, StyleSheet, View, TouchableOpacity, Image, ScrollView, StatusBar } from 'react-native';
-import { CreateAndUpdateMessage, GetMessagesBySenderIdReceiverId } from '../services/CustomerService';
+import { CreateAndUpdateMessageService, GetMessagesBySenderIdReceiverIdService } from '../services/CustomerService';
 
 export default function SuperAdminParticularMessage({ navigation, route }) {
     const state = useSelector((state) => state);
@@ -16,9 +16,9 @@ export default function SuperAdminParticularMessage({ navigation, route }) {
             const getMessagesBySenderIdReceiverId = async () => {
                 var result;
                 if (route.params.messages.sender_role === 'superadmin') {
-                    result = await GetMessagesBySenderIdReceiverId(state.authPage.id, route.params.messages.receiver_id);
+                    result = await GetMessagesBySenderIdReceiverIdService(state.authPage.id, route.params.messages.receiver_id);
                 } else {
-                    result = await GetMessagesBySenderIdReceiverId(state.authPage.id, route.params.messages.sender_id);
+                    result = await GetMessagesBySenderIdReceiverIdService(state.authPage.id, route.params.messages.sender_id);
                 }
                 if (result) {
                     setSenderMessages(result[0]);
@@ -40,7 +40,7 @@ export default function SuperAdminParticularMessage({ navigation, route }) {
                 message: message,
                 messanger_name: 'Super Admin'
             };
-            const result = await CreateAndUpdateMessage(data);
+            const result = await CreateAndUpdateMessageService(data);
             if (result) {
                 setMsgResult(result);
                 setMessage();

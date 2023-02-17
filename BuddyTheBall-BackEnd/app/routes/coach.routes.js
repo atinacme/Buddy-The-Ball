@@ -15,6 +15,8 @@ module.exports = function (app) {
 
     app.get("/api/getCustomersOfParticularCoach/:id", controller.findCustomersOfParticularCoach);
 
+    app.get("/api/getCustomersOfParticularCoachOfParticularSchool/:coachId/:schoolId", controller.findCustomersOfParticularCoachOfParticularSchool);
+
     app.put("/api/updateCoach/:userId/:coachId", controller.updateCoach);
 
     app.delete("/api/deleteCoach/:id", controller.deleteCoach);

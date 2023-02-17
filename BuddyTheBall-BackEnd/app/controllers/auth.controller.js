@@ -79,6 +79,15 @@ exports.signup = (req, res) => {
                             }
                         );
                     }
+                    School.find({ school_name: req.body.school })
+                        .then((data => {
+                            School.findByIdAndUpdate(data[0]._id, {
+                                $push: {
+                                    customers: customer
+                                }
+                            })
+                                .then(data => console.log(data));
+                        }));
                 });
             }
             if (req.body.roles[0] === "coach") {

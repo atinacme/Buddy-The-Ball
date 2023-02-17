@@ -52,6 +52,23 @@ exports.findCustomersOfParticularCoach = (req, res) => {
         });
 };
 
+exports.findCustomersOfParticularCoachOfParticularSchool = (req, res) => {
+    const coachId = req.params.coachId;
+    const schoolId = req.params.schoolId;
+
+    Customer.find({ coach: coachId, school: schoolId })
+        .then(data => {
+            if (!data)
+                res.status(404).send({ message: "Not found Coach with id " + id });
+            else res.send(data);
+        })
+        .catch(err => {
+            res
+                .status(500)
+                .send({ message: "Error retrieving Coach with id=" + id });
+        });
+};
+
 exports.updateCoach = (req, res) => {
     if (!req.body) {
         return res.status(400).send({

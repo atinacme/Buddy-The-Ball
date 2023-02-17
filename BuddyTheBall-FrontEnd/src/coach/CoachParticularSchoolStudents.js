@@ -1,14 +1,21 @@
 import React, { useEffect, useState } from 'react';
+import { useSelector } from "react-redux";
 import { SafeAreaView, Text, StyleSheet, TextInput, View, Image, Modal, Pressable, TouchableOpacity } from 'react-native';
 import { SelectList } from 'react-native-dropdown-select-list';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import buddy from '../assets/buddy.png';
 import moment from 'moment';
+import { GetCustomersOfParticularCoachOfParticularSchool } from '../services/CoachService';
+import { CreateAttendanceService } from '../services/AttendanceService';
 
 export default function CoachParticularSchoolStudents({ route }) {
+    const state = useSelector((state) => state);
     const [allDates, setAllDates] = useState({ key: '', value: '' });
     const [selectedDate, setSelectedDate] = useState();
     const [modalVisible, setModalVisible] = useState(false);
+    const [customers, setCustomers] = useState([]);
+    const [attendance, setAttendance] = useState();
+    const [attendanceValue, setAttendanceValue] = useState();
 
     function dateRange(startDate, endDate, steps = 1) {
         const dateArray = [];
@@ -24,7 +31,45 @@ export default function CoachParticularSchoolStudents({ route }) {
     useEffect(() => {
         let range = dateRange(route.params.schoolItem.startDate, route.params.schoolItem.endDate);
         setAllDates({ key: range, value: range });
+        try {
+            const getCustomers = async () => {
+                const result = await GetCustomersOfParticularCoachOfParticularSchool(state.authPage.auth_data?._id, route.params.schoolItem._id);
+                if (result) {
+                    setCustomers(result.map(v => ({ ...v, attendance: 'NA' })));
+                }
+            };
+            getCustomers();
+        } catch (e) { }
     }, []);
+
+    const handleAttendance = async (item) => {
+        var array = [...customers];
+        var index = array.indexOf(item);
+        if (item.attendance === 'NA') {
+            array[index]['attendance'] = 'P';
+            setCustomers(array);
+        } else if (item.attendance === 'P') {
+            array[index]['attendance'] = 'A';
+            setCustomers(array);
+        } else {
+            array[index]['attendance'] = 'P';
+            setCustomers(array);
+        }
+        const data = {
+            coach_id: state.authPage.auth_data?._id,
+            school_id: route.params.schoolItem._id,
+            customer_id: item._id,
+            customer: item.player_name,
+            time_period: route.params.schoolItem.timePeriod,
+            attendance_date: selectedDate,
+            attendance: item.attendance,
+            start_date: route.params.schoolItem.startDate,
+            end_data: route.params.schoolItem.endDate
+        };
+        try {
+            await CreateAttendanceService(data);
+        } catch (e) { }
+    };
 
     return (
         <SafeAreaView>
@@ -57,306 +102,70 @@ export default function CoachParticularSchoolStudents({ route }) {
                     <Text style={styles.calendarSectionText}>{route.params.schoolItem.school}</Text>
                 </View>
             </View>
-            <View style={styles.listSection}>
-                <TouchableOpacity onPress={() => setModalVisible(!modalVisible)} style={styles.listSectionLeft}>
-                    <Image source={buddy} style={styles.listProfilePic} />
-                    <View>
-                        <Text style={styles.listTitleText}>Andy Raj Kapoor</Text>
-                        <Text style={styles.listSeeText}>Click to see details</Text>
-                    </View>
-                </TouchableOpacity>
-                <View style={styles.centeredView}>
-                    <Modal
-                        animationType="slide"
-                        transparent={true}
-                        visible={modalVisible}
-                        onRequestClose={() => {
-                            setModalVisible(!modalVisible);
-                        }}
-                    >
-                        <View style={styles.centeredView}>
-                            <View style={styles.modalView}>
-                                <Text style={styles.itemHeading}>Andy Raja Kapoor Data</Text>
-                                <View style={styles.item}>
-                                    <Text style={styles.itemTextFirst}>Parent Name:</Text><Text style={styles.itemText}>evgfregev</Text>
-                                </View>
-                                <View style={styles.item}>
-                                    <Text style={styles.itemTextFirst}>Email:</Text><Text style={styles.itemText}>fwedfewcfew</Text>
-                                </View>
-                                <View style={styles.item}>
-                                    <Text style={styles.itemTextFirst}>Password:</Text><Text style={styles.itemText}>evgfregev</Text>
-                                </View>
-                                <View style={styles.item}>
-                                    <Text style={styles.itemTextFirst}>Player Age:</Text><Text style={styles.itemText}>fwedfewcfew</Text>
-                                </View>
-                                <View style={styles.item}>
-                                    <Text style={styles.itemTextFirst}>Wristband Level:</Text><Text style={styles.itemText}>evgfregev</Text>
-                                </View>
-                                <View style={styles.item}>
-                                    <Text style={styles.itemTextFirst}>Handed:</Text><Text style={styles.itemText}>fwedfewcfew</Text>
-                                </View>
-                                <View style={styles.item}>
-                                    <Text style={styles.itemTextFirst}>Buddy Books Read:</Text><Text style={styles.itemText}>evgfregev</Text>
-                                </View>
-                                <View style={styles.item}>
-                                    <Text style={styles.itemTextFirst}>Jersey Size:</Text><Text style={styles.itemText}>fwedfewcfew</Text>
-                                </View>
-                                <View style={styles.item}>
-                                    <Text style={styles.itemTextFirst}>Current Award:</Text><Text style={styles.itemText}>fwedfewcfew</Text>
-                                </View>
-                                <Pressable
-                                    style={[styles.button, styles.buttonClose]}
-                                    onPress={() => setModalVisible(!modalVisible)}>
-                                    <Text style={styles.textStyle}>Close</Text>
-                                </Pressable>
+            {customers.map(v => {
+                return (
+                    <View key={v._id} style={styles.listSection}>
+                        <TouchableOpacity onPress={() => setModalVisible(!modalVisible)} style={styles.listSectionLeft}>
+                            <Image source={buddy} style={styles.listProfilePic} />
+                            <View>
+                                <Text style={styles.listTitleText}>{v.player_name}</Text>
+                                <Text style={styles.listSeeText}>Click to see details</Text>
                             </View>
-                        </View>
-                    </Modal>
-                </View>
-                <View style={styles.listSectionRight}>
-                    <Text style={styles.attendanceText}>NA</Text>
-                </View>
-            </View>
-            <View style={styles.listSection}>
-                <TouchableOpacity onPress={() => setModalVisible(!modalVisible)} style={styles.listSectionLeft}>
-                    <Image source={buddy} style={styles.listProfilePic} />
-                    <View>
-                        <Text style={styles.listTitleText}>Andy Raj Kapoor</Text>
-                        <Text style={styles.listSeeText}>Click to see details</Text>
-                    </View>
-                </TouchableOpacity>
-                <View style={styles.centeredView}>
-                    <Modal
-                        animationType="slide"
-                        transparent={true}
-                        visible={modalVisible}
-                        onRequestClose={() => {
-                            setModalVisible(!modalVisible);
-                        }}
-                    >
+                        </TouchableOpacity>
                         <View style={styles.centeredView}>
-                            <View style={styles.modalView}>
-                                <Text style={styles.itemHeading}>Andy Raja Kapoor Data</Text>
-                                <View style={styles.item}>
-                                    <Text style={styles.itemTextFirst}>Parent Name:</Text><Text style={styles.itemText}>evgfregev</Text>
+                            <Modal
+                                animationType="slide"
+                                transparent={true}
+                                visible={modalVisible}
+                                onRequestClose={() => {
+                                    setModalVisible(!modalVisible);
+                                }}
+                            >
+                                <View style={styles.centeredView}>
+                                    <View style={styles.modalView}>
+                                        <Text style={styles.itemHeading}>Andy Raja Kapoor Data</Text>
+                                        <View style={styles.item}>
+                                            <Text style={styles.itemTextFirst}>Parent Name:</Text><Text style={styles.itemText}>evgfregev</Text>
+                                        </View>
+                                        <View style={styles.item}>
+                                            <Text style={styles.itemTextFirst}>Email:</Text><Text style={styles.itemText}>fwedfewcfew</Text>
+                                        </View>
+                                        <View style={styles.item}>
+                                            <Text style={styles.itemTextFirst}>Password:</Text><Text style={styles.itemText}>evgfregev</Text>
+                                        </View>
+                                        <View style={styles.item}>
+                                            <Text style={styles.itemTextFirst}>Player Age:</Text><Text style={styles.itemText}>fwedfewcfew</Text>
+                                        </View>
+                                        <View style={styles.item}>
+                                            <Text style={styles.itemTextFirst}>Wristband Level:</Text><Text style={styles.itemText}>evgfregev</Text>
+                                        </View>
+                                        <View style={styles.item}>
+                                            <Text style={styles.itemTextFirst}>Handed:</Text><Text style={styles.itemText}>fwedfewcfew</Text>
+                                        </View>
+                                        <View style={styles.item}>
+                                            <Text style={styles.itemTextFirst}>Buddy Books Read:</Text><Text style={styles.itemText}>evgfregev</Text>
+                                        </View>
+                                        <View style={styles.item}>
+                                            <Text style={styles.itemTextFirst}>Jersey Size:</Text><Text style={styles.itemText}>fwedfewcfew</Text>
+                                        </View>
+                                        <View style={styles.item}>
+                                            <Text style={styles.itemTextFirst}>Current Award:</Text><Text style={styles.itemText}>fwedfewcfew</Text>
+                                        </View>
+                                        <Pressable
+                                            style={[styles.button, styles.buttonClose]}
+                                            onPress={() => setModalVisible(!modalVisible)}>
+                                            <Text style={styles.textStyle}>Close</Text>
+                                        </Pressable>
+                                    </View>
                                 </View>
-                                <View style={styles.item}>
-                                    <Text style={styles.itemTextFirst}>Email:</Text><Text style={styles.itemText}>fwedfewcfew</Text>
-                                </View>
-                                <View style={styles.item}>
-                                    <Text style={styles.itemTextFirst}>Password:</Text><Text style={styles.itemText}>evgfregev</Text>
-                                </View>
-                                <View style={styles.item}>
-                                    <Text style={styles.itemTextFirst}>Player Age:</Text><Text style={styles.itemText}>fwedfewcfew</Text>
-                                </View>
-                                <View style={styles.item}>
-                                    <Text style={styles.itemTextFirst}>Wristband Level:</Text><Text style={styles.itemText}>evgfregev</Text>
-                                </View>
-                                <View style={styles.item}>
-                                    <Text style={styles.itemTextFirst}>Handed:</Text><Text style={styles.itemText}>fwedfewcfew</Text>
-                                </View>
-                                <View style={styles.item}>
-                                    <Text style={styles.itemTextFirst}>Buddy Books Read:</Text><Text style={styles.itemText}>evgfregev</Text>
-                                </View>
-                                <View style={styles.item}>
-                                    <Text style={styles.itemTextFirst}>Jersey Size:</Text><Text style={styles.itemText}>fwedfewcfew</Text>
-                                </View>
-                                <View style={styles.item}>
-                                    <Text style={styles.itemTextFirst}>Current Award:</Text><Text style={styles.itemText}>fwedfewcfew</Text>
-                                </View>
-                                <Pressable
-                                    style={[styles.button, styles.buttonClose]}
-                                    onPress={() => setModalVisible(!modalVisible)}>
-                                    <Text style={styles.textStyle}>Close</Text>
-                                </Pressable>
-                            </View>
+                            </Modal>
                         </View>
-                    </Modal>
-                </View>
-                <View style={styles.listSectionRight}>
-                    <Text style={styles.attendanceText}>NA</Text>
-                </View>
-            </View>
-            <View style={styles.listSection}>
-                <TouchableOpacity onPress={() => setModalVisible(!modalVisible)} style={styles.listSectionLeft}>
-                    <Image source={buddy} style={styles.listProfilePic} />
-                    <View>
-                        <Text style={styles.listTitleText}>Andy Raj Kapoor</Text>
-                        <Text style={styles.listSeeText}>Click to see details</Text>
+                        <TouchableOpacity key={v._id} style={v.attendance === 'NA' ? styles.listSectionRight : v.attendance === 'P' ? styles.listSectionRightPresent : styles.listSectionRightAbsent} onPress={() => handleAttendance(v)}>
+                            <Text style={styles.attendanceText}>{v.attendance === 'NA' ? 'NA' : v.attendance === 'P' ? 'P' : 'A'}</Text>
+                        </TouchableOpacity>
                     </View>
-                </TouchableOpacity>
-                <View style={styles.centeredView}>
-                    <Modal
-                        animationType="slide"
-                        transparent={true}
-                        visible={modalVisible}
-                        onRequestClose={() => {
-                            setModalVisible(!modalVisible);
-                        }}
-                    >
-                        <View style={styles.centeredView}>
-                            <View style={styles.modalView}>
-                                <Text style={styles.itemHeading}>Andy Raja Kapoor Data</Text>
-                                <View style={styles.item}>
-                                    <Text style={styles.itemTextFirst}>Parent Name:</Text><Text style={styles.itemText}>evgfregev</Text>
-                                </View>
-                                <View style={styles.item}>
-                                    <Text style={styles.itemTextFirst}>Email:</Text><Text style={styles.itemText}>fwedfewcfew</Text>
-                                </View>
-                                <View style={styles.item}>
-                                    <Text style={styles.itemTextFirst}>Password:</Text><Text style={styles.itemText}>evgfregev</Text>
-                                </View>
-                                <View style={styles.item}>
-                                    <Text style={styles.itemTextFirst}>Player Age:</Text><Text style={styles.itemText}>fwedfewcfew</Text>
-                                </View>
-                                <View style={styles.item}>
-                                    <Text style={styles.itemTextFirst}>Wristband Level:</Text><Text style={styles.itemText}>evgfregev</Text>
-                                </View>
-                                <View style={styles.item}>
-                                    <Text style={styles.itemTextFirst}>Handed:</Text><Text style={styles.itemText}>fwedfewcfew</Text>
-                                </View>
-                                <View style={styles.item}>
-                                    <Text style={styles.itemTextFirst}>Buddy Books Read:</Text><Text style={styles.itemText}>evgfregev</Text>
-                                </View>
-                                <View style={styles.item}>
-                                    <Text style={styles.itemTextFirst}>Jersey Size:</Text><Text style={styles.itemText}>fwedfewcfew</Text>
-                                </View>
-                                <View style={styles.item}>
-                                    <Text style={styles.itemTextFirst}>Current Award:</Text><Text style={styles.itemText}>fwedfewcfew</Text>
-                                </View>
-                                <Pressable
-                                    style={[styles.button, styles.buttonClose]}
-                                    onPress={() => setModalVisible(!modalVisible)}>
-                                    <Text style={styles.textStyle}>Close</Text>
-                                </Pressable>
-                            </View>
-                        </View>
-                    </Modal>
-                </View>
-                <View style={styles.listSectionRight}>
-                    <Text style={styles.attendanceText}>NA</Text>
-                </View>
-            </View>
-            <View style={styles.listSection}>
-                <TouchableOpacity onPress={() => setModalVisible(!modalVisible)} style={styles.listSectionLeft}>
-                    <Image source={buddy} style={styles.listProfilePic} />
-                    <View>
-                        <Text style={styles.listTitleText}>Andy Raj Kapoor</Text>
-                        <Text style={styles.listSeeText}>Click to see details</Text>
-                    </View>
-                </TouchableOpacity>
-                <View style={styles.centeredView}>
-                    <Modal
-                        animationType="slide"
-                        transparent={true}
-                        visible={modalVisible}
-                        onRequestClose={() => {
-                            setModalVisible(!modalVisible);
-                        }}
-                    >
-                        <View style={styles.centeredView}>
-                            <View style={styles.modalView}>
-                                <Text style={styles.itemHeading}>Andy Raja Kapoor Data</Text>
-                                <View style={styles.item}>
-                                    <Text style={styles.itemTextFirst}>Parent Name:</Text><Text style={styles.itemText}>evgfregev</Text>
-                                </View>
-                                <View style={styles.item}>
-                                    <Text style={styles.itemTextFirst}>Email:</Text><Text style={styles.itemText}>fwedfewcfew</Text>
-                                </View>
-                                <View style={styles.item}>
-                                    <Text style={styles.itemTextFirst}>Password:</Text><Text style={styles.itemText}>evgfregev</Text>
-                                </View>
-                                <View style={styles.item}>
-                                    <Text style={styles.itemTextFirst}>Player Age:</Text><Text style={styles.itemText}>fwedfewcfew</Text>
-                                </View>
-                                <View style={styles.item}>
-                                    <Text style={styles.itemTextFirst}>Wristband Level:</Text><Text style={styles.itemText}>evgfregev</Text>
-                                </View>
-                                <View style={styles.item}>
-                                    <Text style={styles.itemTextFirst}>Handed:</Text><Text style={styles.itemText}>fwedfewcfew</Text>
-                                </View>
-                                <View style={styles.item}>
-                                    <Text style={styles.itemTextFirst}>Buddy Books Read:</Text><Text style={styles.itemText}>evgfregev</Text>
-                                </View>
-                                <View style={styles.item}>
-                                    <Text style={styles.itemTextFirst}>Jersey Size:</Text><Text style={styles.itemText}>fwedfewcfew</Text>
-                                </View>
-                                <View style={styles.item}>
-                                    <Text style={styles.itemTextFirst}>Current Award:</Text><Text style={styles.itemText}>fwedfewcfew</Text>
-                                </View>
-                                <Pressable
-                                    style={[styles.button, styles.buttonClose]}
-                                    onPress={() => setModalVisible(!modalVisible)}>
-                                    <Text style={styles.textStyle}>Close</Text>
-                                </Pressable>
-                            </View>
-                        </View>
-                    </Modal>
-                </View>
-                <View style={styles.listSectionRight}>
-                    <Text style={styles.attendanceText}>NA</Text>
-                </View>
-            </View>
-            <View style={styles.listSection}>
-                <TouchableOpacity onPress={() => setModalVisible(!modalVisible)} style={styles.listSectionLeft}>
-                    <Image source={buddy} style={styles.listProfilePic} />
-                    <View>
-                        <Text style={styles.listTitleText}>Andy Raj Kapoor</Text>
-                        <Text style={styles.listSeeText}>Click to see details</Text>
-                    </View>
-                </TouchableOpacity>
-                <View style={styles.centeredView}>
-                    <Modal
-                        animationType="slide"
-                        transparent={true}
-                        visible={modalVisible}
-                        onRequestClose={() => {
-                            setModalVisible(!modalVisible);
-                        }}
-                    >
-                        <View style={styles.centeredView}>
-                            <View style={styles.modalView}>
-                                <Text style={styles.itemHeading}>Andy Raja Kapoor Data</Text>
-                                <View style={styles.item}>
-                                    <Text style={styles.itemTextFirst}>Parent Name:</Text><Text style={styles.itemText}>evgfregev</Text>
-                                </View>
-                                <View style={styles.item}>
-                                    <Text style={styles.itemTextFirst}>Email:</Text><Text style={styles.itemText}>fwedfewcfew</Text>
-                                </View>
-                                <View style={styles.item}>
-                                    <Text style={styles.itemTextFirst}>Password:</Text><Text style={styles.itemText}>evgfregev</Text>
-                                </View>
-                                <View style={styles.item}>
-                                    <Text style={styles.itemTextFirst}>Player Age:</Text><Text style={styles.itemText}>fwedfewcfew</Text>
-                                </View>
-                                <View style={styles.item}>
-                                    <Text style={styles.itemTextFirst}>Wristband Level:</Text><Text style={styles.itemText}>evgfregev</Text>
-                                </View>
-                                <View style={styles.item}>
-                                    <Text style={styles.itemTextFirst}>Handed:</Text><Text style={styles.itemText}>fwedfewcfew</Text>
-                                </View>
-                                <View style={styles.item}>
-                                    <Text style={styles.itemTextFirst}>Buddy Books Read:</Text><Text style={styles.itemText}>evgfregev</Text>
-                                </View>
-                                <View style={styles.item}>
-                                    <Text style={styles.itemTextFirst}>Jersey Size:</Text><Text style={styles.itemText}>fwedfewcfew</Text>
-                                </View>
-                                <View style={styles.item}>
-                                    <Text style={styles.itemTextFirst}>Current Award:</Text><Text style={styles.itemText}>fwedfewcfew</Text>
-                                </View>
-                                <Pressable
-                                    style={[styles.button, styles.buttonClose]}
-                                    onPress={() => setModalVisible(!modalVisible)}>
-                                    <Text style={styles.textStyle}>Close</Text>
-                                </Pressable>
-                            </View>
-                        </View>
-                    </Modal>
-                </View>
-                <View style={styles.listSectionRight}>
-                    <Text style={styles.attendanceText}>NA</Text>
-                </View>
-            </View>
+                );
+            })}
         </SafeAreaView>
     );
 }
@@ -439,6 +248,26 @@ const styles = StyleSheet.create({
         borderTopRightRadius: 10,
         borderBottomRightRadius: 10,
         borderColor: 'blue'
+    },
+    listSectionRightPresent: {
+        width: '20%',
+        backgroundColor: 'green',
+        justifyContent: 'center',
+        alignItems: 'center',
+        borderWidth: 1,
+        borderTopRightRadius: 10,
+        borderBottomRightRadius: 10,
+        borderColor: 'green'
+    },
+    listSectionRightAbsent: {
+        width: '20%',
+        backgroundColor: 'red',
+        justifyContent: 'center',
+        alignItems: 'center',
+        borderWidth: 1,
+        borderTopRightRadius: 10,
+        borderBottomRightRadius: 10,
+        borderColor: 'red'
     },
     attendanceText: {
         color: '#fff'

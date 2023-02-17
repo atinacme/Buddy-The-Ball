@@ -19,8 +19,15 @@ const GetCustomersOfParticularCoachService = async (id) => {
     return await HttpRequest("GET", `${baseUrl}/getCustomersOfParticularCoach/${id}`, null);
 };
 
+const GetCustomersOfParticularCoachOfParticularSchool = async (coachId, schoolId) => {
+    return await HttpRequest("GET", `${baseUrl}/getCustomersOfParticularCoachOfParticularSchool/${coachId}/${schoolId}`, null);
+};
+
 const CoachUpdateService = async (userId, coachId, data) => {
     return await HttpRequest("PUT", `${baseUrl}/updateCoach/${userId}/${coachId}`, data);
 };
 
-export { CoachPhotoUploadService, GetAllCoachesService, GetParticularCoachService, GetCustomersOfParticularCoachService, CoachUpdateService };
+export {
+    CoachPhotoUploadService, GetAllCoachesService, GetParticularCoachService, GetCustomersOfParticularCoachService,
+    GetCustomersOfParticularCoachOfParticularSchool, CoachUpdateService
+};

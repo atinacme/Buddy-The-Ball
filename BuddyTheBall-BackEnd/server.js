@@ -86,6 +86,7 @@ require('./app/routes/file.routes')(app);
 require('./app/routes/photos.routes')(app);
 require('./app/routes/messages.routes')(app);
 require('./app/routes/calendar.routes')(app);
+require('./app/routes/attendance.routes')(app);
 
 // set port, listen for requests
 const PORT = process.env.PORT || 8080;

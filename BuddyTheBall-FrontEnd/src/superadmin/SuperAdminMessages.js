@@ -3,7 +3,7 @@ import { useSelector } from "react-redux";
 import rightArrow from '../assets/right-arrow.png';
 import message from '../assets/message.png';
 import { SafeAreaView, Text, Image, View, StyleSheet, TouchableOpacity } from 'react-native';
-import { GetMessagesBySenderId } from '../services/CustomerService';
+import { GetMessagesBySenderIdService } from '../services/CustomerService';
 import moment from 'moment';
 
 export default function SuperAdminMessages({ navigation }) {
@@ -13,7 +13,7 @@ export default function SuperAdminMessages({ navigation }) {
     useEffect(() => {
         try {
             const getMessagesBySenderId = async () => {
-                const result = await GetMessagesBySenderId(state.authPage.id);
+                const result = await GetMessagesBySenderIdService(state.authPage.id);
                 if (result) {
                     setSenderMessages(result);
                 }

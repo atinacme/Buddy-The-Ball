@@ -48,30 +48,32 @@ export default function CustomerDashboard({ navigation }) {
             type: selectedFile[0].mime,
             name: newImageUri.split("/").pop()
         });
-        const res = await axios({
-            method: 'post',
-            url: `${Config.REACT_APP_BASE_URL}/uploadCustomerPhotos`,
-            data: formData,
-            headers: {
-                Accept: 'application/json',
-                'Content-Type': 'multipart/form-data',
-            },
-        });
-        if (res) {
-            Alert.alert(
-                "Alert",
-                "Profile Picture Uploaded Sucessfully",
-                [
-                    {
-                        text: "OK",
-                        onPress: () => {
-                            setSelectedFile(null);
-                            setUploadResult(true);
+        try {
+            const res = await axios({
+                method: 'post',
+                url: `${Config.REACT_APP_BASE_URL}/uploadCustomerPhotos`,
+                data: formData,
+                headers: {
+                    Accept: 'application/json',
+                    'Content-Type': 'multipart/form-data',
+                },
+            });
+            if (res) {
+                Alert.alert(
+                    "Alert",
+                    "Profile Picture Uploaded Sucessfully",
+                    [
+                        {
+                            text: "OK",
+                            onPress: () => {
+                                setSelectedFile(null);
+                                setUploadResult(true);
+                            }
                         }
-                    }
-                ]
-            );
-        }
+                    ]
+                );
+            }
+        } catch (e) { }
     };
 
     return (

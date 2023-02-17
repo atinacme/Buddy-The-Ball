@@ -3,6 +3,10 @@ import Config from "../../Config";
 
 const baseUrl = Config.REACT_APP_BASE_URL;
 
+const GetCustomersService = async () => {
+    return await HttpRequest("GET", `${baseUrl}/getCustomers`, null);
+};
+
 const GetCustomerWithSchoolIdService = async (id) => {
     return await HttpRequest("GET", `${baseUrl}/getCustomerWithSchoolId/${id}`, null);
 };
@@ -19,24 +23,24 @@ const GetCustomerParticularPhotoService = async (id) => {
     return await HttpRequest("GET", `${baseUrl}/getParticularPhoto/${id}`, null);
 };
 
-const UpdateCustomerPhotosOnMessage = async (id, data) => {
+const UpdateCustomerPhotosOnMessageService = async (id, data) => {
     return await HttpRequest("POST", `${baseUrl}/updateCustomerPhotosOnMessage/${id}`, data);
 };
 
-const CreateAndUpdateMessage = async (data) => {
+const CreateAndUpdateMessageService = async (data) => {
     return await HttpRequest("POST", `${baseUrl}/createAndUpdateMessage`, data);
 };
 
-const GetMessagesBySenderId = async (id) => {
+const GetMessagesBySenderIdService = async (id) => {
     return await HttpRequest("GET", `${baseUrl}/getMessagesBySenderId/${id}`, null);
 };
 
-const GetMessagesBySenderIdReceiverId = async (sender_id, receiver_id) => {
+const GetMessagesBySenderIdReceiverIdService = async (sender_id, receiver_id) => {
     return await HttpRequest("GET", `${baseUrl}/getMessagesBySenderIdReceiverId/${sender_id}/${receiver_id}`, null);
 };
 
 export {
-    GetCustomerWithSchoolIdService, GetParticularCustomerPhotosService, GetParticularCustomerService,
-    GetCustomerParticularPhotoService, UpdateCustomerPhotosOnMessage, CreateAndUpdateMessage, GetMessagesBySenderId,
-    GetMessagesBySenderIdReceiverId
+    GetCustomersService, GetCustomerWithSchoolIdService, GetParticularCustomerPhotosService, GetParticularCustomerService,
+    GetCustomerParticularPhotoService, UpdateCustomerPhotosOnMessageService, CreateAndUpdateMessageService, GetMessagesBySenderIdService,
+    GetMessagesBySenderIdReceiverIdService
 };
