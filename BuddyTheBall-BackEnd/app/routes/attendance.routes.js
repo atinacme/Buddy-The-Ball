@@ -10,4 +10,8 @@ module.exports = function (app) {
     });
 
     app.post("/api/createAttendance", controller.createAttendance);
+
+    app.post("/api/getAttendanceByDate", controller.getAttendanceByDate);
+
+    app.delete("/api/deleteAttendanceByDate/:id", controller.deleteAttendanceByDate);
 };

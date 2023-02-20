@@ -6,16 +6,14 @@ import Icon from 'react-native-vector-icons/FontAwesome5';
 import buddy from '../assets/buddy.png';
 import moment from 'moment';
 import { GetCustomersOfParticularCoachOfParticularSchool } from '../services/CoachService';
-import { CreateAttendanceService } from '../services/AttendanceService';
+import { CreateAttendanceService, GetAttendanceByDateService } from '../services/AttendanceService';
 
 export default function CoachParticularSchoolStudents({ route }) {
     const state = useSelector((state) => state);
     const [allDates, setAllDates] = useState({ key: '', value: '' });
-    const [selectedDate, setSelectedDate] = useState();
+    const [selectedDate, setSelectedDate] = useState(route.params.schoolItem.startDate);
     const [modalVisible, setModalVisible] = useState(false);
     const [customers, setCustomers] = useState([]);
-    const [attendance, setAttendance] = useState();
-    const [attendanceValue, setAttendanceValue] = useState();
 
     function dateRange(startDate, endDate, steps = 1) {
         const dateArray = [];
@@ -35,12 +33,25 @@ export default function CoachParticularSchoolStudents({ route }) {
             const getCustomers = async () => {
                 const result = await GetCustomersOfParticularCoachOfParticularSchool(state.authPage.auth_data?._id, route.params.schoolItem._id);
                 if (result) {
-                    setCustomers(result.map(v => ({ ...v, attendance: 'NA' })));
+                    var customers = result.map(v => ({ ...v, customer: v.player_name, attendance: 'NA' }));
+                    const data = {
+                        attendance_date: selectedDate
+                    };
+                    const result1 = await GetAttendanceByDateService(data);
+                    if (result1) {
+                        var res = customers.filter(function (item) {
+                            return !result1.data.find(function (school) {
+                                return item._id === school.customer_id;
+                            });
+                        });
+                        var concat = result1.data.concat(res);
+                        setCustomers(concat);
+                    }
                 }
             };
             getCustomers();
         } catch (e) { }
-    }, []);
+    }, [selectedDate]);
 
     const handleAttendance = async (item) => {
         var array = [...customers];
@@ -95,6 +106,7 @@ export default function CoachParticularSchoolStudents({ route }) {
                         boxStyles={{ borderWidth: 0 }}
                         inputStyles={{ color: '#fff', paddingRight: 10 }}
                         dropdownTextStyles={{ color: '#fff' }}
+                        defaultOption={{ key: allDates.key[0], value: allDates.value[0] }}
                     />
                 </View>
                 <View style={styles.verticleLine}></View>
@@ -108,7 +120,7 @@ export default function CoachParticularSchoolStudents({ route }) {
                         <TouchableOpacity onPress={() => setModalVisible(!modalVisible)} style={styles.listSectionLeft}>
                             <Image source={buddy} style={styles.listProfilePic} />
                             <View>
-                                <Text style={styles.listTitleText}>{v.player_name}</Text>
+                                <Text style={styles.listTitleText}>{v.customer}</Text>
                                 <Text style={styles.listSeeText}>Click to see details</Text>
                             </View>
                         </TouchableOpacity>

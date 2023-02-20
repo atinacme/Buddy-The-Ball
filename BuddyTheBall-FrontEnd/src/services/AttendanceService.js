@@ -7,6 +7,10 @@ const CreateAttendanceService = async (data) => {
     return await HttpRequest("POST", `${baseUrl}/createAttendance`, data);
 };
 
+const GetAttendanceByDateService = async (data) => {
+    return await HttpRequest("POST", `${baseUrl}/getAttendanceByDate`, data);
+};
+
 export {
-    CreateAttendanceService
+    CreateAttendanceService, GetAttendanceByDateService
 };

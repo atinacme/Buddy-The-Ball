@@ -23,4 +23,26 @@ const createAttendance = async (req, res) => {
     }
 };
 
-module.exports = { createAttendance };
+const getAttendanceByDate = async (req, res) => {
+    try {
+        const data = await Attendance.find({ attendance_date: req.body.attendance_date });
+        if (!data) {
+            res.status(404).send({ message: 'Attendance not fetched' });
+        } return res.status(200).send({ data: data, message: 'Attendance Fetched Successfully!!' });
+    } catch (err) {
+        res.status(500).send(err);
+    }
+};
+
+const deleteAttendanceByDate = async (req, res) => {
+    try {
+        const data = await Attendance.findByIdAndDelete(req.params.id);
+        if (!data) {
+            res.status(404).send({ message: 'Attendance not deleted' });
+        } return res.status(200).send({ data: data, message: 'Attendance Deleted Successfully!!' });
+    } catch (err) {
+        res.status(500).send(err);
+    }
+};
+
+module.exports = { createAttendance, getAttendanceByDate, deleteAttendanceByDate };
