@@ -9,7 +9,7 @@ module.exports = function (app) {
         next();
     });
 
-    app.post("/api/createAttendance", controller.createAttendance);
+    app.post("/api/createAndUpdateAttendance", controller.createAndUpdateAttendance);
 
     app.post("/api/getAttendanceByDate", controller.getAttendanceByDate);
 

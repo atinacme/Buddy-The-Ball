@@ -5,7 +5,7 @@ const Attendance = mongoose.model(
     new mongoose.Schema({
         coach_id: String,
         school_id: String,
-        customer_id: String,
+        user_id: String,
         customer: String,
         time_period: Object,
         attendance_date: String,

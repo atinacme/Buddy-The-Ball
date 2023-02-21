@@ -6,7 +6,7 @@ import Icon from 'react-native-vector-icons/FontAwesome5';
 import buddy from '../assets/buddy.png';
 import moment from 'moment';
 import { GetCustomersOfParticularCoachOfParticularSchool } from '../services/CoachService';
-import { CreateAttendanceService, GetAttendanceByDateService } from '../services/AttendanceService';
+import { CreateAndUpdateAttendanceService, GetAttendanceByDateService } from '../services/AttendanceService';
 
 export default function CoachParticularSchoolStudents({ route }) {
     const state = useSelector((state) => state);
@@ -14,6 +14,7 @@ export default function CoachParticularSchoolStudents({ route }) {
     const [selectedDate, setSelectedDate] = useState(route.params.schoolItem.startDate);
     const [modalVisible, setModalVisible] = useState(false);
     const [customers, setCustomers] = useState([]);
+    const [searchTerm, setSearchTerm] = useState("");
 
     function dateRange(startDate, endDate, steps = 1) {
         const dateArray = [];
@@ -40,18 +41,21 @@ export default function CoachParticularSchoolStudents({ route }) {
                     const result1 = await GetAttendanceByDateService(data);
                     if (result1) {
                         var res = customers.filter(function (item) {
-                            return !result1.data.find(function (school) {
-                                return item._id === school.customer_id;
+                            return !result1.data.find(function (newitem) {
+                                return item.user_id === newitem.user_id;
                             });
                         });
                         var concat = result1.data.concat(res);
-                        setCustomers(concat);
+                        var results = concat.length > 0 && concat.filter(v =>
+                            v.customer.toLowerCase().includes(searchTerm.toLowerCase())
+                        );
+                        setCustomers(results);
                     }
                 }
             };
             getCustomers();
         } catch (e) { }
-    }, [selectedDate]);
+    }, [selectedDate, searchTerm]);
 
     const handleAttendance = async (item) => {
         var array = [...customers];
@@ -69,7 +73,7 @@ export default function CoachParticularSchoolStudents({ route }) {
         const data = {
             coach_id: state.authPage.auth_data?._id,
             school_id: route.params.schoolItem._id,
-            customer_id: item._id,
+            user_id: item.user_id,
             customer: item.player_name,
             time_period: route.params.schoolItem.timePeriod,
             attendance_date: selectedDate,
@@ -78,7 +82,7 @@ export default function CoachParticularSchoolStudents({ route }) {
             end_data: route.params.schoolItem.endDate
         };
         try {
-            await CreateAttendanceService(data);
+            await CreateAndUpdateAttendanceService(data);
         } catch (e) { }
     };
 
@@ -87,6 +91,8 @@ export default function CoachParticularSchoolStudents({ route }) {
             <View style={styles.searchSection}>
                 <TextInput
                     style={styles.input}
+                    value={searchTerm}
+                    onChangeText={(e) => setSearchTerm(e)}
                     placeholder="Student Attendance"
                     placeholderTextColor="#fff"
                     underlineColorAndroid="transparent"
@@ -97,7 +103,10 @@ export default function CoachParticularSchoolStudents({ route }) {
                 <View style={styles.calendarSectionLeft}>
                     <Icon style={styles.searchIcon} name="calendar" size={20} color="#fff" />
                     <SelectList
-                        setSelected={(val) => setSelectedDate(val)}
+                        setSelected={(val) => {
+                            setSearchTerm("");
+                            setSelectedDate(val);
+                        }}
                         data={allDates?.value}
                         save="value"
                         placeholder="Select Date"
@@ -117,14 +126,18 @@ export default function CoachParticularSchoolStudents({ route }) {
             {customers.map(v => {
                 return (
                     <View key={v._id} style={styles.listSection}>
-                        <TouchableOpacity onPress={() => setModalVisible(!modalVisible)} style={styles.listSectionLeft}>
+                        {console.log("inside--->", v)}
+                        <TouchableOpacity
+                            // onPress={() => setModalVisible(!modalVisible)}
+                            style={styles.listSectionLeft}
+                        >
                             <Image source={buddy} style={styles.listProfilePic} />
                             <View>
                                 <Text style={styles.listTitleText}>{v.customer}</Text>
                                 <Text style={styles.listSeeText}>Click to see details</Text>
                             </View>
                         </TouchableOpacity>
-                        <View style={styles.centeredView}>
+                        {/* <View style={styles.centeredView}>
                             <Modal
                                 animationType="slide"
                                 transparent={true}
@@ -135,7 +148,7 @@ export default function CoachParticularSchoolStudents({ route }) {
                             >
                                 <View style={styles.centeredView}>
                                     <View style={styles.modalView}>
-                                        <Text style={styles.itemHeading}>Andy Raja Kapoor Data</Text>
+                                        <Text style={styles.itemHeading}>{v.customer}</Text>
                                         <View style={styles.item}>
                                             <Text style={styles.itemTextFirst}>Parent Name:</Text><Text style={styles.itemText}>evgfregev</Text>
                                         </View>
@@ -171,7 +184,7 @@ export default function CoachParticularSchoolStudents({ route }) {
                                     </View>
                                 </View>
                             </Modal>
-                        </View>
+                        </View> */}
                         <TouchableOpacity key={v._id} style={v.attendance === 'NA' ? styles.listSectionRight : v.attendance === 'P' ? styles.listSectionRightPresent : styles.listSectionRightAbsent} onPress={() => handleAttendance(v)}>
                             <Text style={styles.attendanceText}>{v.attendance === 'NA' ? 'NA' : v.attendance === 'P' ? 'P' : 'A'}</Text>
                         </TouchableOpacity>
