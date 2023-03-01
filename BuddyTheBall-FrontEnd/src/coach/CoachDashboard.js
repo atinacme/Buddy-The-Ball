@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Text, Image, SafeAreaView, View, StyleSheet, Button, Alert, TouchableOpacity } from 'react-native';
+import { Text, Image, SafeAreaView, View, StyleSheet, Button, Alert, TouchableOpacity, ScrollView } from 'react-native';
 import { useSelector, useDispatch } from "react-redux";
 import ImagePicker from 'react-native-image-crop-picker';
 import buddyBoy from '../assets/buddyGirl.png';
@@ -7,6 +7,8 @@ import axios from 'axios';
 import Config from '../../Config';
 import { GetParticularCoachService } from '../services/CoachService';
 import { AuthPageAction } from '../redux/Actions';
+import LinearGradient from 'react-native-linear-gradient';
+
 
 export default function CoachDashboard({ navigation }) {
     const state = useSelector((state) => state);
@@ -76,93 +78,84 @@ export default function CoachDashboard({ navigation }) {
     };
 
     return (
-        <SafeAreaView style={styles.wrapper}>
-            <Text style={styles.dashimgWrap}>
-                <TouchableOpacity onPress={openGallery} style={styles.profileImgContainer}>
-                    {state.authPage.auth_data?.profile_data && state.authPage.auth_data?.profile_data.url ?
-                        <Image source={{ uri: state.authPage.auth_data?.profile_data.url }} style={styles.profileImg} />
-                        :
-                        <>
-                            {selectedFile !== null ?
-                                <Image source={{ uri: selectedFile[0].path }} style={{ width: 200, height: 150, marginLeft: 'auto', marginRight: 'auto', marginTop: 10, marginBottom: 10 }} />
-                                :
-                                <Image source={buddyBoy} style={{ width: 200, height: 150, marginLeft: 'auto', marginRight: 'auto', marginTop: 10, marginBottom: 10 }} />
-                            }
-                        </>
-                    }
-                </TouchableOpacity>
-            </Text>
-            {selectedFile !== null && (
-                <Button
-                    title="Upload"
-                    color="#000"
-                    style={{ marginTop: 40, marginBottom: 40 }}
-                    onPress={handleUpload}
-                />
-            )}
-            {state.authPage.auth_data?.profile_data && state.authPage.auth_data?.profile_data.url === undefined ? <Text style={styles.playPara}>Upload Player Picture</Text> : null}
-            {state.authPage.auth_data && (
-                <>
-                    <Text style={styles.heading}>Coach {state.authPage.auth_data?.coach_name}</Text>
-                    <Text style={styles.txt}>Tennis Club: {state.authPage.auth_data?.tennis_club}</Text>
-                    <Text style={styles.txt}>Favorite Pro Player: {state.authPage.auth_data?.favorite_pro_player}</Text>
-                    <Text style={styles.txt}>Handed: {state.authPage.auth_data?.handed}</Text>
-                    <Text style={styles.txt}>Favorite Drill: {state.authPage.auth_data?.favorite_drill}</Text>
-                </>
-            )}
-            <View style={styles.btnCta}>
-                <View style={styles.btnCtawrap}>
+        <LinearGradient colors={['#BCD7EF', '#D1E3AA', '#E3EE68', '#E1DA00']} style={styles.linearGradient}>
+            <SafeAreaView style={styles.wrapper}>
+            <ScrollView showsVerticalScrollIndicator>
+                <Text style={styles.dashimgWrap}>
+                    <TouchableOpacity onPress={openGallery} style={styles.profileImgContainer}>
+                        {state.authPage.auth_data?.profile_data && state.authPage.auth_data?.profile_data.url ?
+                            <Image source={{ uri: state.authPage.auth_data?.profile_data.url }} style={styles.profileImg} />
+                            :
+                            <>
+                                {selectedFile !== null ?
+                                    <Image source={{ uri: selectedFile[0].path }} style={{ width: 200, height: 150, marginLeft: 'auto', marginRight: 'auto', marginTop: 10, marginBottom: 10 }} />
+                                    :
+                                    <Image source={buddyBoy} style={{ width: 200, height: 150, marginLeft: 'auto', marginRight: 'auto', marginTop: 10, marginBottom: 10 }} />
+                                }
+                            </>
+                        }
+                    </TouchableOpacity>
+                </Text>
+                {selectedFile !== null && (
                     <Button
-                        title="PHOTOS"
+                        title="Upload"
                         color="#000"
-                        style={styles.cta}
-                        onPress={() => navigation.navigate("Coach Schools Photos")}
+                        style={{ marginTop: 40, marginBottom: 40 }}
+                        onPress={handleUpload}
                     />
+                )}
+                {state.authPage.auth_data?.profile_data && state.authPage.auth_data?.profile_data.url === undefined ? <Text style={styles.playPara}>Upload Player Picture</Text> : null}
+                {state.authPage.auth_data && (
+                    <>
+                        <Text style={styles.heading}>Coach {state.authPage.auth_data?.coach_name}</Text>
+                        <Text style={styles.txt}>Tennis Club: {state.authPage.auth_data?.tennis_club}</Text>
+                        <Text style={styles.txt}>Favorite Pro Player: {state.authPage.auth_data?.favorite_pro_player}</Text>
+                        <Text style={styles.txt}>Handed: {state.authPage.auth_data?.handed}</Text>
+                        <Text style={styles.txt}>Favorite Drill: {state.authPage.auth_data?.favorite_drill}</Text>
+                    </>
+                )}
+                <Text style={styles.adminWrapper}>
+                    <TouchableOpacity onPress={() => navigation.navigate("Coach Schools Photos")}>
+                        <Text style={{ ...styles.adminContainer, ...styles.adminBg1 }}>PHOTOS</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity onPress={() => navigation.navigate("Coach Calendar")} >
+                        <Text style={{ ...styles.adminContainer, ...styles.adminBg2 }}> CALENDAR</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity onPress={() => navigation.navigate("Coach Messages")}>
+                        <Text style={{ ...styles.adminContainer, ...styles.adminBg3 }}>MESSAGES</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity onPress={() => navigation.navigate("Coach School List")}>
+                        <Text style={{ ...styles.adminContainer, ...styles.adminBg4 }}> SCHOOLS</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity onPress={() => navigation.navigate("Customer Creation")}>
+                        <Text style={{ ...styles.adminContainer, ...styles.adminBg5 }}>Customer  reation</Text>
+                    </TouchableOpacity>
+                </Text>
+                <View style={styles.adminbtn}>
+                    <TouchableOpacity onPress={() => {
+                        navigation.navigate("SignIn");
+                        dispatch(AuthPageAction('', '', '', '', ''));
+                    }}>
+                        <Text style={styles.btnWrapper}>Logout</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity>
+                        <Text style={styles.backbtn}>Back</Text>
+                    </TouchableOpacity>
                 </View>
-                <View style={styles.btnCtawrap}>
-                    <Button
-                        title="CALENDAR"
-                        color="#000"
-                        onPress={() => navigation.navigate("Coach Calendar")}
-                    />
-                </View>
-                <View style={styles.btnCtawrap}>
-                    <Button
-                        title="MESSAGES"
-                        color="#000"
-                        onPress={() => navigation.navigate("Coach Messages")}
-                    />
-                </View>
-                <View style={styles.btnCtawrap}>
-                    <Button
-                        title="SCHOOLS"
-                        color="#000"
-                        onPress={() => navigation.navigate("Coach School List")}
-                    />
-                </View>
-                <View style={styles.btnCtawrap}>
-                    <Button
-                        title="Customer Creation"
-                        color="#000"
-                        style={styles.cta}
-                        onPress={() => navigation.navigate("Customer Creation")}
-                    />
-                </View>
-            </View>
-            <Button
-                title="Logout"
-                color="#000"
-                style={{ marginTop: 40, marginBottom: 40 }}
-                onPress={() => {
-                    navigation.navigate("SignIn");
-                    dispatch(AuthPageAction('', '', '', '', ''));
-                }}
-            />
-        </SafeAreaView>
+                
+                </ScrollView>
+            </SafeAreaView>
+        </LinearGradient>
     );
 }
 
 const styles = StyleSheet.create({
+    linearGradient: {
+        flex: 1,
+    },
+    scrollView: {
+        marginHorizontal: 5,
+    },
     txt: {
         fontFamily: 'LemonJuice',
         textAlign: 'center',
@@ -173,39 +166,15 @@ const styles = StyleSheet.create({
         marginTop: 10
     },
     heading: {
-        fontSize: 25,
+        fontSize: 40,
         textAlign: 'center',
         padding: 5,
         fontFamily: 'LemonJuice'
     },
-    wrapper: {
-        paddingTop: 0,
-        paddingBottom: 30,
-        paddingLeft: 10,
-        paddingRight: 10
-    },
+
     playPara: {
         textAlign: 'center',
         color: '#000',
-        fontFamily: 'LemonJuice'
-    },
-    btnCta: {
-        display: 'flex',
-        alignItems: 'center',
-        flexWrap: 'wrap',
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        paddingTop: 20,
-        fontFamily: 'LemonJuice'
-    },
-    cta: {
-        alignItems: 'center',
-        justifyContent: 'center',
-        paddingVertical: 12,
-        paddingHorizontal: 32,
-        borderRadius: 4,
-        elevation: 3,
-        backgroundColor: 'black',
         fontFamily: 'LemonJuice'
     },
     btnCtawrap: {
@@ -214,14 +183,107 @@ const styles = StyleSheet.create({
         fontFamily: 'LemonJuice'
     },
     profileImgContainer: {
-        marginLeft: 8,
+        // marginLeft: 8,
         height: 150,
-        width: 150,
-        borderRadius: 100,
+        width: 200,
+        position: 'relative',
+        left: 0,
+        right: 0,
+        margin: 'auto',
+        textAlign: 'center'
     },
     profileImg: {
-        height: 150,
-        width: 150,
-        borderRadius: 100,
-    }
+       position: 'absolute',
+       left: 0,
+       right: 0,
+       margin: 'auto'
+    },
+    wrapper: {
+        flex: 1,
+        marginTop: 60,
+        paddingLeft: 15,
+        paddingRight: 15,
+    },
+    adminbtn: {
+        display: 'flex',
+        alignItems: 'center',
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        position: 'absolute',
+        bottom: 0,
+        width: '100%',
+        paddingTop: 40,
+        paddingBottom: 20
+
+    },
+    backbtn: {
+        borderColor: "#fff",
+        paddingTop: 10,
+        paddingBottom: 10,
+        backgroundColor: "#ff8400",
+        borderWidth: 3,
+        borderRadius: 10,
+        textAlign: "center",
+        fontWeight: "700",
+        marginTop: 25,
+        width: 120,
+    },
+    btnWrapper: {
+        borderColor: "#fff",
+        paddingTop: 10,
+        paddingBottom: 10,
+        backgroundColor: "#ff8400",
+        borderWidth: 3,
+        borderRadius: 10,
+        textAlign: "center",
+        fontWeight: "700",
+        marginTop: 25,
+        width: 120,
+    },
+    linearGradient: {
+        flex: 1,
+    },
+    adminWrapper: {
+        display: 'flex',
+        alignItems: 'center',
+        flexWrap: 'wrap',
+        justifyContent: 'space-between',
+        marginTop: 30,
+        marginBottom: 30,
+        paddingBottom: 50
+    },
+    adminContainer: {
+        width: 155,
+        margin: 5,
+        padding: 35,
+        paddingLeft: 0,
+        paddingRight: 0,
+        color: '#000',
+        fontSize: 12,
+        height: 100,
+        borderRadius: 10,
+        textAlign: 'center',
+        lineHeight: 20,
+        borderWidth: 3,
+        borderColor: '#fff',
+        fontWeight: '600',
+        fontFamily: 'LemonJuice',
+        verticalAlign: 'middle'
+    },
+    adminBg1: {
+        backgroundColor: '#ffc000'
+    },
+    adminBg2: {
+        backgroundColor: '#ffff00'
+    },
+    adminBg3: {
+        backgroundColor: '#ed7d31'
+    },
+    adminBg4: {
+        backgroundColor: '#0070c0'
+    },
+    adminBg5: {
+        backgroundColor: '#ff0000'
+    },
+   
 });

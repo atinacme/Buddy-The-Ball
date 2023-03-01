@@ -1,10 +1,12 @@
 import React from 'react';
-import { Text, SafeAreaView, TextInput, StyleSheet, Button, Image, Alert, ScrollView, View } from "react-native";
+import { Text, SafeAreaView, TextInput, StyleSheet, Button, Image, Alert, ScrollView, TouchableOpacity, View } from "react-native";
 import { SelectList } from 'react-native-dropdown-select-list';
 import buddy from '../assets/buddy.png';
 import { SchoolCreationService } from '../services/SchoolService';
 import { Formik } from 'formik';
 import * as yup from 'yup';
+import LinearGradient from 'react-native-linear-gradient';
+
 
 export default function SuperAdminSchoolCreation({ navigation }) {
     const territoryList = [
@@ -96,75 +98,102 @@ export default function SuperAdminSchoolCreation({ navigation }) {
     };
 
     return (
-        <SafeAreaView style={styles.wrapper}>
-            <ScrollView style={styles.scrollView}>
-                <Image source={buddy} style={{ width: 200, height: 100, marginLeft: 'auto', marginRight: 'auto' }} />
-                <Formik
-                    validationSchema={loginValidationSchema}
-                    initialValues={{ school_name: '', territory: '', assigned_day: '' }}
-                    onSubmit={(values) => handleAddSchool(values)}
-                >
-                    {({
-                        handleChange,
-                        handleBlur,
-                        handleSubmit,
-                        values,
-                        errors,
-                        isValid,
-                    }) => (
-                        <>
-                            <Text style={styles.label}>School Name</Text>
-                            <TextInput
-                                name="school_name"
-                                placeholder="School"
-                                onChangeText={handleChange('school_name')}
-                                onBlur={handleBlur('school_name')}
-                                value={values.school}
-                                style={styles.input}
-                            />
-                            {errors.school_name &&
-                                <Text style={{ fontSize: 10, color: 'red' }}>{errors.school_name}</Text>
-                            }
-                            <Text style={styles.label}>Territory</Text>
-                            <SelectList
-                                setSelected={handleChange('territory')}
-                                data={territoryList}
-                                save="key"
-                            />
-                            {errors.territory &&
-                                <Text style={{ fontSize: 10, color: 'red' }}>{errors.territory}</Text>
-                            }
-                            <Text style={styles.label}>Assigned Day</Text>
-                            <SelectList
-                                setSelected={handleChange('assigned_day')}
-                                data={dayList}
-                                save="key"
-                            />
-                            {errors.assigned_day &&
-                                <Text style={{ fontSize: 10, color: 'red' }}>{errors.assigned_day}</Text>
-                            }
-                            <View style={{ marginTop: 20 }}>
-                                <Button
-                                    disabled={!isValid}
-                                    title="Submit"
-                                    color="#000"
-                                    onPress={handleSubmit}
+        <LinearGradient colors={['#BCD7EF', '#D1E3AA', '#E3EE68', '#E1DA00']} style={styles.linearGradient}>
+            <SafeAreaView style={styles.wrapper}>
+                <ScrollView style={styles.scrollView}>
+                    <Image source={buddy} style={{ width: 200, height: 100, marginLeft: 'auto', marginRight: 'auto' }} />
+                    <Formik
+                        validationSchema={loginValidationSchema}
+                        initialValues={{ school_name: '', territory: '', assigned_day: '' }}
+                        onSubmit={(values) => handleAddSchool(values)}
+                    >
+                        {({
+                            handleChange,
+                            handleBlur,
+                            handleSubmit,
+                            values,
+                            errors,
+                            isValid,
+                        }) => (
+                            <>
+                                <Text style={styles.label}>School Name</Text>
+                                <TextInput
+                                    name="school_name"
+                                    placeholder="School"
+                                    onChangeText={handleChange('school_name')}
+                                    onBlur={handleBlur('school_name')}
+                                    value={values.school}
+                                    style={styles.input}
                                 />
-                            </View>
-                        </>
-                    )}
-                </Formik>
-            </ScrollView>
-        </SafeAreaView>
+                                {errors.school_name &&
+                                    <Text style={{ fontSize: 10, color: 'red' }}>{errors.school_name}</Text>
+                                }
+                                <Text style={styles.label}>Territory</Text>
+                                <SelectList
+                                    setSelected={handleChange('territory')}
+                                    data={territoryList}
+                                    save="key"
+                                />
+                                {errors.territory &&
+                                    <Text style={{ fontSize: 10, color: 'red' }}>{errors.territory}</Text>
+                                }
+                                <Text style={styles.label}>Assigned Day</Text>
+                                <SelectList
+                                    setSelected={handleChange('assigned_day')}
+                                    data={dayList}
+                                    save="key"
+                                />
+                                {errors.assigned_day &&
+                                    <Text style={{ fontSize: 10, color: 'red' }}>{errors.assigned_day}</Text>
+                                }
+
+                                <TouchableOpacity onPress={handleSubmit}>
+                                    <Text style={styles.btnWrapper}>Submit</Text>
+                                </TouchableOpacity>
+                            </>
+                        )}
+                    </Formik>
+                </ScrollView>
+                <TouchableOpacity>
+                    <Text style={styles.backbtn}>Back</Text>
+                </TouchableOpacity>
+            </SafeAreaView>
+        </LinearGradient>
     );
 }
 
 const styles = StyleSheet.create({
     wrapper: {
-        padding: 20,
+        marginTop: 60,
+        flex: 1,
+        position: 'relative',
+        padding: 15,
+          justifyContent: 'flex-end'
+    },
+    backbtn: {
+        borderColor: "#fff",
+        paddingTop: 10,
+        paddingBottom: 10,
+        backgroundColor: "#ff8400",
+        borderWidth: 3,
+        borderRadius: 10,
+        textAlign: "center",
+        fontWeight: "700",
+        marginTop: 5,
+        position: 'absolute',
+        display: 'flex',
+        right: 0,
+        width: 100,
+        justifyContent: 'flex-end',
+        bottom: 0,
+        marginBottom: 10
+    },
+    linearGradient: {
+        flex: 1,
+        borderRadius: 5
     },
     scrollView: {
-        marginHorizontal: 20,
+        marginHorizontal: 5,
     },
     input: {
         borderWidth: 1,
@@ -174,9 +203,20 @@ const styles = StyleSheet.create({
         marginBottom: 10
     },
     label: {
-        fontSize: 18,
+        fontSize: 16,
         color: '#000',
         paddingTop: 10,
-        paddingBottom: 0
-    }
+        paddingBottom: 5
+    },
+    btnWrapper: {
+        borderColor: "#fff",
+        paddingTop: 15,
+        paddingBottom: 15,
+        backgroundColor: "#ff8400",
+        borderWidth: 3,
+        borderRadius: 10,
+        textAlign: "center",
+        fontWeight: "700",
+        marginTop: 10
+    },
 });

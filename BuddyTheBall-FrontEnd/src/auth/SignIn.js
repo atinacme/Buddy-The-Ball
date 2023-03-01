@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import { Text, SafeAreaView, TextInput, StyleSheet, Button, Image, Alert } from "react-native";
+import { Text, SafeAreaView, TextInput, StyleSheet, Button, Image, TouchableOpacity, Alert, View } from "react-native";
 import buddy from '../assets/buddy.png';
 import { useDispatch } from "react-redux";
 import { AuthPageAction } from '../redux/Actions';
 import { SignInService } from '../services/UserAuthService';
+import LinearGradient from 'react-native-linear-gradient';
 
 export default function SignIn({ navigation, route }) {
     const [email, setEmail] = useState();
@@ -56,34 +57,53 @@ export default function SignIn({ navigation, route }) {
         }
     };
     return (
-        <SafeAreaView style={styles.wrapper}>
-            <Image source={buddy} style={{ width: 200, height: 100, marginLeft: 'auto', marginRight: 'auto' }} />
-            <Text style={styles.label}>Email</Text>
-            <TextInput
-                style={styles.input}
-                onChangeText={(e) => setEmail(e)}
-                value={email}
-            />
-            <Text style={styles.label}>Password</Text>
-            <TextInput
-                style={styles.input}
-                onChangeText={(e) => setPassword(e)}
-                value={password}
-            />
-            <Button
-                title="Login"
-                color="#000"
-                style={{ marginTop: 40, marginBottom: 40 }}
-                onPress={handleSignIn}
-            />
-            {/* <Text style={styles.labeLink}>Forgot Password?</Text> */}
-        </SafeAreaView>
+        <LinearGradient colors={['#BCD7EF', '#D1E3AA', '#E3EE68', '#E1DA00']} style={styles.linearGradient}>
+            <SafeAreaView style={styles.wrapper}>
+                <Image source={buddy} style={{ width: 200, height: 100, marginLeft: 'auto', marginRight: 'auto', marginBottom: 20 }} />
+                <Text style={styles.label}>Email</Text>
+                <TextInput
+                    style={styles.input}
+                    onChangeText={(e) => setEmail(e)}
+                    value={email}
+                />
+                <Text style={styles.label}>Password</Text>
+                <TextInput
+                    style={styles.input}
+                    onChangeText={(e) => setPassword(e)}
+                    value={password}
+                />
+
+                <TouchableOpacity onPress={handleSignIn}>
+                    <Text style={styles.btnWrapper}>Login</Text>
+                </TouchableOpacity>
+
+                {/* <Text style={styles.labeLink}>Forgot Password?</Text> */}
+            </SafeAreaView>
+        </LinearGradient>
     );
 }
 
 const styles = StyleSheet.create({
+    linearGradient: {
+        flex: 1,
+        paddingLeft: 15,
+        paddingRight: 15,
+        borderRadius: 5
+    },
+    btnWrapper: {
+        borderColor: "#ffc000",
+        paddingTop: 15,
+        paddingBottom: 15,
+        backgroundColor: "#ff8400",
+        borderWidth: 3,
+        borderRadius: 10,
+        textAlign: "center",
+        fontWeight: "700",
+        marginTop: 10
+    },
     wrapper: {
-        padding: 20
+        padding: 20,
+        marginTop: 60
     },
     input: {
         borderWidth: 1,
@@ -93,7 +113,7 @@ const styles = StyleSheet.create({
         marginBottom: 10
     },
     label: {
-        fontSize: 18,
+        fontSize: 16,
         color: '#000',
         paddingTop: 10,
         paddingBottom: 0

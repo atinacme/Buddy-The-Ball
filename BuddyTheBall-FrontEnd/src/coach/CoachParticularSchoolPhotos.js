@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Text, View, Image, TouchableOpacity, StyleSheet, SafeAreaView, Button, ScrollView } from 'react-native';
 import { GetParticularSchoolPhotosService } from '../services/SchoolService';
+import LinearGradient from 'react-native-linear-gradient';
 
 export default function CoachParticularSchoolPhotos({ navigation, route }) {
     const [customerData, setCustomerData] = useState([]);
@@ -18,13 +19,14 @@ export default function CoachParticularSchoolPhotos({ navigation, route }) {
     }, [navigation]);
 
     return (
-        <SafeAreaView>
+        <LinearGradient colors={['#BCD7EF', '#D1E3AA', '#E3EE68', '#E1DA00']} style={styles.linearGradient}>
+        <SafeAreaView style={styles.wrapper}>
             <ScrollView style={styles.scrollView}>
-                <Button title="Create Customer Photo"
-                    color="#000"
-                    style={styles.cta}
-                    onPress={() => navigation.navigate("Coach Photo Creation", { schoolId: route.params.schoolItem._id })}
-                />
+            <TouchableOpacity onPress={() => navigation.navigate("Coach Photo Creation", { schoolId: route.params.schoolItem._id })}>
+                    <Text style={styles.cta}>Create Customer Photo</Text>
+                </TouchableOpacity>
+
+
                 <Text style={styles.label}>{route.params.schoolItem.school_name}</Text>
                 <View style={styles.imgWrap}>
                     {customerData.map((item) => {
@@ -36,7 +38,11 @@ export default function CoachParticularSchoolPhotos({ navigation, route }) {
                     })}
                 </View>
             </ScrollView>
+            <TouchableOpacity>
+                    <Text style={styles.backbtn}>Back</Text>
+                </TouchableOpacity>
         </SafeAreaView>
+        </LinearGradient>
     );
 }
 
@@ -50,7 +56,7 @@ const styles = StyleSheet.create({
         paddingTop: 10,
         paddingBottom: 10,
         textAlign: 'center',
-        fontFamily: 'LemonJuice'
+        // fontFamily: 'LemonJuice'
     },
     imgWrap: {
         display: 'flex',
@@ -59,13 +65,40 @@ const styles = StyleSheet.create({
         flexDirection: 'row'
     },
     cta: {
-        alignItems: 'center',
-        justifyContent: 'center',
-        paddingVertical: 12,
-        paddingHorizontal: 32,
         borderRadius: 4,
         elevation: 3,
-        backgroundColor: 'black',
-        fontFamily: 'LemonJuice'
+        backgroundColor: '#ed7d31',
+        fontFamily: 'LemonJuice',
+        color: '#fff',
+        textAlign: 'center',
+        fontSize: 20,
+        padding: 20
+    },
+    linearGradient: {
+        flex: 1,
+    },
+    wrapper: {
+        flex: 2,
+        paddingLeft: 15,
+        paddingRight: 15,
+        position: 'relative',
+        marginBottom: 56,
+        marginTop: 60
+    },
+    backbtn: {
+        borderColor: "#fff",
+        paddingTop: 10,
+        paddingBottom: 10,
+        backgroundColor: "#ff8400",
+        borderWidth: 3,
+        borderRadius: 10,
+        textAlign: "center",
+        fontWeight: "700",
+        marginTop: 5,
+        position: 'absolute',
+        display: 'flex',
+        right: 0,
+        width: 100,
+        justifyContent: 'flex-end'
     },
 });

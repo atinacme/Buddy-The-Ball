@@ -5,6 +5,8 @@ import { SafeAreaView, Text, TextInput, StyleSheet, View, TouchableOpacity, Imag
 import { SelectList } from 'react-native-dropdown-select-list';
 import { CreateAndUpdateMessageService } from '../services/CustomerService';
 import { GetAllCoachesService } from '../services/CoachService';
+import LinearGradient from 'react-native-linear-gradient';
+
 
 export default function SuperAdminMessageCreation({ navigation, route }) {
     const state = useSelector((state) => state);
@@ -44,33 +46,65 @@ export default function SuperAdminMessageCreation({ navigation, route }) {
     };
 
     return (
-        <SafeAreaView style={styles.wrapper}>
-            <Text style={styles.label}>Message To</Text>
-            <SelectList
-                setSelected={(val) => setReceiverId(val)}
-                data={coaches}
-                save="key"
-            />
-            <Text style={styles.label}>Message</Text>
-            <View style={styles.commentwrap}>
-                <TextInput
-                    placeholderTextColor="#000"
-                    style={styles.input}
-                    onChangeText={(e) => { setMessage(e); }}
-                    value={message}
-                    placeholder="Add a comment..."
+        <LinearGradient colors={['#BCD7EF', '#D1E3AA', '#E3EE68', '#E1DA00']} style={styles.linearGradient}>
+            <SafeAreaView style={styles.wrapper}>
+                <Text style={styles.label}>Message To</Text>
+                <SelectList
+                    setSelected={(val) => setReceiverId(val)}
+                    data={coaches}
+                    save="key"
                 />
-                <TouchableOpacity onPress={handleSendMessage} style={styles.photoimg} >
-                    <Image source={send_button} style={{ width: 30, height: 30 }} />
-                </TouchableOpacity>
-            </View>
-        </SafeAreaView>
+                <Text style={styles.label}>Message</Text>
+                <View style={styles.commentwrap}>
+                    <TextInput
+                        placeholderTextColor="#000"
+                        style={styles.input}
+                        onChangeText={(e) => { setMessage(e); }}
+                        value={message}
+                        placeholder="Add a comment..."
+                    />
+                    <TouchableOpacity onPress={handleSendMessage} style={styles.photoimg} >
+                        <Image source={send_button} style={{ width: 30, height: 30 }} />
+                    </TouchableOpacity>
+                </View>
+                <View style={styles.bckcta}>
+                    <TouchableOpacity>
+                        <Text style={styles.backbtn}>Back</Text>
+                    </TouchableOpacity></View>
+            </SafeAreaView>
+        </LinearGradient>
     );
 }
 
 const styles = StyleSheet.create({
     wrapper: {
-        padding: 20,
+        marginTop: 60,
+        flex: 1,
+        position: 'relative',
+        padding: 15,
+    },
+    bckcta: {
+        position: 'absolute',
+        bottom: 0,
+        right: 15
+    },
+    backbtn: {
+        borderColor: "#fff",
+        paddingTop: 10,
+        paddingBottom: 10,
+        backgroundColor: "#ff8400",
+        borderWidth: 3,
+        borderRadius: 10,
+        textAlign: "center",
+        fontWeight: "700",
+        marginTop: 5,
+        display: 'flex',
+        right: 0,
+        width: 100,
+        bottom: 0,
+        marginBottom: 10,
+        justifyContent: 'flex-end'
+
     },
     input: {
         borderWidth: 1,
@@ -86,11 +120,17 @@ const styles = StyleSheet.create({
         paddingBottom: 0
     },
     commentwrap: {
-        width: 320
+        width: 330
     },
     photoimg: {
         position: 'absolute',
         top: 15,
         right: 10,
-    }
+    },
+    linearGradient: {
+        flex: 1,
+        paddingLeft: 1,
+        paddingRight: 1,
+        borderRadius: 5
+    },
 });

@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from 'react';
-import { Text, SafeAreaView, StyleSheet, ScrollView, Image, Alert, View, Button } from "react-native";
+import { Text, SafeAreaView, StyleSheet, ScrollView, Image, Alert, View, Button, TouchableOpacity } from "react-native";
 import { SelectList } from 'react-native-dropdown-select-list';
 import ImagePicker from 'react-native-image-crop-picker';
 import { useSelector } from "react-redux";
 import { GetCustomerWithSchoolIdService } from '../services/CustomerService';
 import axios from 'axios';
 import Config from '../../Config';
+import LinearGradient from 'react-native-linear-gradient';
+
 
 export default function CoachPhotoCreation({ navigation, route }) {
     const [customerData, setCustomerData] = useState([]);
@@ -73,47 +75,101 @@ export default function CoachPhotoCreation({ navigation, route }) {
     };
 
     return (
-        <SafeAreaView style={styles.wrapper}>
-            <ScrollView style={styles.scrollView}>
-                <Text style={styles.label}>Students List</Text>
-                <SelectList
-                    setSelected={(val) => setCustomerId(val)}
-                    data={customerData}
-                    save="key"
-                />
-                <View style={{ marginTop: 20 }}>
-                    <Button onPress={openGallery} title='upload' />
-                    {selectedFile !== null && selectedFile.map((ls, index) => {
-                        return (
-                            <View key={index}>
-                                <Image source={{ uri: ls.path }} style={{ height: 300, width: 300, marginTop: 20, marginBottom: 20 }} />
-                            </View>
-                        );
-                    })}
-                </View>
-                <View style={{ marginTop: 20 }}>
-                    <Button
-                        title="Submit"
-                        color="#000"
-                        onPress={handleAddPhoto}
+        <LinearGradient colors={['#BCD7EF', '#D1E3AA', '#E3EE68', '#E1DA00']} style={styles.linearGradient}>
+            <SafeAreaView style={styles.wrapper}>
+                <ScrollView style={styles.scrollView}>
+                    <Text style={styles.label}>Students List</Text>
+                    <SelectList
+                        setSelected={(val) => setCustomerId(val)}
+                        data={customerData}
+                        save="key"
                     />
-                </View>
-            </ScrollView>
-        </SafeAreaView>
+                    <View style={styles.btnWrapper}>
+                    <View>
+                        {/* <Button onPress={openGallery} title='upload' /> */}
+                        <TouchableOpacity onPress={openGallery}>
+                            <Text style={styles.uploadcta}>upload</Text>
+                        </TouchableOpacity>
+                        {selectedFile !== null && selectedFile.map((ls, index) => {
+                            return (
+                                <View key={index}>
+                                    <Image source={{ uri: ls.path }} style={{ height: 300, width: 300, marginTop: 20, marginBottom: 20 }} />
+                                </View>
+                            );
+                        })}
+                    </View>
+
+                    <View>
+                        <TouchableOpacity onPress={handleAddPhoto} >
+                            <Text style={styles.submitcta}>Submit</Text>
+                        </TouchableOpacity>
+                    </View>
+                    </View>
+                </ScrollView>
+                <TouchableOpacity>
+                    <Text style={styles.backbtn}>Back</Text>
+                </TouchableOpacity>
+            </SafeAreaView>
+        </LinearGradient>
     );
 }
 
 const styles = StyleSheet.create({
-    wrapper: {
-        padding: 20
+    linearGradient: {
+        flex: 1,
     },
-    scrollView: {
-        marginHorizontal: 20,
+    btnWrapper: {
+        paddingTop: 40
+    },
+    wrapper: {
+        flex: 2,
+        paddingLeft: 15,
+        paddingRight: 15,
+        position: 'relative',
+        marginBottom: 56,
+        marginTop: 60
+    },
+    backbtn: {
+        borderColor: "#fff",
+        paddingTop: 10,
+        paddingBottom: 10,
+        backgroundColor: "#ff8400",
+        borderWidth: 3,
+        borderRadius: 10,
+        textAlign: "center",
+        fontWeight: "700",
+        marginTop: 5,
+        position: 'absolute',
+        display: 'flex',
+        right: 0,
+        width: 100,
+        justifyContent: 'flex-end'
     },
     label: {
-        fontSize: 18,
+        fontSize: 16,
         color: '#000',
-        paddingTop: 10,
-        paddingBottom: 0
+        paddingBottom: 10
+    },
+    uploadcta: {
+        backgroundColor: '#5b9bd5',
+        color: '#fff',
+        borderColor: '#fff',
+        borderRadius: 10,
+        borderWidth: 2,
+        padding: 10,
+        textAlign: 'center',
+        textTransform: 'uppercase',
+        margin: 10
+    },
+    submitcta: {
+        backgroundColor: '#993366',
+        color: '#fff',
+        borderColor: '#fff',
+        borderRadius: 10,
+        borderWidth: 2,
+        padding: 10,
+        textAlign: 'center',
+        textTransform: 'uppercase',
+        margin: 10
     }
 });

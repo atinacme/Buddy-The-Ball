@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { Text, View, Image, TouchableOpacity, StyleSheet, SafeAreaView, ScrollView } from 'react-native';
+import { Text, View, Image, TouchableOpacity, StyleSheet, SafeAreaView, ScrollView} from 'react-native';
 import { useSelector } from "react-redux";
 import { GetParticularCustomerPhotosService } from '../services/CustomerService';
+import LinearGradient from 'react-native-linear-gradient';
 
 export default function CustomerPhotos({ navigation }) {
     const state = useSelector((state) => state);
@@ -20,6 +21,7 @@ export default function CustomerPhotos({ navigation }) {
     }, [navigation]);
 
     return (
+        <LinearGradient colors={['#BCD7EF', '#D1E3AA', '#E3EE68', '#E1DA00']} style={styles.linearGradient}>
         <SafeAreaView>
             <Text style={styles.label}>{state.authPage.auth_data?.school.school_name}</Text>
             <View style={styles.imgWrap}>
@@ -34,6 +36,7 @@ export default function CustomerPhotos({ navigation }) {
                 </ScrollView>
             </View>
         </SafeAreaView>
+        </LinearGradient>
     );
 }
 
@@ -51,5 +54,8 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         flexWrap: 'wrap',
         flexDirection: 'row'
-    }
+    },
+    linearGradient: {
+        flex: 1,
+    },
 });

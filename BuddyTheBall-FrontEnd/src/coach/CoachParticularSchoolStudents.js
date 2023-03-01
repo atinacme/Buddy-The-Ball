@@ -1,12 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import { useSelector } from "react-redux";
-import { SafeAreaView, Text, StyleSheet, TextInput, View, Image, Modal, Pressable, TouchableOpacity } from 'react-native';
+import { SafeAreaView, Text, StyleSheet, TextInput, View, Image, Modal, Pressable, TouchableOpacity, ScrollView } from 'react-native';
 import { SelectList } from 'react-native-dropdown-select-list';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import buddy from '../assets/buddy.png';
 import moment from 'moment';
 import { GetCustomersOfParticularCoachOfParticularSchool } from '../services/CoachService';
 import { CreateAndUpdateAttendanceService, GetAttendanceByDateService } from '../services/AttendanceService';
+import LinearGradient from 'react-native-linear-gradient';
+
 
 export default function CoachParticularSchoolStudents({ route }) {
     const state = useSelector((state) => state);
@@ -87,7 +89,9 @@ export default function CoachParticularSchoolStudents({ route }) {
     };
 
     return (
-        <SafeAreaView>
+        <LinearGradient colors={['#BCD7EF', '#D1E3AA', '#E3EE68', '#E1DA00']} style={styles.linearGradient}>
+        <SafeAreaView style={styles.wrapper}>
+        <ScrollView style={styles.scrollView}>
             <View style={styles.searchSection}>
                 <TextInput
                     style={styles.input}
@@ -123,7 +127,7 @@ export default function CoachParticularSchoolStudents({ route }) {
                     <Text style={styles.calendarSectionText}>{route.params.schoolItem.school}</Text>
                 </View>
             </View>
-            {customers.map(v => {
+            {customers.length > 0 && customers.map(v => {
                 return (
                     <View key={v._id} style={styles.listSection}>
                         {console.log("inside--->", v)}
@@ -191,13 +195,39 @@ export default function CoachParticularSchoolStudents({ route }) {
                     </View>
                 );
             })}
+            </ScrollView>
         </SafeAreaView>
+        </LinearGradient>
     );
 }
 
 const styles = StyleSheet.create({
     wrapper: {
-        padding: 10,
+        flex: 2,
+        paddingLeft: 15,
+        paddingRight: 15,
+        position: 'relative',
+        marginBottom: 56,
+        marginTop: 60
+    },
+    backbtn: {
+        borderColor: "#fff",
+        paddingTop: 10,
+        paddingBottom: 10,
+        backgroundColor: "#ff8400",
+        borderWidth: 3,
+        borderRadius: 10,
+        textAlign: "center",
+        fontWeight: "700",
+        marginTop: 5,
+        position: 'absolute',
+        display: 'flex',
+        right: 0,
+        width: 100,
+        justifyContent: 'flex-end'
+    },
+    linearGradient: {
+        flex: 1,
     },
     searchSection: {
         flexDirection: 'row',

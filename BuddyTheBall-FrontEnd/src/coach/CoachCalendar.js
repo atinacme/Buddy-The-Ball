@@ -7,6 +7,8 @@ import { SelectList } from 'react-native-dropdown-select-list';
 import { Agenda } from 'react-native-calendars';
 import moment from 'moment';
 import { CreateAgendaService, GetAgendaByDateService, UpdateAgendaService } from '../services/CalendarService';
+import LinearGradient from 'react-native-linear-gradient';
+
 
 export default function CoachCalendar() {
     const state = useSelector((state) => state);
@@ -73,7 +75,8 @@ export default function CoachCalendar() {
 
     return (
         <>
-            <SafeAreaView style={styles.container}>
+                <LinearGradient colors={['#BCD7EF', '#D1E3AA', '#E3EE68', '#E1DA00']} style={styles.linearGradient}>
+            <SafeAreaView style={styles.wrapper}>
                 <Agenda
                     minDate={today}
                     pastScrollRange={0}
@@ -192,15 +195,43 @@ export default function CoachCalendar() {
                         </View>
                     </Modal>
                 </View>
+                <TouchableOpacity>
+                    <Text style={styles.backbtn}>Back</Text>
+                </TouchableOpacity>
             </SafeAreaView>
+          
+            </LinearGradient>
         </>
     );
 }
 
 const styles = StyleSheet.create({
-    container: {
+    wrapper: {
+        flex: 2,
+        paddingLeft: 15,
+        paddingRight: 15,
+        position: 'relative',
+        marginBottom: 56,
+        marginTop: 60
+    },
+    backbtn: {
+        borderColor: "#fff",
+        paddingTop: 10,
+        paddingBottom: 10,
+        backgroundColor: "#ff8400",
+        borderWidth: 3,
+        borderRadius: 10,
+        textAlign: "center",
+        fontWeight: "700",
+        marginTop: 5,
+        position: 'absolute',
+        display: 'flex',
+        right: 0,
+        width: 100,
+        justifyContent: 'flex-end'
+    },
+    linearGradient: {
         flex: 1,
-        justifyContent: 'center'
     },
     scrollView: {
         marginHorizontal: 20,
@@ -228,7 +259,7 @@ const styles = StyleSheet.create({
         fontSize: 16,
     },
     centeredView: {
-        flex: 1,
+        // flex: 1,
         justifyContent: 'center',
         alignItems: 'center',
         marginTop: 22

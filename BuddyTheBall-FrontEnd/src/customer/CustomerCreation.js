@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from 'react';
-import { Text, SafeAreaView, TextInput, StyleSheet, Button, Image, Alert, ScrollView } from "react-native";
+import { Text, SafeAreaView, TextInput, StyleSheet, Button, Image, Alert, ScrollView, TouchableOpacity } from "react-native";
 import { MultipleSelectList } from 'react-native-dropdown-select-list';
 import buddy from '../assets/buddy.png';
 import { useSelector } from "react-redux";
 import { SignUpService } from '../services/UserAuthService';
 import { Formik } from 'formik';
 import * as yup from 'yup';
+import LinearGradient from 'react-native-linear-gradient';
+
 
 export default function CustomerCreation({ navigation }) {
     const [data, setData] = useState([]);
@@ -92,6 +94,7 @@ export default function CustomerCreation({ navigation }) {
     };
 
     return (
+        <LinearGradient colors={['#BCD7EF', '#D1E3AA', '#E3EE68', '#E1DA00']} style={styles.linearGradient}>
         <SafeAreaView style={styles.wrapper}>
             <ScrollView style={styles.scrollView}>
                 <Image source={buddy} style={{ width: 200, height: 100, marginLeft: 'auto', marginRight: 'auto' }} />
@@ -248,23 +251,67 @@ export default function CustomerCreation({ navigation }) {
                             {errors.current_award &&
                                 <Text style={{ fontSize: 10, color: 'red' }}>{errors.current_award}</Text>
                             }
-                            <Button
+                            {/* <Button
                                 title="Submit"
                                 color="#000"
                                 style={{ marginTop: 40, marginBottom: 40 }}
                                 onPress={handleSubmit}
-                            />
+                            /> */}
+                             <TouchableOpacity onPress={handleSubmit}>
+                    <Text style={styles.submit}>Submit</Text>
+                </TouchableOpacity>
                         </>
                     )}
                 </Formik>
             </ScrollView>
+            <TouchableOpacity>
+                    <Text style={styles.backbtn}>Back</Text>
+                </TouchableOpacity>
         </SafeAreaView>
+        </LinearGradient>
     );
 }
 
 const styles = StyleSheet.create({
     wrapper: {
-        padding: 20
+        flex: 2,
+        paddingLeft: 15,
+        paddingRight: 15,
+        position: 'relative',
+        marginBottom: 56,
+        marginTop: 60
+    },
+    submit: {
+        borderColor: "#fff",
+        paddingTop: 10,
+        paddingBottom: 10,
+        backgroundColor: "#ff8400",
+        borderWidth: 3,
+        borderRadius: 10,
+        textAlign: "center",
+        fontWeight: "700",
+        marginTop: 5,
+        display: 'flex',
+        justifyContent: 'flex-end'
+    },
+    backbtn: {
+        borderColor: "#fff",
+        paddingTop: 10,
+        paddingBottom: 10,
+        backgroundColor: "#ff8400",
+        borderWidth: 3,
+        borderRadius: 10,
+        textAlign: "center",
+        fontWeight: "700",
+        marginTop: 5,
+        position: 'absolute',
+        display: 'flex',
+        right: 0,
+        width: 100,
+        justifyContent: 'flex-end'
+    },
+    linearGradient: {
+        flex: 1,
     },
     input: {
         borderWidth: 1,

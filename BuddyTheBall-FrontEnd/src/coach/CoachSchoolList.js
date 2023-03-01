@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import { SafeAreaView, Text, StyleSheet, TouchableOpacity, Alert } from 'react-native';
+import { SafeAreaView, Text, StyleSheet, TouchableOpacity, Alert, ScrollView } from 'react-native';
 import { useSelector } from "react-redux";
 import { DataTable } from 'react-native-paper';
 import moment from 'moment';
+import LinearGradient from 'react-native-linear-gradient';
+
 
 export default function CoachSchoolList({ navigation }) {
     const state = useSelector((state) => state);
@@ -32,7 +34,9 @@ export default function CoachSchoolList({ navigation }) {
     }, []);
 
     return (
-        <SafeAreaView>
+        <LinearGradient colors={['#BCD7EF', '#D1E3AA', '#E3EE68', '#E1DA00']} style={styles.linearGradient}>
+        <SafeAreaView style={styles.wrapper}>
+        <ScrollView style={styles.scrollView}>
             <Text>CURRENT TERRITORY: {state.authPage.auth_data?.assigned_territory}</Text>
             <Text>CURRENT SEASON: FALL - {allDates.length > 0 && <>{moment(allDates[0]).format("MMM D")} - {moment(allDates[1]).format("MMM D")}</>}</Text>
             <DataTable style={styles.container}>
@@ -62,15 +66,48 @@ export default function CoachSchoolList({ navigation }) {
                     );
                 })}
             </DataTable>
+            </ScrollView>
+            <TouchableOpacity>
+                    <Text style={styles.backbtn}>Back</Text>
+                </TouchableOpacity>
         </SafeAreaView>
+        </LinearGradient>
     );
 }
 
 const styles = StyleSheet.create({
     container: {
-        padding: 15,
+        backgroundColor: '#fff',
+        marginTop: 30
     },
     tableHeader: {
-        backgroundColor: '#DCDCDC',
+        backgroundColor: '#fff',
+    },
+    wrapper: {
+        flex: 2,
+        paddingLeft: 15,
+        paddingRight: 15,
+        position: 'relative',
+        marginBottom: 56,
+        marginTop: 60
+    },
+    backbtn: {
+        borderColor: "#fff",
+        paddingTop: 10,
+        paddingBottom: 10,
+        backgroundColor: "#ff8400",
+        borderWidth: 3,
+        borderRadius: 10,
+        textAlign: "center",
+        fontWeight: "700",
+        marginTop: 5,
+        position: 'absolute',
+        display: 'flex',
+        right: 0,
+        width: 100,
+        justifyContent: 'flex-end'
+    },
+    linearGradient: {
+        flex: 1,
     },
 });

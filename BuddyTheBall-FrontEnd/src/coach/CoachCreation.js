@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from 'react';
-import { Text, SafeAreaView, TextInput, StyleSheet, Button, Image, Alert, ScrollView, View, Modal, Pressable } from "react-native";
+import { Text, SafeAreaView, TextInput, StyleSheet, TouchableOpacity, Button, Image, Alert, ScrollView, View, Modal, Pressable } from "react-native";
 import { SelectList, MultipleSelectList } from 'react-native-dropdown-select-list';
 import buddy from '../assets/buddy.png';
 import { GetSchoolsService } from '../services/SchoolService';
 import { SignUpService } from '../services/UserAuthService';
 import { Calendar } from 'react-native-calendars';
 import moment from 'moment';
+import LinearGradient from 'react-native-linear-gradient';
 
 export default function CoachCreation({ navigation }) {
     const [data, setData] = useState([]);
@@ -153,161 +154,182 @@ export default function CoachCreation({ navigation }) {
     };
 
     return (
-        <SafeAreaView style={styles.wrapper}>
-            <ScrollView style={styles.scrollView}>
-                <Image source={buddy} style={{ width: 200, height: 100, marginLeft: 'auto', marginRight: 'auto' }} />
-                <Text style={styles.label}>Email</Text>
-                <TextInput
-                    style={styles.input}
-                    onChangeText={(e) => setCoachData({ ...coachData, email: e })}
-                    value={coachData.email}
-                />
-                <Text style={styles.label}>Password</Text>
-                <TextInput
-                    style={styles.input}
-                    onChangeText={(e) => setCoachData({ ...coachData, password: e })}
-                    value={coachData.password}
-                />
-                <Text style={styles.label}>Coach Name</Text>
-                <TextInput
-                    style={styles.input}
-                    onChangeText={(e) => setCoachData({ ...coachData, coach_name: e })}
-                    value={coachData.coach_name}
-                />
-                <Text style={styles.label}>Assigned Territory</Text>
-                <SelectList
-                    setSelected={(val) => setCoachData({ ...coachData, assigned_territory: val })}
-                    data={territoryList}
-                    save="key"
-                />
-                <Text style={styles.label}>Assigned Schools</Text>
-                <MultipleSelectList
-                    setSelected={(val) => setSelected(val)}
-                    data={data}
-                    save="value"
-                    onSelect={() => alert(selected)}
-                    label="Selected Schools"
-                />
-                <View style={{ flexDirection: 'row', textAlign: 'center', alignItems: 'center', justifyContent: 'space-between' }}>
-                    <Text style={styles.label}>Assign Period</Text>
-                    <Pressable
-                        style={[styles.plusButton, styles.buttonOpen]}
-                        onPress={() => setModalVisible(!modalVisible)}>
-                        <Text style={styles.textPlus}>+</Text>
-                    </Pressable>
-                </View>
-                <View style={styles.centeredView}>
-                    <Modal
-                        animationType="slide"
-                        transparent={true}
-                        visible={modalVisible}
-                        onRequestClose={() => {
-                            setModalVisible(!modalVisible);
-                        }}
-                    >
-                        <View style={styles.centeredView}>
-                            <View style={styles.modalView}>
-                                <ScrollView style={styles.scrollView}>
-                                    <View>
-                                        <View style={styles.schoolList}>
-                                            <SelectList
-                                                key="key"
-                                                setSelected={(val) => setAssignCal({ ...assignCal, school: val })}
-                                                data={data}
-                                                save="value"
-                                            />
+        <LinearGradient colors={['#BCD7EF', '#D1E3AA', '#E3EE68', '#E1DA00']} style={styles.linearGradient}>
+            <SafeAreaView style={styles.wrapper}>
+                <ScrollView style={styles.scrollView}>
+                {/* <Text style={styles.heading}>Coach Creation</Text> */}
+                    <Image source={buddy} style={{ width: 200, height: 100, marginLeft: 'auto', marginRight: 'auto' }} />                   
+                    <Text style={styles.label}>Email</Text>
+                    <TextInput
+                        style={styles.input}
+                        onChangeText={(e) => setCoachData({ ...coachData, email: e })}
+                        value={coachData.email}
+                    />
+                    <Text style={styles.label}>Password</Text>
+                    <TextInput
+                        style={styles.input}
+                        onChangeText={(e) => setCoachData({ ...coachData, password: e })}
+                        value={coachData.password}
+                    />
+                    <Text style={styles.label}>Coach Name</Text>
+                    <TextInput
+                        style={styles.input}
+                        onChangeText={(e) => setCoachData({ ...coachData, coach_name: e })}
+                        value={coachData.coach_name}
+                    />
+                    <Text style={styles.label}>Assigned Territory</Text>
+                    <SelectList
+                        setSelected={(val) => setCoachData({ ...coachData, assigned_territory: val })}
+                        data={territoryList}
+                        save="key"
+                    />
+                    <Text style={styles.label}>Assigned Schools</Text>
+                    <MultipleSelectList
+                        setSelected={(val) => setSelected(val)}
+                        data={data}
+                        save="value"
+                        onSelect={() => alert(selected)}
+                        label="Selected Schools"
+                    />
+                    <View style={{ flexDirection: 'row', textAlign: 'center', alignItems: 'center', justifyContent: 'space-between' }}>
+                        <Text style={styles.label}>Assign Period</Text>
+                        <Pressable
+                            style={[styles.plusButton, styles.buttonOpen]}
+                            onPress={() => setModalVisible(!modalVisible)}>
+                            <Text style={styles.textPlus}>+</Text>
+                        </Pressable>
+                    </View>
+                    <View style={styles.centeredView}>
+                        <Modal
+                            animationType="slide"
+                            transparent={true}
+                            visible={modalVisible}
+                            onRequestClose={() => {
+                                setModalVisible(!modalVisible);
+                            }}
+                        >
+                            <View style={styles.centeredView}>
+                                <View style={styles.modalView}>
+                                    <ScrollView style={styles.scrollView}>
+                                        <View>
+                                            <View style={styles.schoolList}>
+                                                <SelectList
+                                                    key="key"
+                                                    setSelected={(val) => setAssignCal({ ...assignCal, school: val })}
+                                                    data={data}
+                                                    save="value"
+                                                />
+                                            </View>
+                                            <View style={styles.container}>
+                                                <Calendar
+                                                    minDate={Date()}
+                                                    monthFormat={"MMMM yyyy"}
+                                                    markedDates={markedDates}
+                                                    markingType="period"
+                                                    hideExtraDays={true}
+                                                    hideDayNames={true}
+                                                    onDayPress={onDayPress}
+                                                />
+                                            </View>
                                         </View>
-                                        <View style={styles.container}>
-                                            <Calendar
-                                                minDate={Date()}
-                                                monthFormat={"MMMM yyyy"}
-                                                markedDates={markedDates}
-                                                markingType="period"
-                                                hideExtraDays={true}
-                                                hideDayNames={true}
-                                                onDayPress={onDayPress}
-                                            />
-                                        </View>
-                                    </View>
-                                    <Pressable
-                                        style={[styles.button, styles.buttonOpen]}
-                                        onPress={handleCreate}>
-                                        <Text style={styles.textStyle}>Create</Text>
-                                    </Pressable>
-                                    <Pressable
-                                        style={[styles.button, styles.buttonClose]}
-                                        onPress={() => {
-                                            setModalVisible(!modalVisible);
-                                        }}>
-                                        <Text style={styles.textStyle}>Don't Create !!</Text>
-                                    </Pressable>
-                                </ScrollView>
+                                        <Pressable
+                                            style={[styles.button, styles.buttonOpen]}
+                                            onPress={handleCreate}>
+                                            <Text style={styles.textStyle}>Create</Text>
+                                        </Pressable>
+                                        <Pressable
+                                            style={[styles.button, styles.buttonClose]}
+                                            onPress={() => {
+                                                setModalVisible(!modalVisible);
+                                            }}>
+                                            <Text style={styles.textStyle}>Don't Create !!</Text>
+                                        </Pressable>
+                                    </ScrollView>
+                                </View>
                             </View>
-                        </View>
-                    </Modal>
-                </View>
-                {assignSlot.length > 0 && assignSlot.map((item) => {
-                    return (
-                        <View style={{
-                            alignItems: 'center',
-                            flexDirection: 'row',
-                            justifyContent: 'space-between'
-                        }}>
-                            <View style={{ flexDirection: 'column' }}>
-                                <Text>{item.school}</Text>
-                                <Text>{item.startDate} to {item.endDate}</Text>
+                        </Modal>
+                    </View>
+                    {assignSlot.length > 0 && assignSlot.map((item) => {
+                        return (
+                            <View style={{
+                                alignItems: 'center',
+                                flexDirection: 'row',
+                                justifyContent: 'space-between'
+                            }}>
+                                <View style={{ flexDirection: 'column' }}>
+                                    <Text>{item.school}</Text>
+                                    <Text>{item.startDate} to {item.endDate}</Text>
+                                </View>
+                                <Pressable
+                                    style={[styles.agendaButton, styles.buttonClose]}
+                                    onPress={() => {
+                                        setAssignSlot(assignSlot.filter((slot) => slot.startDate !== item.startDate));
+                                    }}>
+                                    <Text style={styles.agendaCrossBtn}>X</Text>
+                                </Pressable>
                             </View>
-                            <Pressable
-                                style={[styles.agendaButton, styles.buttonClose]}
-                                onPress={() => {
-                                    setAssignSlot(assignSlot.filter((slot) => slot.startDate !== item.startDate));
-                                }}>
-                                <Text style={styles.agendaCrossBtn}>X</Text>
-                            </Pressable>
-                        </View>
-                    );
-                })}
-                <Text style={styles.label}>Tennis Club</Text>
-                <TextInput
-                    style={styles.input}
-                    onChangeText={(e) => setCoachData({ ...coachData, tennis_club: e })}
-                    value={coachData.tennis_club}
-                />
-                <Text style={styles.label}>Favourite Pro Player</Text>
-                <TextInput
-                    style={styles.input}
-                    onChangeText={(e) => setCoachData({ ...coachData, favorite_pro_player: e })}
-                    value={coachData.favorite_pro_player}
-                />
-                <Text style={styles.label}>Handed</Text>
-                <TextInput
-                    style={styles.input}
-                    onChangeText={(e) => setCoachData({ ...coachData, handed: e })}
-                    value={coachData.handed}
-                />
-                <Text style={styles.label}>Favourite Drill</Text>
-                <TextInput
-                    style={styles.input}
-                    onChangeText={(e) => setCoachData({ ...coachData, favorite_drill: e })}
-                    value={coachData.favorite_drill}
-                />
-                <Button
-                    title="Submit"
-                    color="#000"
-                    style={{ marginTop: 40, marginBottom: 40 }}
-                    onPress={handleSignUp}
-                />
-            </ScrollView>
-        </SafeAreaView>
+                        );
+                    })}
+                    <Text style={styles.label}>Tennis Club</Text>
+                    <TextInput
+                        style={styles.input}
+                        onChangeText={(e) => setCoachData({ ...coachData, tennis_club: e })}
+                        value={coachData.tennis_club}
+                    />
+                    <Text style={styles.label}>Favourite Pro Player</Text>
+                    <TextInput
+                        style={styles.input}
+                        onChangeText={(e) => setCoachData({ ...coachData, favorite_pro_player: e })}
+                        value={coachData.favorite_pro_player}
+                    />
+                    <Text style={styles.label}>Handed</Text>
+                    <TextInput
+                        style={styles.input}
+                        onChangeText={(e) => setCoachData({ ...coachData, handed: e })}
+                        value={coachData.handed}
+                    />
+                    <Text style={styles.label}>Favourite Drill</Text>
+                    <TextInput
+                        style={styles.input}
+                        onChangeText={(e) => setCoachData({ ...coachData, favorite_drill: e })}
+                        value={coachData.favorite_drill}
+                    />
+
+                    <TouchableOpacity onPress={handleSignUp}>
+                        <Text style={styles.btnWrapper}>Submit</Text>
+                    </TouchableOpacity>
+                </ScrollView>
+            </SafeAreaView>
+        </LinearGradient>
     );
 }
 
 const styles = StyleSheet.create({
     wrapper: {
-        padding: 20,
+        padding: 15,
+        marginTop: 60,
+    },
+    heading: {
+        textAlign: "center",
+        fontSize: 18,
+        padding: 20
+    },
+    linearGradient: {
+        flex: 1,
+    },
+    btnWrapper: {
+        borderColor: "#fff",
+        paddingTop: 15,
+        paddingBottom: 15,
+        backgroundColor: "#ff8400",
+        borderWidth: 3,
+        borderRadius: 10,
+        textAlign: "center",
+        fontWeight: "700",
+        marginTop: 10,
     },
     scrollView: {
-        marginHorizontal: 20,
+        marginHorizontal: 10
     },
     input: {
         borderWidth: 1,
@@ -317,7 +339,7 @@ const styles = StyleSheet.create({
         marginBottom: 10
     },
     label: {
-        fontSize: 18,
+        fontSize: 16,
         color: '#000',
         paddingTop: 10,
         paddingBottom: 0
@@ -365,14 +387,15 @@ const styles = StyleSheet.create({
         fontSize: 15,
     },
     buttonOpen: {
-        backgroundColor: '#2196F3'
+        backgroundColor: '#ed7d31'
     },
     plusButton: {
         borderRadius: 50,
         elevation: 2,
         width: 30,
         height: 30,
-        alignItems: 'center'
+        alignItems: 'center',
+        backgroundColor: '#ed7d31'
     },
     textPlus: {
         fontSize: 20,

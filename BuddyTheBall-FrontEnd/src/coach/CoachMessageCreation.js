@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import { useSelector } from "react-redux";
 import send_button from '../assets/send_button.png';
-import { SafeAreaView, Text, TextInput, StyleSheet, View, TouchableOpacity, Image } from 'react-native';
+import { SafeAreaView, Text, TextInput, StyleSheet, View, TouchableOpacity, Image, ScrollView } from 'react-native';
 import { SelectList } from 'react-native-dropdown-select-list';
 import { GetCustomersOfParticularCoachService } from '../services/CoachService';
 import { RadioButton } from 'react-native-paper';
 import { CreateAndUpdateMessageService } from '../services/CustomerService';
+import LinearGradient from 'react-native-linear-gradient';
 
 export default function CoachMessageCreation({ navigation, route }) {
     const state = useSelector((state) => state);
@@ -46,54 +47,75 @@ export default function CoachMessageCreation({ navigation, route }) {
     };
 
     return (
-        <SafeAreaView style={styles.wrapper}>
-            <View style={{ display: 'flex', justifyContent: 'space-between', flexDirection: 'row' }}>
-                <RadioButton.Group onValueChange={newValue => setReceiverRole(newValue)} value={receiverRole}>
-                    <View>
-                        <Text>Customer</Text>
-                        <RadioButton value="customer" />
+        <LinearGradient colors={['#BCD7EF', '#D1E3AA', '#E3EE68', '#E1DA00']} style={styles.linearGradient}>
+            <SafeAreaView style={styles.wrapper}>
+                <ScrollView style={styles.scrollView}>
+                    <View style={{ display: 'flex', justifyContent: 'space-between', flexDirection: 'row' }}>
+                        <RadioButton.Group onValueChange={newValue => setReceiverRole(newValue)} value={receiverRole}>
+                            {/* <View>
+                            <Text>Customer</Text>
+                            <RadioButton value="customer" />
+                        </View>
+                        <View>
+                            <Text>Super Admin</Text>
+                            <RadioButton value="superadmin" />
+                        </View> */}
+
+                            <RadioButton.Item label="Customer" value="customer" style={styles.radioLabel}/>
+                            <RadioButton.Item label="Super Admin" value="Super Admin" style={styles.radioLabel}/>
+                        </RadioButton.Group>
                     </View>
-                    <View>
-                        <Text>Super Admin</Text>
-                        <RadioButton value="superadmin" />
+                    <Text style={styles.label}>Message To</Text>
+                    {receiverRole === 'customer' ?
+                        <SelectList
+                            setSelected={(val) => setReceiverId(val)}
+                            data={customers}
+                            save="key"
+                        />
+                        :
+                        <TextInput
+                            placeholderTextColor="#000"
+                            style={styles.input}
+                            value="Super Admin"
+                            aria-disabled
+                        />
+                    }
+                    <Text style={styles.label}>Message</Text>
+                    <View style={styles.commentwrap}>
+                        <TextInput
+                            placeholderTextColor="#000"
+                            style={styles.input}
+                            onChangeText={(e) => { setMessage(e); }}
+                            value={message}
+                            placeholder="Add a comment..."
+                        />
+                        <TouchableOpacity onPress={handleSendMessage} style={styles.photoimg} >
+                            <Image source={send_button} style={{ width: 30, height: 30 }} />
+                        </TouchableOpacity>
                     </View>
-                </RadioButton.Group>
-            </View>
-            <Text style={styles.label}>Message To</Text>
-            {receiverRole === 'customer' ?
-                <SelectList
-                    setSelected={(val) => setReceiverId(val)}
-                    data={customers}
-                    save="key"
-                />
-                :
-                <TextInput
-                    placeholderTextColor="#000"
-                    style={styles.input}
-                    value="Super Admin"
-                    aria-disabled
-                />
-            }
-            <Text style={styles.label}>Message</Text>
-            <View style={styles.commentwrap}>
-                <TextInput
-                    placeholderTextColor="#000"
-                    style={styles.input}
-                    onChangeText={(e) => { setMessage(e); }}
-                    value={message}
-                    placeholder="Add a comment..."
-                />
-                <TouchableOpacity onPress={handleSendMessage} style={styles.photoimg} >
-                    <Image source={send_button} style={{ width: 30, height: 30 }} />
+                </ScrollView>
+                <TouchableOpacity>
+                    <Text style={styles.backbtn}>Back</Text>
                 </TouchableOpacity>
-            </View>
-        </SafeAreaView >
+            </SafeAreaView >
+        </LinearGradient>
     );
 }
 
 const styles = StyleSheet.create({
     wrapper: {
-        padding: 20,
+        flex: 2,
+        paddingLeft: 15,
+        paddingRight: 15,
+        position: 'relative',
+        marginTop: 60,
+    },
+    linearGradient: {
+        flex: 1,
+    },
+    radioLabel: {
+        fontSize: 14,
+        color: '#000'
     },
     input: {
         borderWidth: 1,
@@ -115,5 +137,22 @@ const styles = StyleSheet.create({
         position: 'absolute',
         top: 15,
         right: 10,
-    }
+    },
+    backbtn: {
+        borderColor: "#fff",
+        paddingTop: 10,
+        paddingBottom: 10,
+        backgroundColor: "#ff8400",
+        borderWidth: 3,
+        borderRadius: 10,
+        textAlign: "center",
+        fontWeight: "700",
+        marginTop: 5,
+        display: 'flex',
+        right: 0,
+        width: 100,
+        bottom: 0,
+        position: 'absolute',
+        marginBottom: 10
+    },
 });

@@ -5,7 +5,7 @@
  * @format
  * @flow strict-local
  */
-
+import { View } from 'react-native';
 import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
@@ -43,50 +43,81 @@ import SuperAdminSettings from './src/superadmin/SuperAdminSettings.js';
 import SuperAdminMessages from './src/superadmin/SuperAdminMessages';
 import SuperAdminMessageCreation from './src/superadmin/SuperAdminMessageCreation';
 import SuperAdminParticularMessage from './src/superadmin/SuperAdminParticularMessage';
+import LinearGradient from 'react-native-linear-gradient';
+import { StyleSheet } from "react-native";
 
 const Stack = createNativeStackNavigator();
 const App = () => {
+  const headerStyle = {
+    // headerStyle: { elevation: 0,backgroundColor: 'transparent'},
+
+    // headerTransparent: true,
+
+    headerStyle: {
+      backgroundColor: 'transparent',
+      elevation: 0,
+      shadowOpacity: 0,
+      borderBottomWidth: 0,
+    }
+
+
+  }
   return (
-    <Provider store={store}>
-      <NavigationContainer>
-        <Stack.Navigator initialRouteName="SignIn">
-          <Stack.Screen name="SignIn" component={SignIn} />
-          <Stack.Screen name="Customer Creation" component={CustomerCreation} />
-          <Stack.Screen name="Customer Dashboard" options={{ headerBackVisible: false }} component={CustomerDashboard} />
-          <Stack.Screen name="Customer Photos" component={CustomerPhotos} />
-          <Stack.Screen name="Customer Particular Photo" component={CustomerParticularPhoto} />
-          <Stack.Screen name="Customer Messages" component={CustomerMessages} />
-          <Stack.Screen name="Customer Message Creation" component={CustomerMessageCreation} />
-          <Stack.Screen name="Customer Particular Message" component={CustomerParticularMessage} />
-          <Stack.Screen name="Coach Creation" component={CoachCreation} />
-          <Stack.Screen name="Coach Dashboard" options={{ headerBackVisible: false }} component={CoachDashboard} />
-          <Stack.Screen name="Coach Schools Photos" component={CoachSchoolsPhotos} />
-          <Stack.Screen name="Coach Photo Creation" component={CoachPhotoCreation} />
-          <Stack.Screen name="Coach Particular School Photos" component={CoachParticularSchoolPhotos} />
-          <Stack.Screen name="Coach Calendar" component={CoachCalendar} />
-          <Stack.Screen name="Coach Messages" component={CoachMessages} />
-          <Stack.Screen name="Coach Message Creation" component={CoachMessageCreation} />
-          <Stack.Screen name="Coach Particular Message" component={CoachParticularMessage} />
-          <Stack.Screen name="Coach School List" component={CoachSchoolList} />
-          <Stack.Screen name="Coach Particular School Students" component={CoachParticularSchoolStudents} />
-          <Stack.Screen name="SuperAdmin Dashboard" options={{ headerBackVisible: false }} component={SuperAdminDashboard} />
-          <Stack.Screen name="SuperAdmin Billing" component={SuperAdminBilling} />
-          <Stack.Screen name="SuperAdmin Coaches" component={SuperAdminCoaches} />
-          <Stack.Screen name="SuperAdmin Coach Description" component={SuperAdminCoachDescription} />
-          <Stack.Screen name="SuperAdmin Schools" component={SuperAdminSchools} />
-          <Stack.Screen name="SuperAdmin School Description" component={SuperAdminSchoolDescription} />
-          <Stack.Screen name="SuperAdmin School Creation" component={SuperAdminSchoolCreation} />
-          <Stack.Screen name="SuperAdmin Photos" component={SuperAdminPhotos} />
-          <Stack.Screen name="SuperAdmin Students" component={SuperAdminStudents} />
-          <Stack.Screen name="SuperAdmin Settings" component={SuperAdminSettings} />
-          <Stack.Screen name="SuperAdmin Messages" component={SuperAdminMessages} />
-          <Stack.Screen name="SuperAdmin Message Creation" component={SuperAdminMessageCreation} />
-          <Stack.Screen name="SuperAdmin Particular Message" component={SuperAdminParticularMessage} />
-        </Stack.Navigator>
-      </NavigationContainer>
-    </Provider>
+    <LinearGradient colors={['#BCD7EF', '#D1E3AA', '#E3EE68', '#E1DA00']} style={styles.linearGradient}>
+
+      <Provider store={store}>
+        <NavigationContainer>
+          <Stack.Navigator initialRouteName="SignIn" screenOptions={{
+            headerShown: true,
+            headerTransparent: true,
+            headerTitleAlign: 'center',
+            headerTitleStyle: {
+              fontSize: 16,
+              textTransform: 'uppercase',
+            },
+          }}>
+            <Stack.Screen name="SignIn" component={SignIn} style={{ marginTop: 40 }} />
+            <Stack.Screen name="Customer Creation" component={CustomerCreation} />
+            <Stack.Screen name="Customer Dashboard" options={{ headerBackVisible: false, headerTitleAlign: 'center' }} component={CustomerDashboard} />
+            <Stack.Screen name="Customer Photos" component={CustomerPhotos} />
+            <Stack.Screen name="Customer Particular Photo" component={CustomerParticularPhoto} />
+            <Stack.Screen name="Customer Messages" component={CustomerMessages} />
+            <Stack.Screen name="Customer Message Creation" component={CustomerMessageCreation} />
+            <Stack.Screen name="Customer Particular Message" component={CustomerParticularMessage} />
+            <Stack.Screen name="Coach Creation" component={CoachCreation} />
+            <Stack.Screen name="Coach Dashboard" options={{ headerBackVisible: false, headerTitleAlign: 'center' }} component={CoachDashboard} />
+            <Stack.Screen name="Coach Schools Photos" component={CoachSchoolsPhotos} />
+            <Stack.Screen name="Coach Photo Creation" component={CoachPhotoCreation} />
+            <Stack.Screen name="Coach Particular School Photos" component={CoachParticularSchoolPhotos} />
+            <Stack.Screen name="Coach Calendar" component={CoachCalendar} />
+            <Stack.Screen name="Coach Messages" component={CoachMessages} />
+            <Stack.Screen name="Coach Message Creation" component={CoachMessageCreation} />
+            <Stack.Screen name="Coach Particular Message" component={CoachParticularMessage} />
+            <Stack.Screen name="Coach School List" component={CoachSchoolList} />
+            <Stack.Screen name="Coach Particular School Students" component={CoachParticularSchoolStudents} />
+            <Stack.Screen name="SuperAdmin Dashboard" options={{  headerTitleAlign: 'center' }} component={SuperAdminDashboard} />
+            <Stack.Screen name="SuperAdmin Billing" component={SuperAdminBilling} />
+            <Stack.Screen name="SuperAdmin Coaches" component={SuperAdminCoaches} />
+            <Stack.Screen name="SuperAdmin Coach Description" component={SuperAdminCoachDescription} />
+            <Stack.Screen name="SuperAdmin Schools" component={SuperAdminSchools} />
+            <Stack.Screen name="SuperAdmin School Description" component={SuperAdminSchoolDescription} />
+            <Stack.Screen name="SuperAdmin School Creation" component={SuperAdminSchoolCreation} />
+            <Stack.Screen name="SuperAdmin Photos" component={SuperAdminPhotos} />
+            <Stack.Screen name="SuperAdmin Students" component={SuperAdminStudents} />
+            <Stack.Screen name="SuperAdmin Settings" options={{ headerBackVisible: false, headerTitleAlign: 'center' }} component={SuperAdminSettings} />
+            <Stack.Screen name="SuperAdmin Messages" component={SuperAdminMessages} />
+            <Stack.Screen name="SuperAdmin Message Creation" component={SuperAdminMessageCreation} />
+            <Stack.Screen name="SuperAdmin Particular Message" component={SuperAdminParticularMessage} />
+          </Stack.Navigator>
+        </NavigationContainer>
+      </Provider>
+    </LinearGradient>
   );
 };
 
-
+const styles = StyleSheet.create({
+  linearGradient: {
+    flex: 1,
+  },
+});
 export default App;

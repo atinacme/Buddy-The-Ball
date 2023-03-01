@@ -5,6 +5,8 @@ import message from '../assets/message.png';
 import { SafeAreaView, Text, Image, View, StyleSheet, TouchableOpacity } from 'react-native';
 import { GetMessagesBySenderIdService } from '../services/CustomerService';
 import moment from 'moment';
+import LinearGradient from 'react-native-linear-gradient';
+
 
 export default function CoachMessages({ navigation }) {
     const state = useSelector((state) => state);
@@ -23,7 +25,8 @@ export default function CoachMessages({ navigation }) {
     }, []);
 
     return (
-        <SafeAreaView>
+        <LinearGradient colors={['#BCD7EF', '#D1E3AA', '#E3EE68', '#E1DA00']} style={styles.linearGradient}>
+        <SafeAreaView style={styles.wrapper}>
             {senderMessages.map(item => {
                 return (
                     <TouchableOpacity key={item._id} onPress={() => navigation.navigate("Coach Particular Message", { messages: item })}>
@@ -56,11 +59,51 @@ export default function CoachMessages({ navigation }) {
                     <Image resizeMode={"contain"} source={message} />
                 </View>
             </TouchableOpacity>
+            <View style={styles.bckcta}>
+            <TouchableOpacity>
+                    <Text style={styles.backbtn}>Back</Text>
+                </TouchableOpacity>
+                </View>
         </SafeAreaView>
+        </LinearGradient>
     );
 }
 
 const styles = StyleSheet.create({
+    wrapper: {
+        flex: 2,
+        paddingLeft: 15,
+        paddingRight: 15,
+        position: 'relative',
+        marginBottom: 56,
+        marginTop: 60
+    },
+    bckcta: {
+        position: 'absolute',
+        bottom: 0,
+        right: 15
+    },
+    backbtn: {
+        borderColor: "#fff",
+        paddingTop: 10,
+        paddingBottom: 10,
+        backgroundColor: "#ff8400",
+        borderWidth: 3,
+        borderRadius: 10,
+        textAlign: "center",
+        fontWeight: "700",
+        marginTop: 5,
+        display: 'flex',
+        right: 0,
+        width: 100,
+        bottom: 0,
+        marginBottom: 10,
+        justifyContent: 'flex-end'
+
+    },
+    linearGradient: {
+        flex: 1,
+    },
     messagewrap: {
         display: 'flex',
         flexDirection: 'row',
@@ -89,15 +132,20 @@ const styles = StyleSheet.create({
         fontFamily: 'LemonJuice'
     },
     messageImageHolder: {
-        left: '70%',
+        position: 'relative',
+        left: 0,
+        right: 0,
         top: '400%',
         width: 80,
         height: 80,
         aspectRatio: 1 / 1,
-        backgroundColor: '#d8d8d8',
+        backgroundColor: '#ffc000',
         padding: 20,
         borderColor: '#d8d8d8',
         borderRadius: 50,
-        overflow: 'hidden'
-    }
+        overflow: 'hidden',
+        marginLeft: 'auto',
+        marginRight: 'auto',
+        textAlign: 'center'
+    },
 });

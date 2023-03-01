@@ -6,6 +6,8 @@ import moment from 'moment';
 import { useSelector } from "react-redux";
 import { GetCustomerParticularPhotoService, UpdateCustomerPhotosOnMessageService } from '../services/CustomerService';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import LinearGradient from 'react-native-linear-gradient';
+
 
 export default function CustomerParticularPhoto({ navigation, route }) {
     const state = useSelector((state) => state);
@@ -43,6 +45,7 @@ export default function CustomerParticularPhoto({ navigation, route }) {
     };
 
     return (
+        <LinearGradient colors={['#BCD7EF', '#D1E3AA', '#E3EE68', '#E1DA00']} style={styles.linearGradient}>
         <SafeAreaView style={styles.container}>
             <ScrollView style={styles.scrollView}>
                 {onLoadMessages.length > 0 && onLoadMessages.map(item => {
@@ -79,6 +82,7 @@ export default function CustomerParticularPhoto({ navigation, route }) {
                 </TouchableOpacity>
             </View>
         </SafeAreaView>
+        </LinearGradient>
     );
 }
 
@@ -87,11 +91,15 @@ const styles = StyleSheet.create({
         flex: 1,
         paddingTop: StatusBar.currentHeight,
     },
+    linearGradient: {
+        flex: 1,
+        borderRadius: 5
+      },
     pro_img: {
         width: 40,
         height: 40,
         borderRadius: 50,
-        overflow: 'hidden'
+        overflow: 'hidden',
     },
     scrollView: {
         marginHorizontal: 20,
@@ -134,5 +142,6 @@ const styles = StyleSheet.create({
         position: 'absolute',
         top: 30,
         right: 10,
+        marginRight: 10
     }
 });
