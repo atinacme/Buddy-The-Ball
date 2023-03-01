@@ -5,6 +5,7 @@ const Role = db.role;
 const Customer = db.customer;
 const School = db.school;
 const Coach = db.coach;
+const RegionalManager = db.regionalmanager;
 
 var jwt = require("jsonwebtoken");
 var bcrypt = require("bcryptjs");
@@ -132,6 +133,22 @@ exports.signup = (req, res) => {
                     }
                 });
             }
+            if (req.body.roles[0] === "regionalmanager") {
+                const regionalmanager = new RegionalManager({
+                    user_id: user._id,
+                    email: req.body.email,
+                    password: req.body.password,
+                    regional_manager_name: req.body.regional_manager_name,
+                    assigned_region: req.body.assigned_region
+                });
+
+                regionalmanager.save((err, regionalmanager) => {
+                    if (err) {
+                        res.status(500).send({ message: err });
+                        return;
+                    }
+                });
+            }
             Role.find(
                 {
                     name: { $in: req.body.roles }
@@ -247,6 +264,25 @@ exports.signin = (req, res) => {
                             roles: authorities,
                             status: 200,
                             customer_data: customer_data,
+                            accessToken: token
+                        });
+                    });
+            } else if (authorities[0] === "ROLE_REGIONALMANAGER") {
+                RegionalManager.findOne({
+                    email: req.body.email
+                })
+                    // .populate("school coach", "-__v")
+                    .exec((err, regionalmanager_data) => {
+                        if (err) {
+                            res.status(500).send({ message: err });
+                        }
+                        return res.status(200).send({
+                            id: user._id,
+                            username: user.username,
+                            email: user.email,
+                            roles: authorities,
+                            status: 200,
+                            regionalmanager_data: regionalmanager_data,
                             accessToken: token
                         });
                     });

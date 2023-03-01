@@ -46,60 +46,11 @@ export default function CoachSchoolsPhotos({ navigation }) {
                                         </View>
                                     </View>
                                 </ImageBackground>
-
-                                <ImageBackground source={kids} style={styles.cardBackground}>
-                                    <View style={styles.cardContent}>
-                                        <View style={styles.carddes}>
-                                            <Text style={styles.cardSubtitle}>Yesterday</Text>
-                                            <View style={styles.cardText}>
-                                                <Text style={styles.title}>{item.school_name}</Text>
-                                                <Text style={styles.cardimg}>
-                                                    <Image source={galley} style={{ width: 20, height: 20 }} />
-                                                    <Text style={styles.num}>100</Text>
-                                                    <Image source={profile} style={{ width: 20, height: 20 }} />
-                                                    <Text style={styles.num}>2</Text>
-                                                </Text>
-                                            </View>
-                                        </View>
-                                    </View>
-                                </ImageBackground>
-                                <ImageBackground source={kids} style={styles.cardBackground}>
-                                    <View style={styles.cardContent}>
-                                        <View style={styles.carddes}>
-                                            <Text style={styles.cardSubtitle}>Yesterday</Text>
-                                            <View style={styles.cardText}>
-                                                <Text style={styles.title}>{item.school_name}</Text>
-                                                <Text style={styles.cardimg}>
-                                                    <Image source={galley} style={{ width: 20, height: 20 }} />
-                                                    <Text style={styles.num}>100</Text>
-                                                    <Image source={profile} style={{ width: 20, height: 20 }} />
-                                                    <Text style={styles.num}>2</Text>
-                                                </Text>
-                                            </View>
-                                        </View>
-                                    </View>
-                                </ImageBackground>
-                                <ImageBackground source={kids} style={styles.cardBackground}>
-                                    <View style={styles.cardContent}>
-                                        <View style={styles.carddes}>
-                                            <Text style={styles.cardSubtitle}>Yesterday</Text>
-                                            <View style={styles.cardText}>
-                                                <Text style={styles.title}>{item.school_name}</Text>
-                                                <Text style={styles.cardimg}>
-                                                    <Image source={galley} style={{ width: 20, height: 20 }} />
-                                                    <Text style={styles.num}>100</Text>
-                                                    <Image source={profile} style={{ width: 20, height: 20 }} />
-                                                    <Text style={styles.num}>2</Text>
-                                                </Text>
-                                            </View>
-                                        </View>
-                                    </View>
-                                </ImageBackground>
                             </TouchableOpacity>
                         );
                     })}
                 </ScrollView>
-                 <TouchableOpacity>
+                <TouchableOpacity onPress={() => navigation.navigate("Coach Dashboard")}>
                     <Text style={styles.backbtn}>Back</Text>
                 </TouchableOpacity>
             </SafeAreaView>
@@ -177,14 +128,14 @@ const styles = StyleSheet.create({
         fontSize: 14
         // fontFamily: 'LemonJuice'
     },
-   
+
     kidimg: {
         position: 'absolute',
         top: 0,
         left: 15,
         width: '100%'
     },
-  
+
     cardBackground: {
         width: '100%',
         height: 200,

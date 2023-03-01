@@ -67,6 +67,16 @@ function initial() {
 
                 console.log("added 'superadmin' to roles collection");
             });
+
+            new Role({
+                name: "regionalmanager"
+            }).save(err => {
+                if (err) {
+                    console.log("error", err);
+                }
+
+                console.log("added 'regionalmanager' to roles collection");
+            });
         }
     });
 }
@@ -87,6 +97,7 @@ require('./app/routes/photos.routes')(app);
 require('./app/routes/messages.routes')(app);
 require('./app/routes/calendar.routes')(app);
 require('./app/routes/attendance.routes')(app);
+require('./app/routes/regionalmanager.routes')(app);
 
 // set port, listen for requests
 const PORT = process.env.PORT || 8080;

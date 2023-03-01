@@ -61,8 +61,8 @@ export default function CoachMessageCreation({ navigation, route }) {
                             <RadioButton value="superadmin" />
                         </View> */}
 
-                            <RadioButton.Item label="Customer" value="customer" style={styles.radioLabel}/>
-                            <RadioButton.Item label="Super Admin" value="Super Admin" style={styles.radioLabel}/>
+                            <RadioButton.Item label="Customer" value="customer" style={styles.radioLabel} />
+                            <RadioButton.Item label="Super Admin" value="Super Admin" style={styles.radioLabel} />
                         </RadioButton.Group>
                     </View>
                     <Text style={styles.label}>Message To</Text>
@@ -94,7 +94,7 @@ export default function CoachMessageCreation({ navigation, route }) {
                         </TouchableOpacity>
                     </View>
                 </ScrollView>
-                <TouchableOpacity>
+                <TouchableOpacity onPress={() => navigation.navigate("Coach Messages")}>
                     <Text style={styles.backbtn}>Back</Text>
                 </TouchableOpacity>
             </SafeAreaView >

@@ -1,22 +1,21 @@
 import React, { useEffect, useState } from 'react';
 import { SafeAreaView, StyleSheet, View, Button, TouchableOpacity, ScrollView, Text } from 'react-native';
 import { DataTable } from 'react-native-paper';
-import { GetSchoolsService } from '../services/SchoolService';
 import LinearGradient from 'react-native-linear-gradient';
+import { GetAllRegionalManagersService } from '../services/RegionalMAnagerService';
 
-
-export default function SuperAdminSchools({ navigation }) {
-    const [schools, setSchools] = useState([]);
+export default function SuperAdminRM({ navigation }) {
+    const [regionalManagers, setRegionalManagers] = useState([]);
 
     useEffect(() => {
         try {
-            const getSchools = async () => {
-                const result = await GetSchoolsService();
+            const getRegionalManagers = async () => {
+                const result = await GetAllRegionalManagersService();
                 if (result) {
-                    setSchools(result);
+                    setRegionalManagers(result);
                 }
             };
-            getSchools();
+            getRegionalManagers();
         } catch (e) { }
     }, []);
 
@@ -27,17 +26,15 @@ export default function SuperAdminSchools({ navigation }) {
                     <View>
                         <DataTable style={styles.container}>
                             <DataTable.Header style={styles.tableHeader}>
-                                <DataTable.Title>SCHOOL</DataTable.Title>
-                                <DataTable.Title>TERRITORY</DataTable.Title>
-                                <DataTable.Title>ASSIGNED DAY</DataTable.Title>
+                                <DataTable.Title>REGIONAL MANAGER NAME</DataTable.Title>
+                                <DataTable.Title>ASSIGNED REGION</DataTable.Title>
                             </DataTable.Header>
-                            {schools.map(item => {
+                            {regionalManagers.map(item => {
                                 return (
-                                    <TouchableOpacity key={item._id} onPress={() => navigation.navigate("SuperAdmin School Description", { school: item })}>
+                                    <TouchableOpacity key={item._id} onPress={() => navigation.navigate("SuperAdmin RM Description", { regional_manager: item })}>
                                         <DataTable.Row>
-                                            <DataTable.Cell>{item.school_name}</DataTable.Cell>
-                                            <DataTable.Cell>{item.territory}</DataTable.Cell>
-                                            <DataTable.Cell>{item.assigned_day}</DataTable.Cell>
+                                            <DataTable.Cell>{item.regional_manager_name}</DataTable.Cell>
+                                            <DataTable.Cell>{item.assigned_region}</DataTable.Cell>
                                         </DataTable.Row>
                                     </TouchableOpacity>
                                 );
@@ -47,8 +44,8 @@ export default function SuperAdminSchools({ navigation }) {
 
                 </ScrollView>
                 <View style={styles.adminbtn}>
-                    <TouchableOpacity onPress={() => navigation.navigate("SuperAdmin School Creation")}>
-                        <Text style={styles.coach_cta}>School Creation</Text>
+                    <TouchableOpacity onPress={() => navigation.navigate("SuperAdmin RM Creation")}>
+                        <Text style={styles.coach_cta}>Regional Manager Creation</Text>
                     </TouchableOpacity>
                     <TouchableOpacity onPress={() => navigation.navigate("SuperAdmin Dashboard")}>
                         <Text style={styles.backbtn}>Back</Text>

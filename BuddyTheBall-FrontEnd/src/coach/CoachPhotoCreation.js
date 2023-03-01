@@ -85,28 +85,28 @@ export default function CoachPhotoCreation({ navigation, route }) {
                         save="key"
                     />
                     <View style={styles.btnWrapper}>
-                    <View>
-                        {/* <Button onPress={openGallery} title='upload' /> */}
-                        <TouchableOpacity onPress={openGallery}>
-                            <Text style={styles.uploadcta}>upload</Text>
-                        </TouchableOpacity>
-                        {selectedFile !== null && selectedFile.map((ls, index) => {
-                            return (
-                                <View key={index}>
-                                    <Image source={{ uri: ls.path }} style={{ height: 300, width: 300, marginTop: 20, marginBottom: 20 }} />
-                                </View>
-                            );
-                        })}
-                    </View>
+                        <View>
+                            {/* <Button onPress={openGallery} title='upload' /> */}
+                            <TouchableOpacity onPress={openGallery}>
+                                <Text style={styles.uploadcta}>upload</Text>
+                            </TouchableOpacity>
+                            {selectedFile !== null && selectedFile.map((ls, index) => {
+                                return (
+                                    <View key={index}>
+                                        <Image source={{ uri: ls.path }} style={{ height: 300, width: 300, marginTop: 20, marginBottom: 20 }} />
+                                    </View>
+                                );
+                            })}
+                        </View>
 
-                    <View>
-                        <TouchableOpacity onPress={handleAddPhoto} >
-                            <Text style={styles.submitcta}>Submit</Text>
-                        </TouchableOpacity>
-                    </View>
+                        <View>
+                            <TouchableOpacity onPress={handleAddPhoto} >
+                                <Text style={styles.submitcta}>Submit</Text>
+                            </TouchableOpacity>
+                        </View>
                     </View>
                 </ScrollView>
-                <TouchableOpacity>
+                <TouchableOpacity onPress={() => navigation.navigate("Coach Schools Photos")}>
                     <Text style={styles.backbtn}>Back</Text>
                 </TouchableOpacity>
             </SafeAreaView>

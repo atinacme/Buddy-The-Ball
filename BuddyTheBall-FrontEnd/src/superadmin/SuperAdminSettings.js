@@ -1,21 +1,21 @@
-import React from 'react'
-import { Text, View, StyleSheet, TouchableOpacity, SafeAreaView } from 'react-native'
+import React from 'react';
+import { Text, View, StyleSheet, TouchableOpacity, SafeAreaView } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 
 
-export default function SuperAdminSettings() {
+export default function SuperAdminSettings({ navigation }) {
     return (
         <LinearGradient colors={['#BCD7EF', '#D1E3AA', '#E3EE68', '#E1DA00']} style={styles.linearGradient}>
-         <SafeAreaView style={styles.wrapper}>
-        <View>
-            {/* <Text>SuperAdminSettings</Text> */}
-        </View>
-        <TouchableOpacity>
+            <SafeAreaView style={styles.wrapper}>
+                <View>
+                    {/* <Text>SuperAdminSettings</Text> */}
+                </View>
+                <TouchableOpacity onPress={() => navigation.navigate("SuperAdmin Dashboard")}>
                     <Text style={styles.backbtn}>Back</Text>
                 </TouchableOpacity>
-        </SafeAreaView>
+            </SafeAreaView>
         </LinearGradient>
-    )
+    );
 }
 const styles = StyleSheet.create({
     linearGradient: {

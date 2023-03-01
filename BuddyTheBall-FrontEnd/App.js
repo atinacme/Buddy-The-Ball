@@ -5,7 +5,6 @@
  * @format
  * @flow strict-local
  */
-import { View } from 'react-native';
 import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
@@ -43,6 +42,9 @@ import SuperAdminSettings from './src/superadmin/SuperAdminSettings.js';
 import SuperAdminMessages from './src/superadmin/SuperAdminMessages';
 import SuperAdminMessageCreation from './src/superadmin/SuperAdminMessageCreation';
 import SuperAdminParticularMessage from './src/superadmin/SuperAdminParticularMessage';
+import SuperAdminRM from './src/superadmin/SuperAdminRM';
+import SuperAdminRMCreation from './src/superadmin/SuperAdminRMCreation';
+import SuperAdminRMDescription from './src/superadmin/SuperAdminRMDescription';
 import LinearGradient from 'react-native-linear-gradient';
 import { StyleSheet } from "react-native";
 
@@ -61,10 +63,9 @@ const App = () => {
     }
 
 
-  }
+  };
   return (
     <LinearGradient colors={['#BCD7EF', '#D1E3AA', '#E3EE68', '#E1DA00']} style={styles.linearGradient}>
-
       <Provider store={store}>
         <NavigationContainer>
           <Stack.Navigator initialRouteName="SignIn" screenOptions={{
@@ -95,7 +96,7 @@ const App = () => {
             <Stack.Screen name="Coach Particular Message" component={CoachParticularMessage} />
             <Stack.Screen name="Coach School List" component={CoachSchoolList} />
             <Stack.Screen name="Coach Particular School Students" component={CoachParticularSchoolStudents} />
-            <Stack.Screen name="SuperAdmin Dashboard" options={{  headerTitleAlign: 'center' }} component={SuperAdminDashboard} />
+            <Stack.Screen name="SuperAdmin Dashboard" options={{ headerTitleAlign: 'center' }} component={SuperAdminDashboard} />
             <Stack.Screen name="SuperAdmin Billing" component={SuperAdminBilling} />
             <Stack.Screen name="SuperAdmin Coaches" component={SuperAdminCoaches} />
             <Stack.Screen name="SuperAdmin Coach Description" component={SuperAdminCoachDescription} />
@@ -108,6 +109,9 @@ const App = () => {
             <Stack.Screen name="SuperAdmin Messages" component={SuperAdminMessages} />
             <Stack.Screen name="SuperAdmin Message Creation" component={SuperAdminMessageCreation} />
             <Stack.Screen name="SuperAdmin Particular Message" component={SuperAdminParticularMessage} />
+            <Stack.Screen name="SuperAdmin RM" component={SuperAdminRM} />
+            <Stack.Screen name="SuperAdmin RM Description" component={SuperAdminRMDescription} />
+            <Stack.Screen name="SuperAdmin RM Creation" component={SuperAdminRMCreation} />
           </Stack.Navigator>
         </NavigationContainer>
       </Provider>

@@ -4,7 +4,7 @@ import { GetSchoolsService } from '../services/SchoolService';
 import LinearGradient from 'react-native-linear-gradient';
 
 
-export default function SuperAdminStudents() {
+export default function SuperAdminStudents({ navigation }) {
     const [customers, setCustomers] = useState([]);
     useEffect(() => {
         try {
@@ -19,37 +19,35 @@ export default function SuperAdminStudents() {
     });
     return (
         <LinearGradient colors={['#BCD7EF', '#D1E3AA', '#E3EE68', '#E1DA00']} style={styles.linearGradient}>
-        <SafeAreaView style={styles.wrapper}>
-            <ScrollView>
-                {customers.map(customer => {
-                    return (
-                        <View style={styles.stdWrapper}>
-                            <Text style={styles.title}>{customer.school_name}</Text>
-                            {customer.customers.length > 0 ?
-                                <>
-                                    {customer.customers.map(v => {
-                                        return (
-                                            <View style={styles.stddesc}>
-                                                <Text style={styles.content}>{v.player_name}</Text>
-                                            </View>
-                                        );
-                                    })}
-                                </>
-                                :
-                                <View style={styles.stddesc}>
-                                    <Text style={styles.content}>No Students!!</Text>
-                                </View>
-                            }
-                        
-                          
-                        </View>
-                    );
-                })}
-            </ScrollView>
-            <TouchableOpacity>
+            <SafeAreaView style={styles.wrapper}>
+                <ScrollView>
+                    {customers.map(customer => {
+                        return (
+                            <View style={styles.stdWrapper}>
+                                <Text style={styles.title}>{customer.school_name}</Text>
+                                {customer.customers.length > 0 ?
+                                    <>
+                                        {customer.customers.map(v => {
+                                            return (
+                                                <View style={styles.stddesc}>
+                                                    <Text style={styles.content}>{v.player_name}</Text>
+                                                </View>
+                                            );
+                                        })}
+                                    </>
+                                    :
+                                    <View style={styles.stddesc}>
+                                        <Text style={styles.content}>No Students!!</Text>
+                                    </View>
+                                }
+                            </View>
+                        );
+                    })}
+                </ScrollView>
+                <TouchableOpacity onPress={() => navigation.navigate("SuperAdmin Dashboard")}>
                     <Text style={styles.backbtn}>Back</Text>
                 </TouchableOpacity>
-        </SafeAreaView>
+            </SafeAreaView>
         </LinearGradient>
     );
 }
@@ -64,7 +62,7 @@ const styles = StyleSheet.create({
     },
     stdWrapper: {
         flex: 1,
-       
+
     },
     // stdWrapper: {
     //     padding: 10,

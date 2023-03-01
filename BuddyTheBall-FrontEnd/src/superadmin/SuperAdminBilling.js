@@ -3,7 +3,7 @@ import { SafeAreaView, StyleSheet, ScrollView, View, Text, TouchableOpacity } fr
 import { DataTable } from 'react-native-paper';
 import LinearGradient from 'react-native-linear-gradient';
 
-export default function SuperAdminBilling() {
+export default function SuperAdminBilling({ navigation }) {
     const billingList = [
         {
             child_id: 565490,
@@ -53,7 +53,7 @@ export default function SuperAdminBilling() {
                         })}
                     </DataTable>
                 </ScrollView>
-                <TouchableOpacity>
+                <TouchableOpacity onPress={() => navigation.navigate("SuperAdmin Dashboard")}>
                     <Text style={styles.backbtn}>Back</Text>
                 </TouchableOpacity>
             </SafeAreaView>

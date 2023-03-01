@@ -2,89 +2,63 @@ import React from 'react';
 import { Text, SafeAreaView, TextInput, StyleSheet, Button, Image, Alert, ScrollView, TouchableOpacity, View } from "react-native";
 import { SelectList } from 'react-native-dropdown-select-list';
 import buddy from '../assets/buddy.png';
-import { SchoolCreationService } from '../services/SchoolService';
 import { Formik } from 'formik';
 import * as yup from 'yup';
 import LinearGradient from 'react-native-linear-gradient';
+import { SignUpService } from '../services/UserAuthService';
 
-
-export default function SuperAdminSchoolCreation({ navigation }) {
-    const territoryList = [
+export default function SuperAdminRMCreation({ navigation }) {
+    const regionList = [
         {
-            key: "Kanpur",
-            value: "Kanpur"
+            key: "Region1",
+            value: "Region1"
         },
         {
-            key: "Lucknow",
-            value: "Lucknow"
+            key: "Region2",
+            value: "Region2"
         },
         {
-            key: "Allahabad",
-            value: "Allahabad"
+            key: "Region3",
+            value: "Region3"
         },
         {
-            key: "Banaras",
-            value: "Banaras"
+            key: "Region4",
+            value: "Region4"
         }
     ];
-    const dayList = [
-        {
-            key: "Monday",
-            value: "Monday"
-        },
-        {
-            key: "Tuesday",
-            value: "Tuesday"
-        },
-        {
-            key: "Wednesday",
-            value: "Wednesday"
-        },
-        {
-            key: "Thursday",
-            value: "Thursday"
-        },
-        {
-            key: "Friday",
-            value: "Friday"
-        },
-        {
-            key: "Saturday",
-            value: "Saturday"
-        },
-        {
-            key: "Sunday",
-            value: "Sunday"
-        }
-    ];
-    const loginValidationSchema = yup.object().shape({
-        school_name: yup
+    const validationSchema = yup.object().shape({
+        email: yup
             .string()
-            .required('School Name is Required'),
-        territory: yup
+            .required('Email is Required'),
+        password: yup
             .string()
-            .required('Territory is required'),
-        assigned_day: yup
+            .required('Password is Required'),
+        regional_manager_name: yup
             .string()
-            .required('Assigned Day is required')
+            .required('Regional Manager Name is Required'),
+        assigned_region: yup
+            .string()
+            .required('Assigned Region is required')
     });
 
-    const handleAddSchool = async (values) => {
+    const handleAddRegionalManager = async (values) => {
         try {
             const data = {
-                school_name: values.school_name,
-                territory: values.territory,
-                assigned_day: values.assigned_day,
+                email: values.email,
+                password: values.password,
+                roles: ['regionalmanager'],
+                regional_manager_name: values.regional_manager_name,
+                assigned_region: values.assigned_region
             };
-            const result = await SchoolCreationService(data);
+            const result = await SignUpService(data);
             if (result) {
                 Alert.alert(
                     "Alert",
-                    "School Added Successfully",
+                    "Regional Manager Added Successfully",
                     [
                         {
                             text: "OK",
-                            onPress: () => navigation.navigate("SuperAdmin Dashboard")
+                            onPress: () => navigation.navigate("SuperAdmin RM")
                         }
                     ]
                 );
@@ -92,7 +66,7 @@ export default function SuperAdminSchoolCreation({ navigation }) {
         } catch (e) {
             Alert.alert(
                 "Alert",
-                "Failed! Can't add School!"
+                "Failed! Can't add Regional Manager!"
             );
         }
     };
@@ -103,9 +77,9 @@ export default function SuperAdminSchoolCreation({ navigation }) {
                 <ScrollView style={styles.scrollView}>
                     <Image source={buddy} style={{ width: 200, height: 100, marginLeft: 'auto', marginRight: 'auto' }} />
                     <Formik
-                        validationSchema={loginValidationSchema}
-                        initialValues={{ school_name: '', territory: '', assigned_day: '' }}
-                        onSubmit={(values) => handleAddSchool(values)}
+                        validationSchema={validationSchema}
+                        initialValues={{ email: '', password: '', regional_manager_name: '', assigned_region: '' }}
+                        onSubmit={(values) => handleAddRegionalManager(values)}
                     >
                         {({
                             handleChange,
@@ -116,37 +90,51 @@ export default function SuperAdminSchoolCreation({ navigation }) {
                             isValid,
                         }) => (
                             <>
-                                <Text style={styles.label}>School Name</Text>
+                                <Text style={styles.label}>Email</Text>
                                 <TextInput
-                                    name="school_name"
-                                    placeholder="School"
-                                    onChangeText={handleChange('school_name')}
-                                    onBlur={handleBlur('school_name')}
-                                    value={values.school}
+                                    name="email"
+                                    placeholder="Email"
+                                    onChangeText={handleChange('email')}
+                                    onBlur={handleBlur('email')}
+                                    value={values.email}
                                     style={styles.input}
                                 />
-                                {errors.school_name &&
-                                    <Text style={{ fontSize: 10, color: 'red' }}>{errors.school_name}</Text>
+                                {errors.email &&
+                                    <Text style={{ fontSize: 10, color: 'red' }}>{errors.email}</Text>
                                 }
-                                <Text style={styles.label}>Territory</Text>
+                                <Text style={styles.label}>Password</Text>
+                                <TextInput
+                                    name="password"
+                                    placeholder="Password"
+                                    onChangeText={handleChange('password')}
+                                    onBlur={handleBlur('password')}
+                                    value={values.password}
+                                    style={styles.input}
+                                />
+                                {errors.password &&
+                                    <Text style={{ fontSize: 10, color: 'red' }}>{errors.password}</Text>
+                                }
+                                <Text style={styles.label}>Regional Manager Name</Text>
+                                <TextInput
+                                    name="regional_manager_name"
+                                    placeholder="Regional Manager"
+                                    onChangeText={handleChange('regional_manager_name')}
+                                    onBlur={handleBlur('regional_manager_name')}
+                                    value={values.regional_manager_name}
+                                    style={styles.input}
+                                />
+                                {errors.regional_manager_name &&
+                                    <Text style={{ fontSize: 10, color: 'red' }}>{errors.regional_manager_name}</Text>
+                                }
+                                <Text style={styles.label}>Region</Text>
                                 <SelectList
-                                    setSelected={handleChange('territory')}
-                                    data={territoryList}
+                                    setSelected={handleChange('assigned_region')}
+                                    data={regionList}
                                     save="key"
                                 />
-                                {errors.territory &&
-                                    <Text style={{ fontSize: 10, color: 'red' }}>{errors.territory}</Text>
+                                {errors.assigned_region &&
+                                    <Text style={{ fontSize: 10, color: 'red' }}>{errors.assigned_region}</Text>
                                 }
-                                <Text style={styles.label}>Assigned Day</Text>
-                                <SelectList
-                                    setSelected={handleChange('assigned_day')}
-                                    data={dayList}
-                                    save="key"
-                                />
-                                {errors.assigned_day &&
-                                    <Text style={{ fontSize: 10, color: 'red' }}>{errors.assigned_day}</Text>
-                                }
-
                                 <TouchableOpacity onPress={handleSubmit}>
                                     <Text style={styles.btnWrapper}>Submit</Text>
                                 </TouchableOpacity>

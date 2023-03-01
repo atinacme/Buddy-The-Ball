@@ -35,42 +35,42 @@ export default function CoachSchoolList({ navigation }) {
 
     return (
         <LinearGradient colors={['#BCD7EF', '#D1E3AA', '#E3EE68', '#E1DA00']} style={styles.linearGradient}>
-        <SafeAreaView style={styles.wrapper}>
-        <ScrollView style={styles.scrollView}>
-            <Text>CURRENT TERRITORY: {state.authPage.auth_data?.assigned_territory}</Text>
-            <Text>CURRENT SEASON: FALL - {allDates.length > 0 && <>{moment(allDates[0]).format("MMM D")} - {moment(allDates[1]).format("MMM D")}</>}</Text>
-            <DataTable style={styles.container}>
-                <DataTable.Header style={styles.tableHeader}>
-                    <DataTable.Title>DAY</DataTable.Title>
-                    <DataTable.Title>SCHOOL</DataTable.Title>
-                </DataTable.Header>
-                {allSchoolData.length > 0 && allSchoolData.map(item => {
-                    return (
-                        <TouchableOpacity key={item._id} onPress={() => item.territory.indexOf(state.authPage.auth_data?.assigned_territory) > -1 ?
-                            navigation.navigate("Coach Particular School Students", { schoolItem: item })
-                            : Alert.alert(
-                                "Alert",
-                                "You are not assigned to this School!",
-                                [
-                                    {
-                                        text: "OK"
-                                    }
-                                ]
-                            )} style={styles.cachpicWrap}
-                        >
-                            <DataTable.Row>
-                                <DataTable.Cell>{item.assigned_day}</DataTable.Cell>
-                                <DataTable.Cell>{item.school_name}</DataTable.Cell>
-                            </DataTable.Row>
-                        </TouchableOpacity>
-                    );
-                })}
-            </DataTable>
-            </ScrollView>
-            <TouchableOpacity>
+            <SafeAreaView style={styles.wrapper}>
+                <ScrollView style={styles.scrollView}>
+                    <Text>CURRENT TERRITORY: {state.authPage.auth_data?.assigned_territory}</Text>
+                    <Text>CURRENT SEASON: FALL - {allDates.length > 0 && <>{moment(allDates[0]).format("MMM D")} - {moment(allDates[1]).format("MMM D")}</>}</Text>
+                    <DataTable style={styles.container}>
+                        <DataTable.Header style={styles.tableHeader}>
+                            <DataTable.Title>DAY</DataTable.Title>
+                            <DataTable.Title>SCHOOL</DataTable.Title>
+                        </DataTable.Header>
+                        {allSchoolData.length > 0 && allSchoolData.map(item => {
+                            return (
+                                <TouchableOpacity key={item._id} onPress={() => item.territory.indexOf(state.authPage.auth_data?.assigned_territory) > -1 ?
+                                    navigation.navigate("Coach Particular School Students", { schoolItem: item })
+                                    : Alert.alert(
+                                        "Alert",
+                                        "You are not assigned to this School!",
+                                        [
+                                            {
+                                                text: "OK"
+                                            }
+                                        ]
+                                    )} style={styles.cachpicWrap}
+                                >
+                                    <DataTable.Row>
+                                        <DataTable.Cell>{item.assigned_day}</DataTable.Cell>
+                                        <DataTable.Cell>{item.school_name}</DataTable.Cell>
+                                    </DataTable.Row>
+                                </TouchableOpacity>
+                            );
+                        })}
+                    </DataTable>
+                </ScrollView>
+                <TouchableOpacity onPress={() => navigation.navigate("Coach Dashboard")}>
                     <Text style={styles.backbtn}>Back</Text>
                 </TouchableOpacity>
-        </SafeAreaView>
+            </SafeAreaView>
         </LinearGradient>
     );
 }

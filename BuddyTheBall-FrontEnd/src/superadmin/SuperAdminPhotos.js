@@ -21,10 +21,9 @@ export default function SuperAdminPhotos({ navigation }) {
                         </View>
                     </ScrollView>
                 </ScrollView>
-                <TouchableOpacity>
+                <TouchableOpacity onPress={() => navigation.navigate("SuperAdmin Dashboard")}>
                     <Text style={styles.backbtn}>Back</Text>
                 </TouchableOpacity>
-
             </SafeAreaView>
         </LinearGradient>
     );

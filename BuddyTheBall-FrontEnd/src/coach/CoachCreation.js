@@ -157,8 +157,8 @@ export default function CoachCreation({ navigation }) {
         <LinearGradient colors={['#BCD7EF', '#D1E3AA', '#E3EE68', '#E1DA00']} style={styles.linearGradient}>
             <SafeAreaView style={styles.wrapper}>
                 <ScrollView style={styles.scrollView}>
-                {/* <Text style={styles.heading}>Coach Creation</Text> */}
-                    <Image source={buddy} style={{ width: 200, height: 100, marginLeft: 'auto', marginRight: 'auto' }} />                   
+                    {/* <Text style={styles.heading}>Coach Creation</Text> */}
+                    <Image source={buddy} style={{ width: 200, height: 100, marginLeft: 'auto', marginRight: 'auto' }} />
                     <Text style={styles.label}>Email</Text>
                     <TextInput
                         style={styles.input}
@@ -294,7 +294,6 @@ export default function CoachCreation({ navigation }) {
                         onChangeText={(e) => setCoachData({ ...coachData, favorite_drill: e })}
                         value={coachData.favorite_drill}
                     />
-
                     <TouchableOpacity onPress={handleSignUp}>
                         <Text style={styles.btnWrapper}>Submit</Text>
                     </TouchableOpacity>

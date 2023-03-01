@@ -48,7 +48,7 @@ export default function SuperAdminCoaches({ navigation }) {
                     <TouchableOpacity onPress={() => navigation.navigate("Coach Creation")}>
                         <Text style={styles.coach_cta}>Coaches</Text>
                     </TouchableOpacity>
-                    <TouchableOpacity>
+                    <TouchableOpacity onPress={() => navigation.navigate("SuperAdmin Dashboard")}>
                         <Text style={styles.backbtn}>Back</Text>
                     </TouchableOpacity>
                 </View>
@@ -66,7 +66,7 @@ const styles = StyleSheet.create({
         flex: 1,
         padding: 15,
     },
-   btn: {
+    btn: {
         display: 'flex',
         alignItems: 'center',
         flexDirection: 'row',

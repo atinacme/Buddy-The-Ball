@@ -26,45 +26,45 @@ export default function CoachMessages({ navigation }) {
 
     return (
         <LinearGradient colors={['#BCD7EF', '#D1E3AA', '#E3EE68', '#E1DA00']} style={styles.linearGradient}>
-        <SafeAreaView style={styles.wrapper}>
-            {senderMessages.map(item => {
-                return (
-                    <TouchableOpacity key={item._id} onPress={() => navigation.navigate("Coach Particular Message", { messages: item })}>
-                        {item.sender_role === "coach" ?
-                            <View key={item._id} style={styles.messagewrap}>
-                                <Image source={{ uri: item.receiver_profile_url }} style={{ width: 40, height: 40, borderRadius: 60 }} />
-                                <Text style={styles.msgName}>{item.receiver_name}</Text>
-                                <Text style={styles.msgWrap}>{item.last_message}</Text>
-                                <Text style={styles.rightsec}>
-                                    <Text style={styles.msgDay}>{moment(item.time).format('dddd')}</Text>
-                                    <Image source={rightArrow} style={{ width: 15, height: 15 }} />
-                                </Text>
-                            </View>
-                            :
-                            <View key={item._id} style={styles.messagewrap}>
-                                <Image source={{ uri: item.sender_profile_url }} style={{ width: 30, height: 30 }} />
-                                <Text style={styles.msgName}>{item.sender_name}</Text>
-                                <Text style={styles.msgWrap}>{item.last_message}</Text>
-                                <Text style={styles.rightsec}>
-                                    <Text style={styles.msgDay}>{moment(item.time).format('dddd')}</Text>
-                                    <Image source={rightArrow} style={{ width: 15, height: 15 }} />
-                                </Text>
-                            </View>
-                        }
-                    </TouchableOpacity>
-                );
-            })}
-            <TouchableOpacity onPress={() => navigation.navigate("Coach Message Creation")}>
-                <View style={styles.messageImageHolder}>
-                    <Image resizeMode={"contain"} source={message} />
-                </View>
-            </TouchableOpacity>
-            <View style={styles.bckcta}>
-            <TouchableOpacity>
-                    <Text style={styles.backbtn}>Back</Text>
+            <SafeAreaView style={styles.wrapper}>
+                {senderMessages.map(item => {
+                    return (
+                        <TouchableOpacity key={item._id} onPress={() => navigation.navigate("Coach Particular Message", { messages: item })}>
+                            {item.sender_role === "coach" ?
+                                <View key={item._id} style={styles.messagewrap}>
+                                    <Image source={{ uri: item.receiver_profile_url }} style={{ width: 40, height: 40, borderRadius: 60 }} />
+                                    <Text style={styles.msgName}>{item.receiver_name}</Text>
+                                    <Text style={styles.msgWrap}>{item.last_message}</Text>
+                                    <Text style={styles.rightsec}>
+                                        <Text style={styles.msgDay}>{moment(item.time).format('dddd')}</Text>
+                                        <Image source={rightArrow} style={{ width: 15, height: 15 }} />
+                                    </Text>
+                                </View>
+                                :
+                                <View key={item._id} style={styles.messagewrap}>
+                                    <Image source={{ uri: item.sender_profile_url }} style={{ width: 30, height: 30 }} />
+                                    <Text style={styles.msgName}>{item.sender_name}</Text>
+                                    <Text style={styles.msgWrap}>{item.last_message}</Text>
+                                    <Text style={styles.rightsec}>
+                                        <Text style={styles.msgDay}>{moment(item.time).format('dddd')}</Text>
+                                        <Image source={rightArrow} style={{ width: 15, height: 15 }} />
+                                    </Text>
+                                </View>
+                            }
+                        </TouchableOpacity>
+                    );
+                })}
+                <TouchableOpacity onPress={() => navigation.navigate("Coach Message Creation")}>
+                    <View style={styles.messageImageHolder}>
+                        <Image resizeMode={"contain"} source={message} />
+                    </View>
                 </TouchableOpacity>
+                <View style={styles.bckcta}>
+                    <TouchableOpacity onPress={() => navigation.navigate("Coach Dashboard")}>
+                        <Text style={styles.backbtn}>Back</Text>
+                    </TouchableOpacity>
                 </View>
-        </SafeAreaView>
+            </SafeAreaView>
         </LinearGradient>
     );
 }

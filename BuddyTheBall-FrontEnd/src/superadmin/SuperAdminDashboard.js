@@ -35,19 +35,21 @@ export default function SuperAdminDashboard({ navigation }) {
                     <TouchableOpacity onPress={() => navigation.navigate("SuperAdmin Billing")}>
                         <Text style={{ ...styles.adminContainer, ...styles.adminBg8 }}>CALENDAR</Text>
                     </TouchableOpacity>
-                    
+                    <TouchableOpacity onPress={() => navigation.navigate("SuperAdmin RM")}>
+                        <Text style={{ ...styles.adminContainer, ...styles.adminBg8 }}>Regional Managers</Text>
+                    </TouchableOpacity>
                 </Text>
                 <View style={styles.adminbtn}>
-                        <TouchableOpacity onPress={() => {
-                            navigation.navigate("SignIn");
-                            dispatch(AuthPageAction('', '', '', '', ''));
-                        }}>
-                            <Text style={styles.btnWrapper}>Logout</Text>
-                        </TouchableOpacity>
-                        <TouchableOpacity>
-                            <Text style={styles.backbtn}>Back</Text>
-                        </TouchableOpacity>
-                    </View>
+                    <TouchableOpacity onPress={() => {
+                        navigation.navigate("SignIn");
+                        dispatch(AuthPageAction('', '', '', '', ''));
+                    }}>
+                        <Text style={styles.btnWrapper}>Logout</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity>
+                        <Text style={styles.backbtn}>Back</Text>
+                    </TouchableOpacity>
+                </View>
             </SafeAreaView>
 
         </LinearGradient>
@@ -66,7 +68,7 @@ const styles = StyleSheet.create({
         bottom: 0,
         marginBottom: 10,
         width: '100%'
-        
+
     },
     backbtn: {
         borderColor: "#fff",

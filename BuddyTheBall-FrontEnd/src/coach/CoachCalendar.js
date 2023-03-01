@@ -10,7 +10,7 @@ import { CreateAgendaService, GetAgendaByDateService, UpdateAgendaService } from
 import LinearGradient from 'react-native-linear-gradient';
 
 
-export default function CoachCalendar() {
+export default function CoachCalendar({ navigation }) {
     const state = useSelector((state) => state);
     const schoolData = state.authPage.auth_data?.assigned_schools.map(v => Object.assign(v, { key: v._id, value: v.school_name }));
     const [modalVisible, setModalVisible] = useState(false);
@@ -75,131 +75,130 @@ export default function CoachCalendar() {
 
     return (
         <>
-                <LinearGradient colors={['#BCD7EF', '#D1E3AA', '#E3EE68', '#E1DA00']} style={styles.linearGradient}>
-            <SafeAreaView style={styles.wrapper}>
-                <Agenda
-                    minDate={today}
-                    pastScrollRange={0}
-                    futureScrollRange={12}
-                    dayLoading={false}
-                    items={items}
-                    renderItem={(item) => (
-                        <TouchableOpacity style={styles.item} onPress={handleRenderAgenda}>
-                            <Text style={styles.itemTextFirst}>School:</Text><Text style={styles.itemText}>{item.school}</Text>
-                            <Text style={styles.itemTextFirst}>Agenda:</Text><Text style={styles.itemText}>{item.name}</Text>
-                        </TouchableOpacity>
-                    )}
-                    onDayPress={day => {
-                        setUpdateAgenda(false);
-                        if (Object.keys(items).indexOf(day.dateString) > -1) {
-                            setModalVisible(false);
-                            setNewDay(day.dateString);
-                        } else {
-                            setModalVisible(true);
-                            setNewDay(day.dateString);
-                        }
-                        setAgendaData([]);
-                        setLoadResult();
-                    }}
-                />
-                <View style={styles.centeredView}>
-                    <Modal
-                        animationType="slide"
-                        transparent={true}
-                        visible={modalVisible}
-                        onRequestClose={() => {
-                            setModalVisible(!modalVisible);
+            <LinearGradient colors={['#BCD7EF', '#D1E3AA', '#E3EE68', '#E1DA00']} style={styles.linearGradient}>
+                <SafeAreaView style={styles.wrapper}>
+                    <Agenda
+                        minDate={today}
+                        pastScrollRange={0}
+                        futureScrollRange={12}
+                        dayLoading={false}
+                        items={items}
+                        renderItem={(item) => (
+                            <TouchableOpacity style={styles.item} onPress={handleRenderAgenda}>
+                                <Text style={styles.itemTextFirst}>School:</Text><Text style={styles.itemText}>{item.school}</Text>
+                                <Text style={styles.itemTextFirst}>Agenda:</Text><Text style={styles.itemText}>{item.name}</Text>
+                            </TouchableOpacity>
+                        )}
+                        onDayPress={day => {
+                            setUpdateAgenda(false);
+                            if (Object.keys(items).indexOf(day.dateString) > -1) {
+                                setModalVisible(false);
+                                setNewDay(day.dateString);
+                            } else {
+                                setModalVisible(true);
+                                setNewDay(day.dateString);
+                            }
                             setAgendaData([]);
+                            setLoadResult();
                         }}
-                    >
-                        <View style={styles.centeredView}>
-                            <View style={styles.modalView}>
-                                <ScrollView style={styles.scrollView}>
-                                    <View style={styles.modalText}>
-                                        <Text style={styles.mainText}>Create Your Agenda</Text>
-                                        <Pressable
-                                            style={[styles.plusButton, styles.buttonOpen]}
-                                            onPress={() => {
-                                                setAgendaData([...agendaData, { name: '' }]);
-                                            }}>
-                                            <Text style={styles.textPlus}>+</Text>
-                                        </Pressable>
-                                    </View>
-                                    {agendaData.length > 0 && agendaData.map((item, index) => {
-                                        return (
-                                            <View>
-                                                <Text>Agenda {index + 1}</Text>
-                                                {loadResult && item.school ?
-                                                    <TextInput
-                                                        style={styles.input}
-                                                        value={item.school}
-                                                    />
-                                                    :
-                                                    <View style={styles.schoolList}>
-                                                        <SelectList
-                                                            setSelected={(val) => {
+                    />
+                    <View style={styles.centeredView}>
+                        <Modal
+                            animationType="slide"
+                            transparent={true}
+                            visible={modalVisible}
+                            onRequestClose={() => {
+                                setModalVisible(!modalVisible);
+                                setAgendaData([]);
+                            }}
+                        >
+                            <View style={styles.centeredView}>
+                                <View style={styles.modalView}>
+                                    <ScrollView style={styles.scrollView}>
+                                        <View style={styles.modalText}>
+                                            <Text style={styles.mainText}>Create Your Agenda</Text>
+                                            <Pressable
+                                                style={[styles.plusButton, styles.buttonOpen]}
+                                                onPress={() => {
+                                                    setAgendaData([...agendaData, { name: '' }]);
+                                                }}>
+                                                <Text style={styles.textPlus}>+</Text>
+                                            </Pressable>
+                                        </View>
+                                        {agendaData.length > 0 && agendaData.map((item, index) => {
+                                            return (
+                                                <View>
+                                                    <Text>Agenda {index + 1}</Text>
+                                                    {loadResult && item.school ?
+                                                        <TextInput
+                                                            style={styles.input}
+                                                            value={item.school}
+                                                        />
+                                                        :
+                                                        <View style={styles.schoolList}>
+                                                            <SelectList
+                                                                setSelected={(val) => {
+                                                                    let newArr = [...agendaData];
+                                                                    newArr[index].school = val;
+                                                                    setAgendaData(newArr);
+                                                                }}
+                                                                data={schoolData}
+                                                                save="value"
+                                                            />
+                                                        </View>
+                                                    }
+                                                    <View style={{
+                                                        alignItems: 'center',
+                                                        flexDirection: 'row',
+                                                        justifyContent: 'space-between'
+                                                    }}>
+                                                        <TextInput
+                                                            style={styles.input}
+                                                            onChangeText={(e) => {
                                                                 let newArr = [...agendaData];
-                                                                newArr[index].school = val;
+                                                                newArr[index].name = e;
                                                                 setAgendaData(newArr);
                                                             }}
-                                                            data={schoolData}
-                                                            save="value"
+                                                            value={item.name}
                                                         />
+                                                        <Pressable
+                                                            style={[styles.agendaButton, styles.buttonClose]}
+                                                            onPress={() => {
+                                                                var array = [...agendaData];
+                                                                var indexData = array.indexOf(item);
+                                                                if (indexData !== -1) {
+                                                                    array.splice(indexData, 1);
+                                                                    setAgendaData(array);
+                                                                }
+                                                            }}>
+                                                            <Text style={styles.agendaCrossBtn}>X</Text>
+                                                        </Pressable>
                                                     </View>
-                                                }
-                                                <View style={{
-                                                    alignItems: 'center',
-                                                    flexDirection: 'row',
-                                                    justifyContent: 'space-between'
-                                                }}>
-                                                    <TextInput
-                                                        style={styles.input}
-                                                        onChangeText={(e) => {
-                                                            let newArr = [...agendaData];
-                                                            newArr[index].name = e;
-                                                            setAgendaData(newArr);
-                                                        }}
-                                                        value={item.name}
-                                                    />
-                                                    <Pressable
-                                                        style={[styles.agendaButton, styles.buttonClose]}
-                                                        onPress={() => {
-                                                            var array = [...agendaData];
-                                                            var indexData = array.indexOf(item);
-                                                            if (indexData !== -1) {
-                                                                array.splice(indexData, 1);
-                                                                setAgendaData(array);
-                                                            }
-                                                        }}>
-                                                        <Text style={styles.agendaCrossBtn}>X</Text>
-                                                    </Pressable>
                                                 </View>
-                                            </View>
-                                        );
-                                    })}
-                                    <Pressable
-                                        style={[styles.button, styles.buttonOpen]}
-                                        onPress={() => handleAgenda(key = loadResult?._id ? loadResult?._id : 1)}>
-                                        <Text style={styles.textStyle}>{loadResult ? 'Update' : 'Create'}</Text>
-                                    </Pressable>
-                                    <Pressable
-                                        style={[styles.button, styles.buttonClose]}
-                                        onPress={() => {
-                                            setModalVisible(!modalVisible);
-                                            setAgendaData([]);
-                                        }}>
-                                        <Text style={styles.textStyle}>{loadResult ? "Don't Update !!" : "Don't Create !!"}</Text>
-                                    </Pressable>
-                                </ScrollView>
+                                            );
+                                        })}
+                                        <Pressable
+                                            style={[styles.button, styles.buttonOpen]}
+                                            onPress={() => handleAgenda(key = loadResult?._id ? loadResult?._id : 1)}>
+                                            <Text style={styles.textStyle}>{loadResult ? 'Update' : 'Create'}</Text>
+                                        </Pressable>
+                                        <Pressable
+                                            style={[styles.button, styles.buttonClose]}
+                                            onPress={() => {
+                                                setModalVisible(!modalVisible);
+                                                setAgendaData([]);
+                                            }}>
+                                            <Text style={styles.textStyle}>{loadResult ? "Don't Update !!" : "Don't Create !!"}</Text>
+                                        </Pressable>
+                                    </ScrollView>
+                                </View>
                             </View>
-                        </View>
-                    </Modal>
-                </View>
-                <TouchableOpacity>
-                    <Text style={styles.backbtn}>Back</Text>
-                </TouchableOpacity>
-            </SafeAreaView>
-          
+                        </Modal>
+                    </View>
+                    <TouchableOpacity onPress={() => navigation.navigate("Coach Dashboard")}>
+                        <Text style={styles.backbtn}>Back</Text>
+                    </TouchableOpacity>
+                </SafeAreaView>
             </LinearGradient>
         </>
     );
