@@ -4,7 +4,7 @@ const School = mongoose.model(
     "School",
     new mongoose.Schema({
         school_name: String,
-        territory: String,
+        region: String,
         assigned_day: String,
         customers: Array
     })

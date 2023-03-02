@@ -15,6 +15,7 @@ db.photos = require("./photos.model");
 db.messages = require("./messages.model");
 db.calendar = require("./calendar.model");
 db.attendance = require("./attendance.model");
+db.region = require("./region.model");
 db.dbConfig = require("../config/db.config");
 db.ROLES = ["customer", "superadmin", "coach", "regionalmanager"];
 

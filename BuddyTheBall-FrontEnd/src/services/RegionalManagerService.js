@@ -8,8 +8,7 @@ const GetAllRegionalManagersService = async () => {
 };
 
 const GetParticularRegionalManagerService = async (id) => {
-
-    return console.log('id--->', id);
+    return await HttpRequest("GET", `${baseUrl}/findParticularRegionalManager/${id}`, null);
 };
 
 const RegionalManagerUpdateService = async (userId, regionalManagerId, data) => {

@@ -55,6 +55,7 @@ export default function SuperAdminDashboard({ navigation }) {
         </LinearGradient>
     );
 }
+
 const styles = StyleSheet.create({
     wrapper: {
         flex: 1,

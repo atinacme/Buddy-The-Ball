@@ -26,6 +26,9 @@ export default function SignIn({ navigation, route }) {
             } else if (result.roles[0] === "ROLE_COACH") {
                 navigation.navigate("Coach Dashboard");
                 dispatch(AuthPageAction(result.id, result.email, result.roles, result.coach_data, result.accessToken));
+            } else if (result.roles[0] === "ROLE_REGIONALMANAGER") {
+                navigation.navigate("Regional Manager Dashboard");
+                dispatch(AuthPageAction(result.id, result.email, result.roles, result.regionalmanager_data, result.accessToken));
             } else {
                 navigation.navigate("SuperAdmin Dashboard");
                 dispatch(AuthPageAction(result.id, result.email, result.roles, null, result.accessToken));

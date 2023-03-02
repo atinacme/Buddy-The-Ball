@@ -8,7 +8,7 @@ const Coach = mongoose.model(
         password: String,
         coach_name: String,
         tennis_club: String,
-        assigned_territory: String,
+        assigned_region: String,
         assigned_schools: [
             {
                 type: mongoose.Schema.Types.ObjectId,

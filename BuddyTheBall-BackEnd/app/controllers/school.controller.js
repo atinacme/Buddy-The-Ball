@@ -10,7 +10,7 @@ exports.createSchool = (req, res) => {
     // Create a School
     const school = new School({
         school_name: req.body.school_name,
-        territory: req.body.territory,
+        region: req.body.region,
         assigned_day: req.body.assigned_day
     });
 
@@ -45,6 +45,20 @@ exports.findParticularSchool = (req, res) => {
     const id = req.params.id;
 
     School.findById(id)
+        .then(data => {
+            if (!data)
+                res.status(404).send({ message: "Not found School with id " + id });
+            else res.send(data);
+        })
+        .catch(err => {
+            res
+                .status(500)
+                .send({ message: "Error retrieving School with id=" + id });
+        });
+};
+
+exports.findRegionWiseSchools = (req, res) => {
+    School.find({ region: req.body.region })
         .then(data => {
             if (!data)
                 res.status(404).send({ message: "Not found School with id " + id });

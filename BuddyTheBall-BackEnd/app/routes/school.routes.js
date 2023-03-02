@@ -15,6 +15,8 @@ module.exports = function (app) {
 
     app.get("/api/getParticularSchool/:id", controller.findParticularSchool);
 
+    app.post("/api/findRegionWiseSchools", controller.findRegionWiseSchools);
+
     app.put("/api/updateSchool/:id", controller.updateSchool);
 
     app.delete("/api/deleteSchool/:id", controller.deleteSchool);

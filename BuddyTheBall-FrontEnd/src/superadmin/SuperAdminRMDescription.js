@@ -2,11 +2,11 @@ import React, { useEffect, useState } from 'react';
 import { Text, SafeAreaView, TextInput, StyleSheet, Button, Image, Alert, ScrollView, View } from "react-native";
 import buddy from '../assets/buddy.png';
 import { SelectList } from 'react-native-dropdown-select-list';
-import { GetParticularRegionalManagerService, RegionalManagerUpdateService } from '../services/RegionalMAnagerService';
+import { GetParticularRegionalManagerService, RegionalManagerUpdateService } from '../services/RegionalManagerService';
 
 export default function SuperAdminRMDescription({ navigation, route }) {
     const [regionalManagerData, setRegionalManagerData] = useState({
-        regional_manager_id: "",
+        regional_manager_user_id: "",
         email: "",
         password: "",
         regional_manager_name: "",
@@ -34,11 +34,10 @@ export default function SuperAdminRMDescription({ navigation, route }) {
     useEffect(() => {
         try {
             const getParticularRegionalManager = async () => {
-                console.log("route---->", route.params.regional_manager._id);
                 const result = await GetParticularRegionalManagerService(route.params.regional_manager._id);
                 if (result) {
                     setRegionalManagerData({
-                        regional_manager_id: result._id,
+                        regional_manager_user_id: result.user_id,
                         email: result.email,
                         password: result.password,
                         regional_manager_name: result.regional_manager_name,
@@ -58,7 +57,8 @@ export default function SuperAdminRMDescription({ navigation, route }) {
                 regional_manager_name: regionalManagerData.regional_manager_name,
                 assigned_region: regionalManagerData.assigned_region
             };
-            const result = await RegionalManagerUpdateService(regionalManagerData.regional_manager_id, data);
+            console.log("route---->", data, regionalManagerData.regional_manager_user_id);
+            const result = await RegionalManagerUpdateService(regionalManagerData.regional_manager_user_id, route.params.regional_manager._id, data);
             if (result) {
                 Alert.alert(
                     "Alert",
@@ -106,7 +106,7 @@ export default function SuperAdminRMDescription({ navigation, route }) {
                     setSelected={(val) => setRegionalManagerData({ ...regionalManagerData, assigned_region: val })}
                     data={regionList}
                     save="key"
-                    defaultOption={{ key: regionalManagerData.assigned_day, value: regionalManagerData.assigned_region }}
+                    defaultOption={{ key: regionalManagerData.assigned_region, value: regionalManagerData.assigned_region }}
                 />
                 <View style={{ marginTop: 20 }}>
                     <Button

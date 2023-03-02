@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Text, SafeAreaView, TextInput, StyleSheet, Button, Image, Alert, ScrollView, TouchableOpacity, View } from "react-native";
 import { SelectList } from 'react-native-dropdown-select-list';
 import buddy from '../assets/buddy.png';
@@ -6,27 +6,22 @@ import { SchoolCreationService } from '../services/SchoolService';
 import { Formik } from 'formik';
 import * as yup from 'yup';
 import LinearGradient from 'react-native-linear-gradient';
-
+import { GetAllRegionsService } from '../services/RegionService';
 
 export default function SuperAdminSchoolCreation({ navigation }) {
-    const territoryList = [
-        {
-            key: "Kanpur",
-            value: "Kanpur"
-        },
-        {
-            key: "Lucknow",
-            value: "Lucknow"
-        },
-        {
-            key: "Allahabad",
-            value: "Allahabad"
-        },
-        {
-            key: "Banaras",
-            value: "Banaras"
-        }
-    ];
+    const [regions, setRegions] = useState([]);
+    useEffect(() => {
+        try {
+            const getRegions = async () => {
+                const result = await GetAllRegionsService();
+                if (result) {
+                    result.map(v => Object.assign(v, { key: v.region_name, value: v.region_name }));
+                    setRegions(result);
+                }
+            };
+            getRegions();
+        } catch (e) { }
+    }, []);
     const dayList = [
         {
             key: "Monday",
@@ -61,9 +56,9 @@ export default function SuperAdminSchoolCreation({ navigation }) {
         school_name: yup
             .string()
             .required('School Name is Required'),
-        territory: yup
+        region: yup
             .string()
-            .required('Territory is required'),
+            .required('Region is required'),
         assigned_day: yup
             .string()
             .required('Assigned Day is required')
@@ -73,7 +68,7 @@ export default function SuperAdminSchoolCreation({ navigation }) {
         try {
             const data = {
                 school_name: values.school_name,
-                territory: values.territory,
+                region: values.region,
                 assigned_day: values.assigned_day,
             };
             const result = await SchoolCreationService(data);
@@ -104,7 +99,7 @@ export default function SuperAdminSchoolCreation({ navigation }) {
                     <Image source={buddy} style={{ width: 200, height: 100, marginLeft: 'auto', marginRight: 'auto' }} />
                     <Formik
                         validationSchema={loginValidationSchema}
-                        initialValues={{ school_name: '', territory: '', assigned_day: '' }}
+                        initialValues={{ school_name: '', region: '', assigned_day: '' }}
                         onSubmit={(values) => handleAddSchool(values)}
                     >
                         {({
@@ -128,14 +123,14 @@ export default function SuperAdminSchoolCreation({ navigation }) {
                                 {errors.school_name &&
                                     <Text style={{ fontSize: 10, color: 'red' }}>{errors.school_name}</Text>
                                 }
-                                <Text style={styles.label}>Territory</Text>
+                                <Text style={styles.label}>Region</Text>
                                 <SelectList
-                                    setSelected={handleChange('territory')}
-                                    data={territoryList}
+                                    setSelected={handleChange('region')}
+                                    data={regions}
                                     save="key"
                                 />
-                                {errors.territory &&
-                                    <Text style={{ fontSize: 10, color: 'red' }}>{errors.territory}</Text>
+                                {errors.region &&
+                                    <Text style={{ fontSize: 10, color: 'red' }}>{errors.region}</Text>
                                 }
                                 <Text style={styles.label}>Assigned Day</Text>
                                 <SelectList

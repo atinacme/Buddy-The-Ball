@@ -2,14 +2,15 @@ import React, { useEffect, useState } from 'react';
 import { Text, SafeAreaView, TextInput, StyleSheet, TouchableOpacity, Button, Image, Alert, ScrollView, View, Modal, Pressable } from "react-native";
 import { SelectList, MultipleSelectList } from 'react-native-dropdown-select-list';
 import buddy from '../assets/buddy.png';
-import { GetSchoolsService } from '../services/SchoolService';
+import { GetRegionWiseSchools, GetSchoolsService } from '../services/SchoolService';
 import { SignUpService } from '../services/UserAuthService';
 import { Calendar } from 'react-native-calendars';
 import moment from 'moment';
 import LinearGradient from 'react-native-linear-gradient';
-import { GetAllRegionsService } from '../services/RegionService';
+import { useSelector } from 'react-redux';
 
-export default function CoachCreation({ navigation }) {
+export default function RegionalManagerCoachCreation({ navigation }) {
+    const state = useSelector((state) => state);
     const [data, setData] = useState([]);
     const [selected, setSelected] = useState([]);
     const [modalVisible, setModalVisible] = useState(false);
@@ -17,41 +18,29 @@ export default function CoachCreation({ navigation }) {
     const [isStartDatePicked, setIsStartDatePicked] = useState(false);
     const [startDate, setStartDate] = useState('');
     const [assignSlot, setAssignSlot] = useState([]);
-    const [regions, setRegions] = useState([]);
     const [assignCal, setAssignCal] = useState({
         timePeriod: '',
         startDate: '',
         endDate: '',
         school: ''
     });
+    const [regions, setRegions] = useState([]);
     const [coachData, setCoachData] = useState({
         email: "",
         password: "",
         coach_name: "",
-        assigned_region: "",
+        assigned_region: state.authPage.auth_data?.assigned_region,
         tennis_club: "",
         favorite_pro_player: "",
         handed: "",
         favorite_drill: ""
     });
-
-    useEffect(() => {
-        try {
-            const getRegions = async () => {
-                const result = await GetAllRegionsService();
-                if (result) {
-                    result.map(v => Object.assign(v, { key: v.region_name, value: v.region_name }));
-                    setRegions(result);
-                }
-            };
-            getRegions();
-        } catch (e) { }
-    }, []);
-
     useEffect(() => {
         try {
             const getAllSchools = async () => {
-                const result = await GetSchoolsService();
+                const data = { region: state.authPage.auth_data?.assigned_region };
+                const result = await GetRegionWiseSchools(data);
+                console.log("scdesc--->", data, result);
                 result.map(v => Object.assign(v, { key: v._id, value: v.school_name }));
                 setData(result);
             };
@@ -121,7 +110,7 @@ export default function CoachCreation({ navigation }) {
                 password: coachData.password,
                 roles: ['coach'],
                 coach_name: coachData.coach_name,
-                assigned_region: coachData.assigned_region,
+                assigned_region: state.authPage.auth_data?.assigned_region,
                 assigned_schools: selected,
                 assign_slot: assignSlot,
                 tennis_club: coachData.tennis_club,
@@ -173,12 +162,6 @@ export default function CoachCreation({ navigation }) {
                         style={styles.input}
                         onChangeText={(e) => setCoachData({ ...coachData, coach_name: e })}
                         value={coachData.coach_name}
-                    />
-                    <Text style={styles.label}>Assigned Region</Text>
-                    <SelectList
-                        setSelected={(val) => setCoachData({ ...coachData, assigned_region: val })}
-                        data={regions}
-                        save="key"
                     />
                     <Text style={styles.label}>Assigned Schools</Text>
                     <MultipleSelectList
@@ -246,9 +229,9 @@ export default function CoachCreation({ navigation }) {
                             </View>
                         </Modal>
                     </View>
-                    {assignSlot.length > 0 && assignSlot.map((item) => {
+                    {assignSlot.length > 0 && assignSlot.map((item, index) => {
                         return (
-                            <View style={{
+                            <View key={index} style={{
                                 alignItems: 'center',
                                 flexDirection: 'row',
                                 justifyContent: 'space-between'

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Text, SafeAreaView, TextInput, StyleSheet, Button, Image, Alert, ScrollView, TouchableOpacity, View } from "react-native";
 import { SelectList } from 'react-native-dropdown-select-list';
 import buddy from '../assets/buddy.png';
@@ -6,26 +6,24 @@ import { Formik } from 'formik';
 import * as yup from 'yup';
 import LinearGradient from 'react-native-linear-gradient';
 import { SignUpService } from '../services/UserAuthService';
+import { GetAllRegionsService } from '../services/RegionService';
 
 export default function SuperAdminRMCreation({ navigation }) {
-    const regionList = [
-        {
-            key: "Region1",
-            value: "Region1"
-        },
-        {
-            key: "Region2",
-            value: "Region2"
-        },
-        {
-            key: "Region3",
-            value: "Region3"
-        },
-        {
-            key: "Region4",
-            value: "Region4"
-        }
-    ];
+    const [regions, setRegions] = useState([]);
+
+    useEffect(() => {
+        try {
+            const getRegions = async () => {
+                const result = await GetAllRegionsService();
+                if (result) {
+                    result.map(v => Object.assign(v, { key: v.region_name, value: v.region_name }));
+                    setRegions(result);
+                }
+            };
+            getRegions();
+        } catch (e) { }
+    }, []);
+
     const validationSchema = yup.object().shape({
         email: yup
             .string()
@@ -129,7 +127,7 @@ export default function SuperAdminRMCreation({ navigation }) {
                                 <Text style={styles.label}>Region</Text>
                                 <SelectList
                                     setSelected={handleChange('assigned_region')}
-                                    data={regionList}
+                                    data={regions}
                                     save="key"
                                 />
                                 {errors.assigned_region &&
@@ -142,7 +140,7 @@ export default function SuperAdminRMCreation({ navigation }) {
                         )}
                     </Formik>
                 </ScrollView>
-                <TouchableOpacity onPress={() => navigation.navigate("SuperAdmin Schools")}>
+                <TouchableOpacity onPress={() => navigation.navigate("SuperAdmin RM")}>
                     <Text style={styles.backbtn}>Back</Text>
                 </TouchableOpacity>
             </SafeAreaView>

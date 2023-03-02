@@ -1,23 +1,14 @@
 import React, { useEffect, useState } from 'react';
-import { SafeAreaView, StyleSheet, View, Button, TouchableOpacity, ScrollView, Text } from 'react-native';
+import { SafeAreaView, Text, StyleSheet, TouchableOpacity, View, ScrollView } from 'react-native';
+import { useSelector } from "react-redux";
 import { DataTable } from 'react-native-paper';
+import moment from 'moment';
 import LinearGradient from 'react-native-linear-gradient';
-import { GetAllRegionalManagersService } from '../services/RegionalManagerService';
 
-export default function SuperAdminRM({ navigation }) {
-    const [regionalManagers, setRegionalManagers] = useState([]);
-
-    useEffect(() => {
-        try {
-            const getRegionalManagers = async () => {
-                const result = await GetAllRegionalManagersService();
-                if (result) {
-                    setRegionalManagers(result);
-                }
-            };
-            getRegionalManagers();
-        } catch (e) { }
-    }, []);
+export default function RegionalManagerCoaches({ navigation }) {
+    const state = useSelector((state) => state);
+    const allSchoolData = state.authPage.auth_data?.assigned_schools;
+    const [allDates, setAllDates] = useState([]);
 
     return (
         <LinearGradient colors={['#BCD7EF', '#D1E3AA', '#E3EE68', '#E1DA00']} style={styles.linearGradient}>
@@ -26,28 +17,18 @@ export default function SuperAdminRM({ navigation }) {
                     <View>
                         <DataTable style={styles.container}>
                             <DataTable.Header style={styles.tableHeader}>
-                                <DataTable.Title>REGIONAL MANAGER NAME</DataTable.Title>
-                                <DataTable.Title>ASSIGNED REGION</DataTable.Title>
+                                <DataTable.Title>COACH</DataTable.Title>
+                                <DataTable.Title>REGION</DataTable.Title>
+                                <DataTable.Title>SCHOOL QTY</DataTable.Title>
                             </DataTable.Header>
-                            {regionalManagers.map(item => {
-                                return (
-                                    <TouchableOpacity key={item._id} onPress={() => navigation.navigate("SuperAdmin RM Description", { regional_manager: item })}>
-                                        <DataTable.Row>
-                                            <DataTable.Cell>{item.regional_manager_name}</DataTable.Cell>
-                                            <DataTable.Cell>{item.assigned_region}</DataTable.Cell>
-                                        </DataTable.Row>
-                                    </TouchableOpacity>
-                                );
-                            })}
                         </DataTable>
                     </View>
-
                 </ScrollView>
                 <View style={styles.adminbtn}>
-                    <TouchableOpacity onPress={() => navigation.navigate("SuperAdmin RM Creation")}>
-                        <Text style={styles.coach_cta}>Regional Manager Creation</Text>
+                    <TouchableOpacity onPress={() => navigation.navigate("Regional Manager Coach Creation")}>
+                        <Text style={styles.coach_cta}>Coach Creation</Text>
                     </TouchableOpacity>
-                    <TouchableOpacity onPress={() => navigation.navigate("SuperAdmin Dashboard")}>
+                    <TouchableOpacity onPress={() => navigation.navigate("Regional Manager Dashboard")}>
                         <Text style={styles.backbtn}>Back</Text>
                     </TouchableOpacity>
                 </View>
@@ -66,7 +47,6 @@ const styles = StyleSheet.create({
         bottom: 0,
         marginBottom: 10,
         width: '100%'
-
     },
     container: {
         margin: 10,

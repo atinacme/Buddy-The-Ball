@@ -28,7 +28,7 @@ export default function SuperAdminSchools({ navigation }) {
                         <DataTable style={styles.container}>
                             <DataTable.Header style={styles.tableHeader}>
                                 <DataTable.Title>SCHOOL</DataTable.Title>
-                                <DataTable.Title>TERRITORY</DataTable.Title>
+                                <DataTable.Title>REGION</DataTable.Title>
                                 <DataTable.Title>ASSIGNED DAY</DataTable.Title>
                             </DataTable.Header>
                             {schools.map(item => {
@@ -36,7 +36,7 @@ export default function SuperAdminSchools({ navigation }) {
                                     <TouchableOpacity key={item._id} onPress={() => navigation.navigate("SuperAdmin School Description", { school: item })}>
                                         <DataTable.Row>
                                             <DataTable.Cell>{item.school_name}</DataTable.Cell>
-                                            <DataTable.Cell>{item.territory}</DataTable.Cell>
+                                            <DataTable.Cell>{item.region}</DataTable.Cell>
                                             <DataTable.Cell>{item.assigned_day}</DataTable.Cell>
                                         </DataTable.Row>
                                     </TouchableOpacity>

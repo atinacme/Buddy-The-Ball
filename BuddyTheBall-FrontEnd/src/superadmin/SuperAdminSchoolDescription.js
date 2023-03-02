@@ -8,10 +8,10 @@ export default function SuperAdminSchoolDescription({ navigation, route }) {
     const [schoolData, setSchoolData] = useState({
         school_id: "",
         school_name: "",
-        territory: "",
+        region: "",
         assigned_day: ""
     });
-    const territoryList = [
+    const regionList = [
         {
             key: "Kanpur",
             value: "Kanpur"
@@ -68,7 +68,7 @@ export default function SuperAdminSchoolDescription({ navigation, route }) {
                     setSchoolData({
                         school_id: result._id,
                         school_name: result.school_name,
-                        territory: result.territory,
+                        region: result.region,
                         assigned_day: result.assigned_day
                     });
                 }
@@ -81,7 +81,7 @@ export default function SuperAdminSchoolDescription({ navigation, route }) {
         try {
             const data = {
                 school_name: schoolData.school_name,
-                territory: schoolData.territory,
+                region: schoolData.region,
                 assigned_day: schoolData.assigned_day,
             };
             const result = await SchoolUpdationService(schoolData.school_id, data);
@@ -115,12 +115,12 @@ export default function SuperAdminSchoolDescription({ navigation, route }) {
                     onChangeText={(e) => setSchoolData({ ...schoolData, school_name: e })}
                     value={schoolData.school_name}
                 />
-                <Text style={styles.label}>Territory</Text>
+                <Text style={styles.label}>Region</Text>
                 <SelectList
-                    setSelected={(val) => setSchoolData({ ...schoolData, territory: val })}
-                    data={territoryList}
+                    setSelected={(val) => setSchoolData({ ...schoolData, region: val })}
+                    data={regionList}
                     save="key"
-                    defaultOption={{ key: schoolData.territory, value: schoolData.territory }}
+                    defaultOption={{ key: schoolData.region, value: schoolData.region }}
                 />
                 <Text style={styles.label}>Assigned Day</Text>
                 <SelectList

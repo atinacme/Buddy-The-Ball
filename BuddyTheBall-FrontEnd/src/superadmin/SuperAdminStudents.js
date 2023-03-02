@@ -3,7 +3,6 @@ import { SafeAreaView, Text, View, StyleSheet, ScrollView, TouchableOpacity } fr
 import { GetSchoolsService } from '../services/SchoolService';
 import LinearGradient from 'react-native-linear-gradient';
 
-
 export default function SuperAdminStudents({ navigation }) {
     const [customers, setCustomers] = useState([]);
     useEffect(() => {
@@ -21,15 +20,15 @@ export default function SuperAdminStudents({ navigation }) {
         <LinearGradient colors={['#BCD7EF', '#D1E3AA', '#E3EE68', '#E1DA00']} style={styles.linearGradient}>
             <SafeAreaView style={styles.wrapper}>
                 <ScrollView>
-                    {customers.map(customer => {
+                    {customers.map((customer, index) => {
                         return (
-                            <View style={styles.stdWrapper}>
+                            <View key={index} style={styles.stdWrapper}>
                                 <Text style={styles.title}>{customer.school_name}</Text>
                                 {customer.customers.length > 0 ?
                                     <>
-                                        {customer.customers.map(v => {
+                                        {customer.customers.map((v, indexNew) => {
                                             return (
-                                                <View style={styles.stddesc}>
+                                                <View key={indexNew} style={styles.stddesc}>
                                                     <Text style={styles.content}>{v.player_name}</Text>
                                                 </View>
                                             );

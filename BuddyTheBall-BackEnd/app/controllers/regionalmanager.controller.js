@@ -85,27 +85,24 @@ exports.updateRegionalManager = (req, res) => {
                     message: `Cannot update User with id=${userId}. Maybe User was not found!`
                 });
             } else {
-                School.find({ school_name: { $in: req.body.assigned_schools } })
-                    .then(school => {
-                        RegionalManager.findByIdAndUpdate(regionalManagerId,
-                            {
-                                email: req.body.email,
-                                password: req.body.password,
-                                regional_manager_name: req.body.regional_manager_name,
-                                assigned_region: req.body.assigned_region
-                            }, { useFindAndModify: false })
-                            .then(data => {
-                                if (!data) {
-                                    res.status(404).send({
-                                        message: `Cannot update Regional Manager with id=${regionalManagerId}. Maybe Regional Manager was not found!`
-                                    });
-                                } else res.send({ message: "User Regional Manager was updated successfully." });
-                            })
-                            .catch(err => {
-                                res.status(500).send({
-                                    message: "Error updating Regional Manager with id=" + regionalManagerId
-                                });
+                RegionalManager.findByIdAndUpdate(regionalManagerId,
+                    {
+                        email: req.body.email,
+                        password: req.body.password,
+                        regional_manager_name: req.body.regional_manager_name,
+                        assigned_region: req.body.assigned_region
+                    }, { useFindAndModify: false })
+                    .then(data => {
+                        if (!data) {
+                            res.status(404).send({
+                                message: `Cannot update Regional Manager with id=${regionalManagerId}. Maybe Regional Manager was not found!`
                             });
+                        } else res.send({ message: "User Regional Manager was updated successfully." });
+                    })
+                    .catch(err => {
+                        res.status(500).send({
+                            message: "Error updating Regional Manager with id=" + regionalManagerId
+                        });
                     });
             }
         })

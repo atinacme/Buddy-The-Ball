@@ -10,6 +10,8 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { Provider } from "react-redux";
 import store from "./store";
+import LinearGradient from 'react-native-linear-gradient';
+import { StyleSheet } from "react-native";
 import SignIn from './src/auth/SignIn.js';
 import CustomerCreation from './src/customer/CustomerCreation.js';
 import CustomerDashboard from './src/customer/CustomerDashboard.js';
@@ -32,7 +34,7 @@ import CoachParticularSchoolStudents from './src/coach/CoachParticularSchoolStud
 import SuperAdminDashboard from './src/superadmin/SuperAdminDashboard.js';
 import SuperAdminBilling from './src/superadmin/SuperAdminBilling.js';
 import SuperAdminCoaches from './src/superadmin/SuperAdminCoaches.js';
-import SuperAdminCoachDescription from './src/superadmin/SuperAdminCoachDescription.js';
+import SuperAdminCoachDescription from './src/regionalmanager/RegionalManagerCoachDescription.js';
 import SuperAdminSchools from './src/superadmin/SuperAdminSchools.js';
 import SuperAdminSchoolDescription from './src/superadmin/SuperAdminSchoolDescription.js';
 import SuperAdminSchoolCreation from './src/superadmin/SuperAdminSchoolCreation.js';
@@ -45,8 +47,13 @@ import SuperAdminParticularMessage from './src/superadmin/SuperAdminParticularMe
 import SuperAdminRM from './src/superadmin/SuperAdminRM';
 import SuperAdminRMCreation from './src/superadmin/SuperAdminRMCreation';
 import SuperAdminRMDescription from './src/superadmin/SuperAdminRMDescription';
-import LinearGradient from 'react-native-linear-gradient';
-import { StyleSheet } from "react-native";
+import SuperAdminRegions from './src/superadmin/SuperAdminRegions';
+import SuperAdminRegionCreation from './src/superadmin/SuperAdminRegionCreation';
+import SuperAdminRegionDescription from './src/superadmin/SuperAdminRegionDescription';
+import RegionalManagerDashboard from './src/regionalmanager/RegionalManagerDashboard';
+import RegionalManagerCoaches from './src/regionalmanager/RegionalManagerCoaches';
+import RegionalManagerCoachCreation from './src/regionalmanager/RegionalManagerCoachCreation';
+import RegionalManagerCoachDescription from './src/regionalmanager/RegionalManagerCoachDescription.js';
 
 const Stack = createNativeStackNavigator();
 const App = () => {
@@ -112,6 +119,13 @@ const App = () => {
             <Stack.Screen name="SuperAdmin RM" component={SuperAdminRM} />
             <Stack.Screen name="SuperAdmin RM Description" component={SuperAdminRMDescription} />
             <Stack.Screen name="SuperAdmin RM Creation" component={SuperAdminRMCreation} />
+            <Stack.Screen name="SuperAdmin Regions" component={SuperAdminRegions} />
+            <Stack.Screen name="SuperAdmin Region Creation" component={SuperAdminRegionCreation} />
+            <Stack.Screen name="SuperAdmin Region Description" component={SuperAdminRegionDescription} />
+            <Stack.Screen name="Regional Manager Dashboard" component={RegionalManagerDashboard} />
+            <Stack.Screen name="Regional Manager Coaches" component={RegionalManagerCoaches} />
+            <Stack.Screen name="Regional Manager Coach Creation" component={RegionalManagerCoachCreation} />
+            <Stack.Screen name="Regional Manager Coach Description" component={RegionalManagerCoachDescription} />
           </Stack.Navigator>
         </NavigationContainer>
       </Provider>

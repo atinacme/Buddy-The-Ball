@@ -21,7 +21,7 @@ export default function CoachSchoolList({ navigation }) {
     };
 
     useEffect(() => {
-        const result = state.authPage.auth_data?.assigned_schools.filter(v => { return (v.territory == state.authPage.auth_data?.assigned_territory); });
+        const result = state.authPage.auth_data?.assigned_schools.filter(v => { return (v.region == state.authPage.auth_data?.assigned_region); });
         const assign_school = result[0].school_name;
         state.authPage.auth_data?.assign_slot.filter(element => {
             if (element.school === assign_school) {
@@ -37,7 +37,7 @@ export default function CoachSchoolList({ navigation }) {
         <LinearGradient colors={['#BCD7EF', '#D1E3AA', '#E3EE68', '#E1DA00']} style={styles.linearGradient}>
             <SafeAreaView style={styles.wrapper}>
                 <ScrollView style={styles.scrollView}>
-                    <Text>CURRENT TERRITORY: {state.authPage.auth_data?.assigned_territory}</Text>
+                    <Text>CURRENT REGION: {state.authPage.auth_data?.assigned_region}</Text>
                     <Text>CURRENT SEASON: FALL - {allDates.length > 0 && <>{moment(allDates[0]).format("MMM D")} - {moment(allDates[1]).format("MMM D")}</>}</Text>
                     <DataTable style={styles.container}>
                         <DataTable.Header style={styles.tableHeader}>
@@ -46,7 +46,7 @@ export default function CoachSchoolList({ navigation }) {
                         </DataTable.Header>
                         {allSchoolData.length > 0 && allSchoolData.map(item => {
                             return (
-                                <TouchableOpacity key={item._id} onPress={() => item.territory.indexOf(state.authPage.auth_data?.assigned_territory) > -1 ?
+                                <TouchableOpacity key={item._id} onPress={() => item.region.indexOf(state.authPage.auth_data?.assigned_region) > -1 ?
                                     navigation.navigate("Coach Particular School Students", { schoolItem: item })
                                     : Alert.alert(
                                         "Alert",

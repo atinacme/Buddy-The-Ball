@@ -16,7 +16,7 @@ export default function CustomerCreation({ navigation }) {
 
     useEffect(() => {
         const added = state.authPage.auth_data?.assigned_schools.map(v => Object.assign(v, { key: v._id, value: v.school_name }));
-        const result = added.filter(v => { return (v.territory == state.authPage.auth_data?.assigned_territory); });
+        const result = added.filter(v => { return (v.region == state.authPage.auth_data?.assigned_region); });
         setData(result);
     }, []);
 

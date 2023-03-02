@@ -6,13 +6,11 @@ import profile from '../assets/profile.png';
 import { useSelector } from "react-redux";
 import LinearGradient from 'react-native-linear-gradient';
 
-
-export default function CoachSchoolsPhotos({ navigation }) {
+export default function RegionalManagerSchoolsPhotos({ navigation }) {
     const state = useSelector((state) => state);
     const schoolData = state.authPage.auth_data?.assigned_schools;
 
     return (
-
         <LinearGradient colors={['#BCD7EF', '#D1E3AA', '#E3EE68', '#E1DA00']} style={styles.linearGradient}>
             <SafeAreaView style={styles.wrapper}>
                 <ScrollView showsVerticalScrollIndicator>

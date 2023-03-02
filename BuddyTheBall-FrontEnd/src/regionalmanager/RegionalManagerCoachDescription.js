@@ -7,14 +7,14 @@ import { GetSchoolsService } from '../services/SchoolService';
 import { Calendar } from 'react-native-calendars';
 import moment from 'moment';
 
-export default function SuperAdminCoachDescription({ navigation, route }) {
+export default function RegionalManagerCoachDescription({ navigation, route }) {
     const [coachData, setCoachData] = useState({
         coach_id: "",
         user_id: "",
         email: "",
         password: "",
         coach_name: "",
-        assigned_territory: "",
+        assigned_region: "",
         tennis_club: "",
         favorite_pro_player: "",
         handed: "",
@@ -35,7 +35,7 @@ export default function SuperAdminCoachDescription({ navigation, route }) {
         endDate: '',
         school: ''
     });
-    const territoryList = [
+    const regionList = [
         {
             key: "Kanpur",
             value: "Kanpur"
@@ -65,7 +65,7 @@ export default function SuperAdminCoachDescription({ navigation, route }) {
                         email: result.email,
                         password: result.password,
                         coach_name: result.coach_name,
-                        assigned_territory: result.assigned_territory,
+                        assigned_region: result.assigned_region,
                         tennis_club: result.tennis_club,
                         favorite_pro_player: result.favorite_pro_player,
                         handed: result.handed,
@@ -174,7 +174,7 @@ export default function SuperAdminCoachDescription({ navigation, route }) {
                 password: coachData.password,
                 coach_name: coachData.coach_name,
                 tennis_club: coachData.tennis_club,
-                assigned_territory: coachData.assigned_territory,
+                assigned_region: coachData.assigned_region,
                 assigned_schools: coachSchools.concat(selected),
                 assign_slot: assignedSlots,
                 favorite_pro_player: coachData.favorite_pro_player,
@@ -224,12 +224,12 @@ export default function SuperAdminCoachDescription({ navigation, route }) {
                     onChangeText={(e) => setCoachData({ ...coachData, coach_name: e })}
                     value={coachData.coach_name}
                 />
-                <Text style={styles.label}>Assigned Territory</Text>
+                <Text style={styles.label}>Assigned Region</Text>
                 <SelectList
-                    setSelected={(val) => setCoachData({ ...coachData, assigned_territory: val })}
-                    data={territoryList}
+                    setSelected={(val) => setCoachData({ ...coachData, assigned_region: val })}
+                    data={regionList}
                     save="key"
-                    defaultOption={{ key: coachData.assigned_territory, value: coachData.assigned_territory }}
+                    defaultOption={{ key: coachData.assigned_region, value: coachData.assigned_region }}
                 />
                 <Text style={styles.label}>Assigned Schools</Text>
                 {assignedSchools.length > 0 && assignedSchools.map((item) => {
