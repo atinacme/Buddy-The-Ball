@@ -14,7 +14,8 @@ export default function CustomerParticularPhoto({ navigation, route }) {
     const [message, setMessage] = useState("");
     const [onLoadMessages, setOnloadMessages] = useState([]);
     const [msgResult, setMsgResult] = useState();
-    const messanger = state.authPage.roles[0] === "ROLE_CUSTOMER" ? state.authPage.auth_data?.player_name : state.authPage.auth_data?.coach_name;
+    const messanger = state.authPage.roles[0] === "ROLE_CUSTOMER" ? state.authPage.auth_data?.player_name :
+        state.authPage.roles[0] === "ROLE_COACH" ? state.authPage.auth_data?.coach_name : state.authPage.auth_data?.regional_manager_name;
 
     useEffect(() => {
         try {
@@ -46,42 +47,42 @@ export default function CustomerParticularPhoto({ navigation, route }) {
 
     return (
         <LinearGradient colors={['#BCD7EF', '#D1E3AA', '#E3EE68', '#E1DA00']} style={styles.linearGradient}>
-        <SafeAreaView style={styles.container}>
-            <ScrollView style={styles.scrollView}>
-                {onLoadMessages.length > 0 && onLoadMessages.map(item => {
-                    return (
-                        <View key={item._id} style={styles.DateName}>
-                            {item.url ?
-                                <View style={styles.pro_img}>
-                                    <Image source={{ uri: item.url }} style={{ width: 40, height: 40 }} />
+            <SafeAreaView style={styles.container}>
+                <ScrollView style={styles.scrollView}>
+                    {onLoadMessages.length > 0 && onLoadMessages.map(item => {
+                        return (
+                            <View key={item._id} style={styles.DateName}>
+                                {item.url ?
+                                    <View style={styles.pro_img}>
+                                        <Image source={{ uri: item.url }} style={{ width: 40, height: 40 }} />
+                                    </View>
+                                    :
+                                    <View style={styles.pro_img}>
+                                        <Image source={profile} style={{ width: 40, height: 40 }} />
+                                    </View>
+                                }
+                                <View style={styles.msgData}>
+                                    <Text style={styles.date}>&nbsp;&nbsp;{item.messanger_name}</Text>
+                                    <Text style={styles.date}>&nbsp;&nbsp;{moment(item.time).format('MMMM D YY, h:mm a')}</Text>
+                                    <Text style={styles.date}>&nbsp;&nbsp;&nbsp;&nbsp;{item.message}</Text>
                                 </View>
-                                :
-                                <View style={styles.pro_img}>
-                                    <Image source={profile} style={{ width: 40, height: 40 }} />
-                                </View>
-                            }
-                            <View style={styles.msgData}>
-                                <Text style={styles.date}>&nbsp;&nbsp;{item.messanger_name}</Text>
-                                <Text style={styles.date}>&nbsp;&nbsp;{moment(item.time).format('MMMM D YY, h:mm a')}</Text>
-                                <Text style={styles.date}>&nbsp;&nbsp;&nbsp;&nbsp;{item.message}</Text>
                             </View>
-                        </View>
-                    );
-                })}
-            </ScrollView>
-            <View style={styles.commentwrap}>
-                <TextInput
-                    placeholderTextColor="#000"
-                    style={styles.input}
-                    onChangeText={(e) => setMessage(e)}
-                    value={message}
-                    placeholder="Add a comment..."
-                />
-                <TouchableOpacity onPress={handleSendMessage} style={styles.photoimg} >
-                    <Image source={send_button} style={{ width: 30, height: 30 }} />
-                </TouchableOpacity>
-            </View>
-        </SafeAreaView>
+                        );
+                    })}
+                </ScrollView>
+                <View style={styles.commentwrap}>
+                    <TextInput
+                        placeholderTextColor="#000"
+                        style={styles.input}
+                        onChangeText={(e) => setMessage(e)}
+                        value={message}
+                        placeholder="Add a comment..."
+                    />
+                    <TouchableOpacity onPress={handleSendMessage} style={styles.photoimg} >
+                        <Image source={send_button} style={{ width: 30, height: 30 }} />
+                    </TouchableOpacity>
+                </View>
+            </SafeAreaView>
         </LinearGradient>
     );
 }
@@ -94,7 +95,7 @@ const styles = StyleSheet.create({
     linearGradient: {
         flex: 1,
         borderRadius: 5
-      },
+    },
     pro_img: {
         width: 40,
         height: 40,

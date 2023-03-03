@@ -2,29 +2,25 @@ import React, { useEffect, useState } from 'react';
 import { Text, SafeAreaView, TextInput, StyleSheet, Button, Image, Alert, ScrollView, View, Pressable, Modal } from "react-native";
 import { SelectList, MultipleSelectList } from 'react-native-dropdown-select-list';
 import buddy from '../assets/buddy.png';
-import { CoachUpdateService } from '../services/CoachService';
-import { GetRegionWiseSchools } from '../services/SchoolService';
+import { CoachUpdateService, GetParticularCoachService } from '../services/CoachService';
+import { GetSchoolsService } from '../services/SchoolService';
 import { Calendar } from 'react-native-calendars';
 import moment from 'moment';
-import { useSelector } from 'react-redux';
-import { GetCoachOfParticularRegionalManager } from '../services/RegionalManagerService';
 
-export default function RegionalManagerCoachDescription({ navigation, route }) {
-    const state = useSelector((state) => state);
+export default function SuperAdminCoachDescription({ navigation, route }) {
     const [coachData, setCoachData] = useState({
         coach_id: "",
         user_id: "",
         email: "",
         password: "",
         coach_name: "",
-        assigned_region: "",
+        assigned_territory: "",
         tennis_club: "",
         favorite_pro_player: "",
         handed: "",
         favorite_drill: ""
     });
     const [data, setData] = useState([]);
-    const [regionSchools, setRegionSchools] = useState([]);
     const [coachSchools, setCoachSchools] = useState([]);
     const [assignedSchools, setAssignedSchools] = useState([]);
     const [assignedSlots, setAssignedSlots] = useState([]);
@@ -39,7 +35,7 @@ export default function RegionalManagerCoachDescription({ navigation, route }) {
         endDate: '',
         school: ''
     });
-    const regionList = [
+    const territoryList = [
         {
             key: "Kanpur",
             value: "Kanpur"
@@ -61,23 +57,23 @@ export default function RegionalManagerCoachDescription({ navigation, route }) {
     useEffect(() => {
         try {
             const getParticularCoach = async () => {
-                const result = await GetCoachOfParticularRegionalManager(route.params.coachData._id, state.authPage.auth_data?._id);
+                const result = await GetParticularCoachService(route.params.coach._id);
                 if (result) {
                     setCoachData({
-                        coach_id: result[0]._id,
-                        user_id: result[0].user_id,
-                        email: result[0].email,
-                        password: result[0].password,
-                        coach_name: result[0].coach_name,
-                        assigned_region: result[0].assigned_region,
-                        tennis_club: result[0].tennis_club,
-                        favorite_pro_player: result[0].favorite_pro_player,
-                        handed: result[0].handed,
-                        favorite_drill: result[0].favorite_drill
+                        coach_id: result._id,
+                        user_id: result.user_id,
+                        email: result.email,
+                        password: result.password,
+                        coach_name: result.coach_name,
+                        assigned_territory: result.assigned_territory,
+                        tennis_club: result.tennis_club,
+                        favorite_pro_player: result.favorite_pro_player,
+                        handed: result.handed,
+                        favorite_drill: result.favorite_drill
                     });
-                    setCoachSchools(result[0].assigned_schools.map(v => v.school_name));
-                    setAssignedSchools(result[0].assigned_schools.map(v => { return { key: v._id, value: v.school_name }; }));
-                    setAssignedSlots(result[0].assign_slot);
+                    setCoachSchools(result.assigned_schools.map(v => v.school_name));
+                    setAssignedSchools(result.assigned_schools.map(v => { return { key: v._id, value: v.school_name }; }));
+                    setAssignedSlots(result.assign_slot);
                 }
             };
             getParticularCoach();
@@ -87,10 +83,8 @@ export default function RegionalManagerCoachDescription({ navigation, route }) {
     useEffect(() => {
         try {
             const getAllSchools = async () => {
-                const data = { region: state.authPage.auth_data?.assigned_region };
-                const result = await GetRegionWiseSchools(data);
+                const result = await GetSchoolsService();
                 result.map(v => Object.assign(v, { key: v._id, value: v.school_name }));
-                setRegionSchools(result);
                 var res = result.filter(function (item) {
                     return !assignedSchools.find(function (school) {
                         return item.key === school.key;
@@ -99,6 +93,22 @@ export default function RegionalManagerCoachDescription({ navigation, route }) {
                 setData(res);
             };
             getAllSchools();
+        } catch (e) { }
+    }, [assignedSchools]);
+
+    useEffect(() => {
+        try {
+            const getAllSlots = async () => {
+                const result = await GetSchoolsService();
+                result.map(v => Object.assign(v, { key: v._id, value: v.school_name }));
+                var res = result.filter(function (item) {
+                    return !assignedSchools.find(function (school) {
+                        return item.key === school.key;
+                    });
+                });
+                setData(res);
+            };
+            getAllSlots();
         } catch (e) { }
     }, [assignedSchools]);
 
@@ -164,7 +174,7 @@ export default function RegionalManagerCoachDescription({ navigation, route }) {
                 password: coachData.password,
                 coach_name: coachData.coach_name,
                 tennis_club: coachData.tennis_club,
-                assigned_region: coachData.assigned_region,
+                assigned_territory: coachData.assigned_territory,
                 assigned_schools: coachSchools.concat(selected),
                 assign_slot: assignedSlots,
                 favorite_pro_player: coachData.favorite_pro_player,
@@ -179,7 +189,7 @@ export default function RegionalManagerCoachDescription({ navigation, route }) {
                     [
                         {
                             text: "OK",
-                            onPress: () => navigation.navigate("Regional Manager Dashboard")
+                            onPress: () => navigation.navigate("SuperAdmin Dashboard")
                         }
                     ]
                 );
@@ -213,6 +223,13 @@ export default function RegionalManagerCoachDescription({ navigation, route }) {
                     style={styles.input}
                     onChangeText={(e) => setCoachData({ ...coachData, coach_name: e })}
                     value={coachData.coach_name}
+                />
+                <Text style={styles.label}>Assigned Territory</Text>
+                <SelectList
+                    setSelected={(val) => setCoachData({ ...coachData, assigned_territory: val })}
+                    data={territoryList}
+                    save="key"
+                    defaultOption={{ key: coachData.assigned_territory, value: coachData.assigned_territory }}
                 />
                 <Text style={styles.label}>Assigned Schools</Text>
                 {assignedSchools.length > 0 && assignedSchools.map((item) => {
@@ -267,7 +284,7 @@ export default function RegionalManagerCoachDescription({ navigation, route }) {
                                         <View style={styles.schoolList}>
                                             <SelectList
                                                 setSelected={(val) => setAssignCal({ ...assignCal, school: val })}
-                                                data={regionSchools}
+                                                data={data}
                                                 save="value"
                                             />
                                         </View>

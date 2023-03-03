@@ -1,17 +1,17 @@
 import React, { useEffect, useState } from 'react';
 import { Text, View, Image, TouchableOpacity, StyleSheet, SafeAreaView, Button, ScrollView } from 'react-native';
-import { GetParticularSchoolPhotosService } from '../services/SchoolService';
 import LinearGradient from 'react-native-linear-gradient';
+import { GetParticularSchoolPhotosService } from '../services/SchoolService';
 
 export default function RegionalManagerParticularSchoolPhotos({ navigation, route }) {
-    const [customerData, setCustomerData] = useState([]);
-
+    const [schoolPhotosData, setSchoolPhotosData] = useState([]);
     useEffect(() => {
         try {
             const getCustomers = async () => {
                 const result = await GetParticularSchoolPhotosService(route.params.schoolItem._id);
+                console.log("dsgfr---->", result);
                 if (result) {
-                    setCustomerData(result);
+                    setSchoolPhotosData(result);
                 }
             };
             getCustomers();
@@ -22,14 +22,9 @@ export default function RegionalManagerParticularSchoolPhotos({ navigation, rout
         <LinearGradient colors={['#BCD7EF', '#D1E3AA', '#E3EE68', '#E1DA00']} style={styles.linearGradient}>
             <SafeAreaView style={styles.wrapper}>
                 <ScrollView style={styles.scrollView}>
-                    <TouchableOpacity onPress={() => navigation.navigate("Coach Photo Creation", { schoolId: route.params.schoolItem._id })}>
-                        <Text style={styles.cta}>Create Customer Photo</Text>
-                    </TouchableOpacity>
-
-
                     <Text style={styles.label}>{route.params.schoolItem.school_name}</Text>
                     <View style={styles.imgWrap}>
-                        {customerData.map((item) => {
+                        {schoolPhotosData.length > 0 && schoolPhotosData.map((item) => {
                             return (
                                 <TouchableOpacity key={item._id} onPress={() => navigation.navigate("Customer Particular Photo", { photo: item })}>
                                     <Image key={item._id} source={{ uri: item.url }} style={{ height: 300, width: 300, marginBottom: 10 }} />
@@ -38,7 +33,7 @@ export default function RegionalManagerParticularSchoolPhotos({ navigation, rout
                         })}
                     </View>
                 </ScrollView>
-                <TouchableOpacity onPress={() => navigation.navigate("Coach Schools Photos")}>
+                <TouchableOpacity onPress={() => navigation.navigate("Regional Manager Photos")}>
                     <Text style={styles.backbtn}>Back</Text>
                 </TouchableOpacity>
             </SafeAreaView>

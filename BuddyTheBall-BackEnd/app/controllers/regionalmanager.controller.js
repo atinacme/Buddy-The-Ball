@@ -2,6 +2,7 @@ const db = require("../models");
 var bcrypt = require("bcryptjs");
 const User = db.user;
 const RegionalManager = db.regionalmanager;
+const Coach = db.coach;
 
 exports.getRegionalManagers = (req, res) => {
     RegionalManager.find()
@@ -34,38 +35,39 @@ exports.findParticularRegionalManager = (req, res) => {
         });
 };
 
-// exports.findCustomersOfParticularCoach = (req, res) => {
-//     const id = req.params.id;
+exports.getCoachesOfParticularRegionalManager = (req, res) => {
+    const id = req.params.id;
 
-//     Customer.find({ coach: id })
-//         .then(data => {
-//             if (!data)
-//                 res.status(404).send({ message: "Not found Regional Manager with id " + id });
-//             else res.send(data);
-//         })
-//         .catch(err => {
-//             res
-//                 .status(500)
-//                 .send({ message: "Error retrieving Regional Manager with id=" + id });
-//         });
-// };
+    Coach.find({ assigned_by_user_id: id })
+        .then(data => {
+            if (!data)
+                res.status(404).send({ message: "Not found Coaches with id " + id });
+            else res.send(data);
+        })
+        .catch(err => {
+            res
+                .status(500)
+                .send({ message: "Error retrieving Coaches with id=" + id });
+        });
+};
 
-// exports.findCustomersOfParticularCoachOfParticularSchool = (req, res) => {
-//     const coachId = req.params.coachId;
-//     const schoolId = req.params.schoolId;
+exports.getCoachOfParticularRegionalManager = (req, res) => {
+    const coachId = req.params.coachId;
+    const regionalManagerId = req.params.regionalManagerId;
 
-//     Customer.find({ coach: coachId, school: schoolId })
-//         .then(data => {
-//             if (!data)
-//                 res.status(404).send({ message: "Not found Coach with id " + id });
-//             else res.send(data);
-//         })
-//         .catch(err => {
-//             res
-//                 .status(500)
-//                 .send({ message: "Error retrieving Coach with id=" + id });
-//         });
-// };
+    Coach.find({ _id: coachId, assigned_by_user_id: regionalManagerId })
+        .populate("assigned_schools", "-__v")
+        .then(data => {
+            if (!data)
+                res.status(404).send({ message: "Not found Coach with id " + id });
+            else res.send(data);
+        })
+        .catch(err => {
+            res
+                .status(500)
+                .send({ message: "Error retrieving Coach with id=" + id });
+        });
+};
 
 exports.updateRegionalManager = (req, res) => {
     if (!req.body) {

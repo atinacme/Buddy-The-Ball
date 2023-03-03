@@ -7,6 +7,7 @@ const db = require("../models");
 const Coach = db.coach;
 const Customer = db.customer;
 const Photos = db.photos;
+const RegionalManager = db.regionalmanager;
 
 const MongoClient = require("mongodb").MongoClient;
 const GridFSBucket = require("mongodb").GridFSBucket;
@@ -47,6 +48,32 @@ const uploadCustomerPhotos = async (req, res) => {
                     if (err) {
                         console.log(err);
                     } else {
+                        // return res.status(200).send({
+                        //     message: "Profile Picture has been uploaded.",
+                        // });
+                    }
+                }).clone();
+            }
+            if (req.body.role === 'ROLE_REGIONALMANAGER') {
+                const profile_data = {
+                    photo_id: req.files[0].id,
+                    fieldname: req.files[0].fieldname,
+                    originalname: req.files[0].originalname,
+                    encoding: req.files[0].encoding,
+                    mimetype: req.files[0].mimetype,
+                    filename: req.files[0].filename,
+                    size: req.files[0].size,
+                    url: baseUrl + req.files[0].filename
+                };
+                await RegionalManager.findByIdAndUpdate(req.body.regional_manager_id, {
+                    $set: {
+                        profile_data: profile_data,
+                    }
+                }, { new: true }, function (err, docs) {
+                    if (err) {
+                        console.log(err);
+                    } else {
+                        console.log("sxcdedsc");
                         // return res.status(200).send({
                         //     message: "Profile Picture has been uploaded.",
                         // });

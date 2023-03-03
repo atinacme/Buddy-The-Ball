@@ -2,13 +2,24 @@ import React, { useEffect, useState } from 'react';
 import { SafeAreaView, Text, StyleSheet, TouchableOpacity, View, ScrollView } from 'react-native';
 import { useSelector } from "react-redux";
 import { DataTable } from 'react-native-paper';
-import moment from 'moment';
 import LinearGradient from 'react-native-linear-gradient';
+import { GetCoachesOfParticularRegionalManager } from '../services/RegionalManagerService';
 
 export default function RegionalManagerCoaches({ navigation }) {
     const state = useSelector((state) => state);
-    const allSchoolData = state.authPage.auth_data?.assigned_schools;
-    const [allDates, setAllDates] = useState([]);
+    const [coaches, setCoaches] = useState([]);
+
+    useEffect(() => {
+        try {
+            const getRegionalManagerCoaches = async () => {
+                const result = await GetCoachesOfParticularRegionalManager(state.authPage.auth_data?._id);
+                if (result) {
+                    setCoaches(result);
+                }
+            };
+            getRegionalManagerCoaches();
+        } catch (e) { }
+    }, []);
 
     return (
         <LinearGradient colors={['#BCD7EF', '#D1E3AA', '#E3EE68', '#E1DA00']} style={styles.linearGradient}>
@@ -21,6 +32,17 @@ export default function RegionalManagerCoaches({ navigation }) {
                                 <DataTable.Title>REGION</DataTable.Title>
                                 <DataTable.Title>SCHOOL QTY</DataTable.Title>
                             </DataTable.Header>
+                            {coaches.map(item => {
+                                return (
+                                    <TouchableOpacity key={item._id} onPress={() => navigation.navigate("Regional Manager Coach Description", { coachData: item })}>
+                                        <DataTable.Row>
+                                            <DataTable.Cell>{item.coach_name}</DataTable.Cell>
+                                            <DataTable.Cell>{item.assigned_region}</DataTable.Cell>
+                                            <DataTable.Cell>{item.assigned_schools.length}</DataTable.Cell>
+                                        </DataTable.Row>
+                                    </TouchableOpacity>
+                                );
+                            })}
                         </DataTable>
                     </View>
                 </ScrollView>

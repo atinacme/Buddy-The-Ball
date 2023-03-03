@@ -34,7 +34,7 @@ import CoachParticularSchoolStudents from './src/coach/CoachParticularSchoolStud
 import SuperAdminDashboard from './src/superadmin/SuperAdminDashboard.js';
 import SuperAdminBilling from './src/superadmin/SuperAdminBilling.js';
 import SuperAdminCoaches from './src/superadmin/SuperAdminCoaches.js';
-import SuperAdminCoachDescription from './src/regionalmanager/RegionalManagerCoachDescription.js';
+import SuperAdminCoachDescription from './src/superadmin/SuperAdminCoachDescription';
 import SuperAdminSchools from './src/superadmin/SuperAdminSchools.js';
 import SuperAdminSchoolDescription from './src/superadmin/SuperAdminSchoolDescription.js';
 import SuperAdminSchoolCreation from './src/superadmin/SuperAdminSchoolCreation.js';
@@ -44,9 +44,9 @@ import SuperAdminSettings from './src/superadmin/SuperAdminSettings.js';
 import SuperAdminMessages from './src/superadmin/SuperAdminMessages';
 import SuperAdminMessageCreation from './src/superadmin/SuperAdminMessageCreation';
 import SuperAdminParticularMessage from './src/superadmin/SuperAdminParticularMessage';
-import SuperAdminRM from './src/superadmin/SuperAdminRM';
-import SuperAdminRMCreation from './src/superadmin/SuperAdminRMCreation';
-import SuperAdminRMDescription from './src/superadmin/SuperAdminRMDescription';
+import SuperAdminRegionalManagers from './src/superadmin/SuperAdminRegionalManagers';
+import SuperAdminRegionalManagerDescription from './src/superadmin/SuperAdminRegionalManagerDescription';
+import SuperAdminRegionalManagerCreation from './src/superadmin/SuperAdminRegionalManagerCreation';
 import SuperAdminRegions from './src/superadmin/SuperAdminRegions';
 import SuperAdminRegionCreation from './src/superadmin/SuperAdminRegionCreation';
 import SuperAdminRegionDescription from './src/superadmin/SuperAdminRegionDescription';
@@ -54,23 +54,11 @@ import RegionalManagerDashboard from './src/regionalmanager/RegionalManagerDashb
 import RegionalManagerCoaches from './src/regionalmanager/RegionalManagerCoaches';
 import RegionalManagerCoachCreation from './src/regionalmanager/RegionalManagerCoachCreation';
 import RegionalManagerCoachDescription from './src/regionalmanager/RegionalManagerCoachDescription.js';
+import RegionalManagerPhotos from './src/regionalmanager/RegionalManagerPhotos';
+import RegionalManagerParticularSchoolPhotos from './src/regionalmanager/RegionalManagerParticularSchoolPhotos';
 
 const Stack = createNativeStackNavigator();
 const App = () => {
-  const headerStyle = {
-    // headerStyle: { elevation: 0,backgroundColor: 'transparent'},
-
-    // headerTransparent: true,
-
-    headerStyle: {
-      backgroundColor: 'transparent',
-      elevation: 0,
-      shadowOpacity: 0,
-      borderBottomWidth: 0,
-    }
-
-
-  };
   return (
     <LinearGradient colors={['#BCD7EF', '#D1E3AA', '#E3EE68', '#E1DA00']} style={styles.linearGradient}>
       <Provider store={store}>
@@ -116,9 +104,9 @@ const App = () => {
             <Stack.Screen name="SuperAdmin Messages" component={SuperAdminMessages} />
             <Stack.Screen name="SuperAdmin Message Creation" component={SuperAdminMessageCreation} />
             <Stack.Screen name="SuperAdmin Particular Message" component={SuperAdminParticularMessage} />
-            <Stack.Screen name="SuperAdmin RM" component={SuperAdminRM} />
-            <Stack.Screen name="SuperAdmin RM Description" component={SuperAdminRMDescription} />
-            <Stack.Screen name="SuperAdmin RM Creation" component={SuperAdminRMCreation} />
+            <Stack.Screen name="SuperAdmin Regional Manager" component={SuperAdminRegionalManagers} />
+            <Stack.Screen name="SuperAdmin Regional Manager Description" component={SuperAdminRegionalManagerDescription} />
+            <Stack.Screen name="SuperAdmin Regional Manager Creation" component={SuperAdminRegionalManagerCreation} />
             <Stack.Screen name="SuperAdmin Regions" component={SuperAdminRegions} />
             <Stack.Screen name="SuperAdmin Region Creation" component={SuperAdminRegionCreation} />
             <Stack.Screen name="SuperAdmin Region Description" component={SuperAdminRegionDescription} />
@@ -126,6 +114,8 @@ const App = () => {
             <Stack.Screen name="Regional Manager Coaches" component={RegionalManagerCoaches} />
             <Stack.Screen name="Regional Manager Coach Creation" component={RegionalManagerCoachCreation} />
             <Stack.Screen name="Regional Manager Coach Description" component={RegionalManagerCoachDescription} />
+            <Stack.Screen name="Regional Manager Photos" component={RegionalManagerPhotos} />
+            <Stack.Screen name="Regional Manager Particular School Photos" component={RegionalManagerParticularSchoolPhotos} />
           </Stack.Navigator>
         </NavigationContainer>
       </Provider>

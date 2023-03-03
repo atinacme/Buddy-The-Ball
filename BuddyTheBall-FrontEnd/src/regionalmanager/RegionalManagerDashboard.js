@@ -39,7 +39,7 @@ export default function RegionalManagerDashboard({ navigation }) {
 
     const handleUpload = async () => {
         const formData = new FormData();
-        formData.append('coach_id', state.authPage.auth_data?._id);
+        formData.append('regional_manager_id', state.authPage.auth_data?._id);
         formData.append('role', state.authPage.roles[0]);
         formData.append('file_type', 'profile');
         const newImageUri = "file:///" + selectedFile[0].path.split("file:/").join("");
@@ -111,7 +111,7 @@ export default function RegionalManagerDashboard({ navigation }) {
                         </>
                     )}
                     <Text style={styles.adminWrapper}>
-                        <TouchableOpacity onPress={() => navigation.navigate("Coach Schools Photos")}>
+                        <TouchableOpacity onPress={() => navigation.navigate("Regional Manager Photos")}>
                             <Text style={{ ...styles.adminContainer, ...styles.adminBg1 }}>PHOTOS</Text>
                         </TouchableOpacity>
                         <TouchableOpacity onPress={() => navigation.navigate("Coach Calendar")}>
@@ -143,57 +143,6 @@ const styles = StyleSheet.create({
     linearGradient: {
         flex: 1,
     },
-    scrollView: {
-        marginHorizontal: 5,
-    },
-    txt: {
-        fontFamily: 'LemonJuice',
-        textAlign: 'center',
-        fontSize: 18,
-    },
-    dashimgWrap: {
-        textAlign: 'center',
-        marginTop: 10
-    },
-    heading: {
-        fontSize: 40,
-        textAlign: 'center',
-        padding: 5,
-        fontFamily: 'LemonJuice'
-    },
-
-    playPara: {
-        textAlign: 'center',
-        color: '#000',
-        fontFamily: 'LemonJuice'
-    },
-    btnCtawrap: {
-        width: 160,
-        marginBottom: 10,
-        fontFamily: 'LemonJuice'
-    },
-    profileImgContainer: {
-        // marginLeft: 8,
-        height: 150,
-        width: 200,
-        position: 'relative',
-        left: 0,
-        right: 0,
-        margin: 'auto',
-        textAlign: 'center'
-    },
-    profileImg: {
-        position: 'absolute',
-        left: 0,
-        right: 0,
-        margin: 'auto'
-    },
-    wrapper: {
-        flex: 1,
-        marginTop: 60,
-        paddingLeft: 15,
-        paddingRight: 15,
-    },
     adminbtn: {
         display: 'flex',
         alignItems: 'center',
@@ -204,7 +153,6 @@ const styles = StyleSheet.create({
         width: '100%',
         paddingTop: 40,
         paddingBottom: 20
-
     },
     backbtn: {
         borderColor: "#fff",
@@ -229,9 +177,6 @@ const styles = StyleSheet.create({
         fontWeight: "700",
         marginTop: 25,
         width: 120,
-    },
-    linearGradient: {
-        flex: 1,
     },
     adminWrapper: {
         display: 'flex',
@@ -275,5 +220,65 @@ const styles = StyleSheet.create({
     adminBg5: {
         backgroundColor: '#ff0000'
     },
-
+    txt: {
+        fontFamily: 'LemonJuice',
+        textAlign: 'center',
+        fontSize: 18,
+    },
+    dashimgWrap: {
+        textAlign: 'center',
+        marginTop: 10
+    },
+    heading: {
+        fontSize: 25,
+        textAlign: 'center',
+        padding: 5,
+        fontFamily: 'LemonJuice'
+    },
+    wrapper: {
+        paddingTop: 0,
+        paddingBottom: 30,
+        paddingLeft: 10,
+        paddingRight: 10
+    },
+    playPara: {
+        textAlign: 'center',
+        color: '#000',
+        fontFamily: 'LemonJuice'
+    },
+    btnCta: {
+        display: 'flex',
+        alignItems: 'center',
+        flexWrap: 'wrap',
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        paddingTop: 20,
+        fontFamily: 'LemonJuice'
+    },
+    cta: {
+        alignItems: 'center',
+        justifyContent: 'center',
+        paddingVertical: 12,
+        paddingHorizontal: 32,
+        borderRadius: 4,
+        elevation: 3,
+        backgroundColor: 'black',
+        fontFamily: 'LemonJuice'
+    },
+    btnCtawrap: {
+        width: 160,
+        marginBottom: 10,
+        fontFamily: 'LemonJuice'
+    },
+    profileImgContainer: {
+        marginLeft: 8,
+        height: 150,
+        width: 150,
+        borderRadius: 100,
+    },
+    profileImg: {
+        height: 150,
+        width: 150,
+        borderRadius: 100,
+    }
 });

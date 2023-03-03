@@ -25,11 +25,9 @@ export default function CoachParticularSchoolPhotos({ navigation, route }) {
                     <TouchableOpacity onPress={() => navigation.navigate("Coach Photo Creation", { schoolId: route.params.schoolItem._id })}>
                         <Text style={styles.cta}>Create Customer Photo</Text>
                     </TouchableOpacity>
-
-
                     <Text style={styles.label}>{route.params.schoolItem.school_name}</Text>
                     <View style={styles.imgWrap}>
-                        {customerData.map((item) => {
+                        {customerData.length > 0 && customerData.map((item) => {
                             return (
                                 <TouchableOpacity key={item._id} onPress={() => navigation.navigate("Customer Particular Photo", { photo: item })}>
                                     <Image key={item._id} source={{ uri: item.url }} style={{ height: 300, width: 300, marginBottom: 10 }} />

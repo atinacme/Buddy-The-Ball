@@ -79,7 +79,7 @@ export default function RegionalManagerCalendar({ navigation }) {
                     <Agenda
                         minDate={today}
                         pastScrollRange={0}
-                        futureScrollRange={12}
+                        futureScrollRange={6}
                         dayLoading={false}
                         items={items}
                         renderItem={(item) => (

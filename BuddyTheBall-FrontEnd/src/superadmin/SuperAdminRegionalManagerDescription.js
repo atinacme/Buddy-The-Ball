@@ -4,7 +4,7 @@ import buddy from '../assets/buddy.png';
 import { SelectList } from 'react-native-dropdown-select-list';
 import { GetParticularRegionalManagerService, RegionalManagerUpdateService } from '../services/RegionalManagerService';
 
-export default function SuperAdminRMDescription({ navigation, route }) {
+export default function SuperAdminRegionalManagerDescription({ navigation, route }) {
     const [regionalManagerData, setRegionalManagerData] = useState({
         regional_manager_user_id: "",
         email: "",

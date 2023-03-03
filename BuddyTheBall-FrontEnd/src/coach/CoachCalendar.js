@@ -20,6 +20,7 @@ export default function CoachCalendar({ navigation }) {
     const today = moment().format("YYYY-MM-DD");
     const [newDay, setNewDay] = useState(today);
     const [loadResult, setLoadResult] = useState();
+    const [allDates, setAllDates] = useState([]);
 
     useEffect(() => {
         const handleOnLoadAgenda = async () => {
@@ -34,6 +35,20 @@ export default function CoachCalendar({ navigation }) {
         };
         handleOnLoadAgenda();
     }, [newDay, updateAgenda]);
+
+    useEffect(() => {
+        const result = state.authPage.auth_data?.assigned_schools.filter(v => { return (v.region == state.authPage.auth_data?.assigned_region); });
+        const assign_school = result[0].school_name;
+        state.authPage.auth_data?.assign_slot.filter(element => {
+            if (element.school === assign_school) {
+                let timeStartStamp = moment(element.startDate);
+                let timeEndStamp = moment(element.endDate);
+                setAllDates([timeStartStamp, timeEndStamp]);
+            }
+        });
+    }, []);
+
+    console.log("ddfn---->", allDates);
 
     const handleRenderAgenda = () => {
         setUpdateAgenda(false);

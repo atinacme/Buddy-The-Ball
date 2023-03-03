@@ -24,7 +24,6 @@ export default function RegionalManagerCoachCreation({ navigation }) {
         endDate: '',
         school: ''
     });
-    const [regions, setRegions] = useState([]);
     const [coachData, setCoachData] = useState({
         email: "",
         password: "",
@@ -40,7 +39,6 @@ export default function RegionalManagerCoachCreation({ navigation }) {
             const getAllSchools = async () => {
                 const data = { region: state.authPage.auth_data?.assigned_region };
                 const result = await GetRegionWiseSchools(data);
-                console.log("scdesc--->", data, result);
                 result.map(v => Object.assign(v, { key: v._id, value: v.school_name }));
                 setData(result);
             };
@@ -113,6 +111,8 @@ export default function RegionalManagerCoachCreation({ navigation }) {
                 assigned_region: state.authPage.auth_data?.assigned_region,
                 assigned_schools: selected,
                 assign_slot: assignSlot,
+                assigned_by: 'Regional Manager',
+                assigned_by_user_id: state.authPage.auth_data?._id,
                 tennis_club: coachData.tennis_club,
                 favorite_pro_player: coachData.favorite_pro_player,
                 handed: coachData.handed,
@@ -126,7 +126,7 @@ export default function RegionalManagerCoachCreation({ navigation }) {
                     [
                         {
                             text: "OK",
-                            onPress: () => navigation.navigate("SuperAdmin Dashboard")
+                            onPress: () => navigation.navigate("Regional Manager Dashboard")
                         }
                     ]
                 );

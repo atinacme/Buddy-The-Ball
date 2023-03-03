@@ -4,7 +4,7 @@ import { DataTable } from 'react-native-paper';
 import LinearGradient from 'react-native-linear-gradient';
 import { GetAllRegionalManagersService } from '../services/RegionalManagerService';
 
-export default function SuperAdminRM({ navigation }) {
+export default function SuperAdminRegionalManagers({ navigation }) {
     const [regionalManagers, setRegionalManagers] = useState([]);
 
     useEffect(() => {
@@ -31,7 +31,7 @@ export default function SuperAdminRM({ navigation }) {
                             </DataTable.Header>
                             {regionalManagers.map(item => {
                                 return (
-                                    <TouchableOpacity key={item._id} onPress={() => navigation.navigate("SuperAdmin RM Description", { regional_manager: item })}>
+                                    <TouchableOpacity key={item._id} onPress={() => navigation.navigate("SuperAdmin Regional Manager Description", { regional_manager: item })}>
                                         <DataTable.Row>
                                             <DataTable.Cell>{item.regional_manager_name}</DataTable.Cell>
                                             <DataTable.Cell>{item.assigned_region}</DataTable.Cell>
@@ -44,7 +44,7 @@ export default function SuperAdminRM({ navigation }) {
 
                 </ScrollView>
                 <View style={styles.adminbtn}>
-                    <TouchableOpacity onPress={() => navigation.navigate("SuperAdmin RM Creation")}>
+                    <TouchableOpacity onPress={() => navigation.navigate("SuperAdmin Regional Manager Creation")}>
                         <Text style={styles.coach_cta}>Regional Manager Creation</Text>
                     </TouchableOpacity>
                     <TouchableOpacity onPress={() => navigation.navigate("SuperAdmin Dashboard")}>

@@ -4,7 +4,7 @@ import HttpRequest from "./HttpRequest";
 const baseUrl = Config.REACT_APP_BASE_URL;
 
 const CoachPhotoUploadService = async (data) => {
-    return await HttpRequest("POST", `${baseUrl}/uploadCustomerPhotos`, data);
+    return await HttpRequest("POST", `${baseUrl}/uploadPhotos`, data);
 };
 
 const GetAllCoachesService = async () => {

@@ -1,14 +1,26 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { SafeAreaView, ImageBackground, Text, View, Image, TouchableOpacity, StyleSheet, ScrollView, Alert } from 'react-native';
 import kids from '../assets/kids.jpg';
 import galley from '../assets/galley.png';
 import profile from '../assets/profile.png';
 import { useSelector } from "react-redux";
 import LinearGradient from 'react-native-linear-gradient';
+import { GetRegionWiseSchools } from '../services/SchoolService';
 
-export default function RegionalManagerSchoolsPhotos({ navigation }) {
+export default function RegionalManagerPhotos({ navigation }) {
     const state = useSelector((state) => state);
-    const schoolData = state.authPage.auth_data?.assigned_schools;
+    const [schoolData, setSchoolData] = useState([]);
+
+    useEffect(() => {
+        try {
+            const getAllSchools = async () => {
+                const data = { region: state.authPage.auth_data?.assigned_region };
+                const result = await GetRegionWiseSchools(data);
+                setSchoolData(result);
+            };
+            getAllSchools();
+        } catch (e) { }
+    }, []);
 
     return (
         <LinearGradient colors={['#BCD7EF', '#D1E3AA', '#E3EE68', '#E1DA00']} style={styles.linearGradient}>
@@ -16,18 +28,8 @@ export default function RegionalManagerSchoolsPhotos({ navigation }) {
                 <ScrollView showsVerticalScrollIndicator>
                     {schoolData.map(item => {
                         return (
-                            <TouchableOpacity key={item._id} onPress={() => item.region.indexOf(state.authPage.auth_data?.assigned_region) > -1 ?
-                                navigation.navigate("Coach Particular School Photos", { schoolItem: item })
-                                : Alert.alert(
-                                    "Alert",
-                                    "You are not assigned to this School!",
-                                    [
-                                        {
-                                            text: "OK"
-                                        }
-                                    ]
-                                )} style={styles.cachpicWrap}
-                            >
+                            <TouchableOpacity key={item._id} onPress={() => navigation.navigate("Regional Manager Particular School Photos", { schoolItem: item })}
+                                style={styles.cachpicWrap}>
                                 <ImageBackground source={kids} style={styles.cardBackground}>
                                     <View style={styles.cardContent}>
                                         <View style={styles.carddes}>
@@ -48,7 +50,7 @@ export default function RegionalManagerSchoolsPhotos({ navigation }) {
                         );
                     })}
                 </ScrollView>
-                <TouchableOpacity onPress={() => navigation.navigate("Coach Dashboard")}>
+                <TouchableOpacity onPress={() => navigation.navigate("Regional Manager Dashboard")}>
                     <Text style={styles.backbtn}>Back</Text>
                 </TouchableOpacity>
             </SafeAreaView>

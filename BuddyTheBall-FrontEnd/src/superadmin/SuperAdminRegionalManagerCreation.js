@@ -8,7 +8,7 @@ import LinearGradient from 'react-native-linear-gradient';
 import { SignUpService } from '../services/UserAuthService';
 import { GetAllRegionsService } from '../services/RegionService';
 
-export default function SuperAdminRMCreation({ navigation }) {
+export default function SuperAdminRegionalManagerCreation({ navigation }) {
     const [regions, setRegions] = useState([]);
 
     useEffect(() => {
@@ -56,7 +56,7 @@ export default function SuperAdminRMCreation({ navigation }) {
                     [
                         {
                             text: "OK",
-                            onPress: () => navigation.navigate("SuperAdmin RM")
+                            onPress: () => navigation.navigate("SuperAdmin Dashboard")
                         }
                     ]
                 );

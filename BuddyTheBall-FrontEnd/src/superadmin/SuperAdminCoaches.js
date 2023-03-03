@@ -28,6 +28,8 @@ export default function SuperAdminCoaches({ navigation }) {
                             <DataTable.Header style={styles.tableHeader}>
                                 <DataTable.Title>REGION</DataTable.Title>
                                 <DataTable.Title>CITIES</DataTable.Title>
+                                <DataTable.Title>SCHOOL QTY</DataTable.Title>
+                                <DataTable.Title>ASSIGNED BY</DataTable.Title>
                             </DataTable.Header>
                             {coaches.map(item => {
                                 return (
@@ -35,8 +37,8 @@ export default function SuperAdminCoaches({ navigation }) {
                                         <DataTable.Row>
                                             <DataTable.Cell>{item.coach_name}</DataTable.Cell>
                                             <DataTable.Cell>{item.assigned_region}</DataTable.Cell>
-                                            {/* <DataTable.Cell>{item.no_students}</DataTable.Cell> */}
                                             <DataTable.Cell>{item.assigned_schools.length}</DataTable.Cell>
+                                            <DataTable.Cell>{item.assigned_by}</DataTable.Cell>
                                         </DataTable.Row>
                                     </TouchableOpacity>
                                 );
@@ -46,7 +48,7 @@ export default function SuperAdminCoaches({ navigation }) {
                 </ScrollView>
                 <View style={styles.adminbtn}>
                     <TouchableOpacity onPress={() => navigation.navigate("Coach Creation")}>
-                        <Text style={styles.coach_cta}>Coaches</Text>
+                        <Text style={styles.coach_cta}>Coach Creation</Text>
                     </TouchableOpacity>
                     <TouchableOpacity onPress={() => navigation.navigate("SuperAdmin Dashboard")}>
                         <Text style={styles.backbtn}>Back</Text>

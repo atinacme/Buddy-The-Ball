@@ -13,9 +13,9 @@ module.exports = function (app) {
 
     app.get("/api/findParticularRegionalManager/:id", controller.findParticularRegionalManager);
 
-    // app.get("/api/getCustomersOfParticularCoach/:id", controller.findCustomersOfParticularCoach);
+    app.get("/api/getCoachesOfParticularRegionalManager/:id", controller.getCoachesOfParticularRegionalManager);
 
-    // app.get("/api/getCustomersOfParticularCoachOfParticularSchool/:coachId/:schoolId", controller.findCustomersOfParticularCoachOfParticularSchool);
+    app.get("/api/getCoachOfParticularRegionalManager/:coachId/:regionalManagerId", controller.getCoachOfParticularRegionalManager);
 
     app.put("/api/updateRegionalManager/:userId/:regionalManagerId", controller.updateRegionalManager);
 

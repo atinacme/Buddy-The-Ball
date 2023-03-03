@@ -100,6 +100,8 @@ exports.signup = (req, res) => {
                     tennis_club: req.body.tennis_club,
                     assigned_region: req.body.assigned_region,
                     assign_slot: req.body.assign_slot,
+                    assigned_by: req.body.assigned_by,
+                    assigned_by_user_id: req.body.assigned_by_user_id,
                     favorite_pro_player: req.body.favorite_pro_player,
                     handed: req.body.handed,
                     favorite_drill: req.body.favorite_drill

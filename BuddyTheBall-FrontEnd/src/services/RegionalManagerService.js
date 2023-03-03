@@ -11,10 +11,19 @@ const GetParticularRegionalManagerService = async (id) => {
     return await HttpRequest("GET", `${baseUrl}/findParticularRegionalManager/${id}`, null);
 };
 
+const GetCoachesOfParticularRegionalManager = async (id) => {
+    return await HttpRequest("GET", `${baseUrl}/getCoachesOfParticularRegionalManager/${id}`, null);
+};
+
+const GetCoachOfParticularRegionalManager = async (coachId, regionalManagerId) => {
+    return await HttpRequest("GET", `${baseUrl}/getCoachOfParticularRegionalManager/${coachId}/${regionalManagerId}`, null);
+};
+
 const RegionalManagerUpdateService = async (userId, regionalManagerId, data) => {
     return await HttpRequest("PUT", `${baseUrl}/updateRegionalManager/${userId}/${regionalManagerId}`, data);
 };
 
 export {
-    GetAllRegionalManagersService, GetParticularRegionalManagerService, RegionalManagerUpdateService
+    GetAllRegionalManagersService, GetParticularRegionalManagerService, GetCoachesOfParticularRegionalManager,
+    GetCoachOfParticularRegionalManager, RegionalManagerUpdateService
 };
