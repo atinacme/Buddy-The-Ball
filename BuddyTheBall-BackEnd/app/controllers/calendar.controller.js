@@ -31,6 +31,17 @@ const getAgendaByDate = async (req, res) => {
     }
 };
 
+const getAgendaByCoach = async (req, res) => {
+    try {
+        const data = await Calendar.find({ agenda_date: req.body.agenda_date });
+        if (data.length === 0)
+            res.status(404).send({ message: 'No Agenda found on date ' + req.body.agenda_date });
+        else res.status(200).send(data);
+    } catch (error) {
+        console.log(error);
+    }
+};
+
 const updateAgenda = async (req, res) => {
     const agendaId = req.params.id;
     const agenda = { [req.body.agenda_date]: req.body.agenda_data };

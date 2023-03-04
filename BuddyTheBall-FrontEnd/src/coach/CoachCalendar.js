@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import {
     SafeAreaView, TouchableOpacity, StyleSheet, Text, Modal, View, Pressable, TextInput, ScrollView
 } from 'react-native';
@@ -23,20 +23,6 @@ export default function CoachCalendar({ navigation }) {
     const [allDates, setAllDates] = useState([]);
 
     useEffect(() => {
-        const handleOnLoadAgenda = async () => {
-            try {
-                const data = { agenda_date: newDay };
-                const result = await GetAgendaByDateService(data);
-                if (result) {
-                    setItems(result[0] ? result[0].agenda : {});
-                    setLoadResult(result[0]);
-                }
-            } catch (e) { }
-        };
-        handleOnLoadAgenda();
-    }, [newDay, updateAgenda]);
-
-    useEffect(() => {
         const result = state.authPage.auth_data?.assigned_schools.filter(v => { return (v.region == state.authPage.auth_data?.assigned_region); });
         const assign_school = result[0].school_name;
         state.authPage.auth_data?.assign_slot.filter(element => {
@@ -44,11 +30,33 @@ export default function CoachCalendar({ navigation }) {
                 let timeStartStamp = moment(element.startDate);
                 let timeEndStamp = moment(element.endDate);
                 setAllDates([timeStartStamp, timeEndStamp]);
+                setNewDay(moment(timeStartStamp).format("YYYY-MM-DD"));
             }
         });
     }, []);
 
-    console.log("ddfn---->", allDates);
+    useEffect(() => {
+        // if (allDates.length > 0) {
+        console.log('items---->', allDates, newDay);
+        const handleOnLoadAgenda = async () => {
+            try {
+                const data = { agenda_date: newDay };
+                const result = await GetAgendaByDateService(data);
+                console.log("result---->", result);
+                if (result) {
+                    setItems(result[0] ? result[0].agenda : {});
+                    setLoadResult(result[0]);
+                }
+            } catch (e) { setItems(); }
+        };
+        handleOnLoadAgenda();
+        // const timer = setTimeout(() => handleOnLoadAgenda(), 1000);
+        // return () => clearTimeout(timer);
+        // }
+    }, [newDay, updateAgenda]);
+
+    console.log('items hth---->', items);
+
 
     const handleRenderAgenda = () => {
         setUpdateAgenda(false);
@@ -88,34 +96,42 @@ export default function CoachCalendar({ navigation }) {
         }
     };
 
+    const handleOnDayPress = useCallback((day) => {
+        setNewDay(day.dateString);
+        setTimeout(() => {
+            setUpdateAgenda(false);
+            console.log("ddfn---->", items, modalVisible,);
+            if (items !== undefined) {
+                setModalVisible(false);
+                // setNewDay(day.dateString);
+            } else {
+                setModalVisible(true);
+                // setNewDay(day.dateString);
+            }
+            setAgendaData([]);
+            setLoadResult();
+        }, 10000);
+    }, [items]);
+
     return (
         <>
             <LinearGradient colors={['#BCD7EF', '#D1E3AA', '#E3EE68', '#E1DA00']} style={styles.linearGradient}>
                 <SafeAreaView style={styles.wrapper}>
                     <Agenda
-                        minDate={today}
+                        minDate={moment(allDates[0]).format("YYYY-MM-DD")}
+                        maxDate={moment(allDates[1]).format("YYYY-MM-DD")}
                         pastScrollRange={0}
-                        futureScrollRange={12}
+                        futureScrollRange={0}
                         dayLoading={false}
                         items={items}
+                        selected={moment(allDates[0]).format("YYYY-MM-DD")}
                         renderItem={(item) => (
                             <TouchableOpacity style={styles.item} onPress={handleRenderAgenda}>
                                 <Text style={styles.itemTextFirst}>School:</Text><Text style={styles.itemText}>{item.school}</Text>
                                 <Text style={styles.itemTextFirst}>Agenda:</Text><Text style={styles.itemText}>{item.name}</Text>
                             </TouchableOpacity>
                         )}
-                        onDayPress={day => {
-                            setUpdateAgenda(false);
-                            if (Object.keys(items).indexOf(day.dateString) > -1) {
-                                setModalVisible(false);
-                                setNewDay(day.dateString);
-                            } else {
-                                setModalVisible(true);
-                                setNewDay(day.dateString);
-                            }
-                            setAgendaData([]);
-                            setLoadResult();
-                        }}
+                        onDayPress={(day) => handleOnDayPress(day)}
                     />
                     <View style={styles.centeredView}>
                         <Modal
@@ -142,7 +158,7 @@ export default function CoachCalendar({ navigation }) {
                                         </View>
                                         {agendaData.length > 0 && agendaData.map((item, index) => {
                                             return (
-                                                <View>
+                                                <View key={index}>
                                                     <Text>Agenda {index + 1}</Text>
                                                     {loadResult && item.school ?
                                                         <TextInput
