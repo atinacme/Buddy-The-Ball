@@ -3,6 +3,7 @@ const mongoose = require("mongoose");
 const Calendar = mongoose.model(
     "Calendar",
     new mongoose.Schema({
+        coach_id: String,
         user_id: String,
         agenda: Object,
         agenda_date: String,

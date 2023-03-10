@@ -11,7 +11,9 @@ module.exports = function (app) {
 
     app.post("/api/createAgenda", controller.createAgenda);
 
-    app.post("/api/getAgendaByDate", controller.getAgendaByDate);
+    app.post("/api/getAgendaByDateAndCoach", controller.getAgendaByDateAndCoach);
+
+    app.get("/api/getAgendaByCoach/:id", controller.getAgendaByCoach);
 
     app.post("/api/updateAgenda/:id", controller.updateAgenda);
 };

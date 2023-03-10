@@ -6,9 +6,8 @@ import { useSelector } from "react-redux";
 import { SelectList } from 'react-native-dropdown-select-list';
 import { Agenda } from 'react-native-calendars';
 import moment from 'moment';
-import { CreateAgendaService, GetAgendaByDateService, UpdateAgendaService } from '../services/CalendarService';
+import { CreateAgendaService, GetAgendaByDateAndCoachService, UpdateAgendaService } from '../services/CalendarService';
 import LinearGradient from 'react-native-linear-gradient';
-
 
 export default function CoachCalendar({ navigation }) {
     const state = useSelector((state) => state);
@@ -34,14 +33,14 @@ export default function CoachCalendar({ navigation }) {
             }
         });
     }, []);
+    console.log('items---->', moment(allDates[0]).format("YYYY-MM-DD"), moment(allDates[1]).format("YYYY-MM-DD"));
 
     useEffect(() => {
         // if (allDates.length > 0) {
-        console.log('items---->', allDates, newDay);
         const handleOnLoadAgenda = async () => {
             try {
-                const data = { agenda_date: newDay };
-                const result = await GetAgendaByDateService(data);
+                const data = { agenda_date: newDay, user_id: state.authPage.auth_data?.user_id };
+                const result = await GetAgendaByDateAndCoachService(data);
                 console.log("result---->", result);
                 if (result) {
                     setItems(result[0] ? result[0].agenda : {});
@@ -69,6 +68,7 @@ export default function CoachCalendar({ navigation }) {
         if (key !== 1) {
             try {
                 const data = {
+                    coach_id: state.authPage.auth_data?._id,
                     user_id: state.authPage.auth_data?.user_id,
                     agenda_date: newDay,
                     agenda_data: agendaData
@@ -83,6 +83,7 @@ export default function CoachCalendar({ navigation }) {
         } else {
             try {
                 const data = {
+                    coach_id: state.authPage.auth_data?._id,
                     user_id: state.authPage.auth_data?.user_id,
                     agenda_date: newDay,
                     agenda_data: agendaData
@@ -98,19 +99,19 @@ export default function CoachCalendar({ navigation }) {
 
     const handleOnDayPress = useCallback((day) => {
         setNewDay(day.dateString);
-        setTimeout(() => {
-            setUpdateAgenda(false);
-            console.log("ddfn---->", items, modalVisible,);
-            if (items !== undefined) {
-                setModalVisible(false);
-                // setNewDay(day.dateString);
-            } else {
-                setModalVisible(true);
-                // setNewDay(day.dateString);
-            }
-            setAgendaData([]);
-            setLoadResult();
-        }, 10000);
+        // setTimeout(() => {
+        setUpdateAgenda(false);
+        console.log("ddfn---->", items, modalVisible,);
+        if (items !== undefined) {
+            setModalVisible(false);
+            // setNewDay(day.dateString);
+        } else {
+            setModalVisible(true);
+            // setNewDay(day.dateString);
+        }
+        setAgendaData([]);
+        setLoadResult();
+        // }, 1000);
     }, [items]);
 
     return (
@@ -121,7 +122,7 @@ export default function CoachCalendar({ navigation }) {
                         minDate={moment(allDates[0]).format("YYYY-MM-DD")}
                         maxDate={moment(allDates[1]).format("YYYY-MM-DD")}
                         pastScrollRange={0}
-                        futureScrollRange={0}
+                        futureScrollRange={1}
                         dayLoading={false}
                         items={items}
                         selected={moment(allDates[0]).format("YYYY-MM-DD")}

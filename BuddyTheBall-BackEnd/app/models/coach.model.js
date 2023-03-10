@@ -15,6 +15,14 @@ const Coach = mongoose.model(
                 ref: "School"
             }
         ],
+        agendas: [{
+            coach_id: String,
+            user_id: String,
+            agenda: Object,
+            agenda_date: String,
+            agenda_data: Array,
+            time: { type: Date, default: Date.now }
+        }],
         assigned_by: String,
         assigned_by_user_id: String,
         assign_slot: Array,

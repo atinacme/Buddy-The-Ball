@@ -7,12 +7,16 @@ const CreateAgendaService = async (data) => {
     return await HttpRequest("POST", `${baseUrl}/createAgenda`, data);
 };
 
-const GetAgendaByDateService = async (data) => {
-    return await HttpRequest("POST", `${baseUrl}/getAgendaByDate`, data);
+const GetAgendaByDateAndCoachService = async (data) => {
+    return await HttpRequest("POST", `${baseUrl}/getAgendaByDateAndCoach`, data);
+};
+
+const GetAgendaByCoachService = async (id) => {
+    return await HttpRequest("GET", `${baseUrl}/getAgendaByCoach/${id}`, null);
 };
 
 const UpdateAgendaService = async (id, data) => {
     return await HttpRequest("POST", `${baseUrl}/updateAgenda/${id}`, data);
 };
 
-export { CreateAgendaService, GetAgendaByDateService, UpdateAgendaService };
+export { CreateAgendaService, GetAgendaByDateAndCoachService, GetAgendaByCoachService, UpdateAgendaService };

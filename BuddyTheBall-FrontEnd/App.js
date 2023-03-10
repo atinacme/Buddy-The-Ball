@@ -56,6 +56,8 @@ import RegionalManagerCoachCreation from './src/regionalmanager/RegionalManagerC
 import RegionalManagerCoachDescription from './src/regionalmanager/RegionalManagerCoachDescription.js';
 import RegionalManagerPhotos from './src/regionalmanager/RegionalManagerPhotos';
 import RegionalManagerParticularSchoolPhotos from './src/regionalmanager/RegionalManagerParticularSchoolPhotos';
+import RegionalManagerCalendar from './src/regionalmanager/RegionalManagerCalendar';
+import RegionalManagerCoachAgenda from './src/regionalmanager/RegionalManagerCoachAgenda';
 
 const Stack = createNativeStackNavigator();
 const App = () => {
@@ -116,6 +118,8 @@ const App = () => {
             <Stack.Screen name="Regional Manager Coach Description" component={RegionalManagerCoachDescription} />
             <Stack.Screen name="Regional Manager Photos" component={RegionalManagerPhotos} />
             <Stack.Screen name="Regional Manager Particular School Photos" component={RegionalManagerParticularSchoolPhotos} />
+            <Stack.Screen name="Regional Manager Calendar" component={RegionalManagerCalendar} />
+            <Stack.Screen name="Regional Manager Coach Agenda" component={RegionalManagerCoachAgenda} />
           </Stack.Navigator>
         </NavigationContainer>
       </Provider>

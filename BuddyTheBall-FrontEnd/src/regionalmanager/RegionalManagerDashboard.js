@@ -114,12 +114,12 @@ export default function RegionalManagerDashboard({ navigation }) {
                         <TouchableOpacity onPress={() => navigation.navigate("Regional Manager Photos")}>
                             <Text style={{ ...styles.adminContainer, ...styles.adminBg1 }}>PHOTOS</Text>
                         </TouchableOpacity>
-                        <TouchableOpacity onPress={() => navigation.navigate("Coach Calendar")}>
+                        <TouchableOpacity onPress={() => navigation.navigate("Regional Manager Calendar")}>
                             <Text style={{ ...styles.adminContainer, ...styles.adminBg2 }}>CALENDAR</Text>
                         </TouchableOpacity>
-                        <TouchableOpacity onPress={() => navigation.navigate("Coach Messages")}>
+                        {/* <TouchableOpacity onPress={() => navigation.navigate("Coach Messages")}>
                             <Text style={{ ...styles.adminContainer, ...styles.adminBg3 }}>MESSAGES</Text>
-                        </TouchableOpacity>
+                        </TouchableOpacity> */}
                         <TouchableOpacity onPress={() => navigation.navigate("Regional Manager Coaches")}>
                             <Text style={{ ...styles.adminContainer, ...styles.adminBg4 }}>COACHES</Text>
                         </TouchableOpacity>
