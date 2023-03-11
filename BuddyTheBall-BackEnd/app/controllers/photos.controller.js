@@ -1,17 +1,12 @@
 const upload = require("../middlewares/upload");
-const fs = require("fs");
-const multer = require("multer");
-const maxSize = 2 * 1024 * 1024;
 const dbConfig = require("../config/db.config");
 const db = require("../models");
 const Coach = db.coach;
 const Customer = db.customer;
 const Photos = db.photos;
 const RegionalManager = db.regionalmanager;
-
 const MongoClient = require("mongodb").MongoClient;
 const GridFSBucket = require("mongodb").GridFSBucket;
-const ObjectID = require('mongodb').ObjectId;
 
 const baseUrl = "http://localhost:8080/api/files/";
 
@@ -104,6 +99,24 @@ const uploadCustomerPhotos = async (req, res) => {
                     }
                 }).clone();
             }
+        } else if (req.body.file_type === "award") {
+            console.log("sdgxsg");
+            req.files.forEach(element => {
+                const customerPhotos = new Photos({
+                    photo_id: element.id,
+                    fieldname: element.fieldname,
+                    originalname: element.originalname,
+                    encoding: element.encoding,
+                    mimetype: element.mimetype,
+                    destination: element.destination,
+                    filename: element.filename,
+                    path: element.path,
+                    size: element.size,
+                    upload_for: 'award',
+                    upload_date: element.uploadDate
+                });
+                customerPhotos.save(customerPhotos);
+            });
         } else {
             req.files.forEach(element => {
                 const customerPhotos = new Photos({
@@ -208,6 +221,35 @@ const getParticularCustomerPhotos = async (req, res) => {
     }
 };
 
+const getAwardPhotos = async (req, res) => {
+    try {
+        var fileInfos = [];
+        var photos = await Photos.find({ upload_for: 'award' });
+
+        if ((photos.length) === 0) {
+            return res.status(500).send({
+                message: "No files found!",
+            });
+        }
+
+        photos.forEach((doc) => {
+            fileInfos.push({
+                _id: doc._id,
+                photo_id: doc.photo_id,
+                originalname: doc.originalname,
+                name: doc.filename,
+                url: baseUrl + doc.filename,
+                messages: doc.messages
+            });
+        });
+        return res.status(200).send(fileInfos);
+    } catch (error) {
+        return res.status(500).send({
+            message: error.message,
+        });
+    }
+};
+
 const getParticularPhoto = async (req, res) => {
     try {
         var data = await Photos.findById(req.params.id);
@@ -283,6 +325,7 @@ const download = async (req, res) => {
 module.exports = {
     uploadCustomerPhotos,
     getParticularSchoolPhotos,
+    getAwardPhotos,
     updateCustomerPhotosOnMessage,
     getParticularPhoto,
     getParticularCustomerPhotos

@@ -13,6 +13,8 @@ module.exports = function (app) {
 
     app.get("/api/getParticularSchoolPhotos/:id", controller.getParticularSchoolPhotos);
 
+    app.get("/api/getAwardPhotos", controller.getAwardPhotos);
+
     app.get("/api/getParticularCustomerPhotos/:id", controller.getParticularCustomerPhotos);
 
     app.post("/api/updateCustomerPhotosOnMessage/:id", controller.updateCustomerPhotosOnMessage);

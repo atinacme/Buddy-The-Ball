@@ -29,7 +29,7 @@ export default function SuperAdminRegionCreation({ navigation }) {
                     [
                         {
                             text: "OK",
-                            onPress: () => navigation.navigate("SuperAdmin Regions")
+                            onPress: () => navigation.navigate("SuperAdmin Settings")
                         }
                     ]
                 );

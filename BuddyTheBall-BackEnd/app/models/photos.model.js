@@ -17,6 +17,7 @@ const Photos = mongoose.model(
         path: String,
         size: String,
         upload_date: String,
+        upload_for: String,
         messages: [{ messanger_id: String, url: String, message: String, time: { type: Date, default: Date.now }, messanger_name: String }]
     })
 );
