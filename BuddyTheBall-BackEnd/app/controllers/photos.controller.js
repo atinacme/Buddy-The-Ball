@@ -237,7 +237,7 @@ const getAwardPhotos = async (req, res) => {
                 _id: doc._id,
                 photo_id: doc.photo_id,
                 originalname: doc.originalname,
-                name: doc.filename,
+                name: doc.originalname.replace(".png", ""),
                 url: baseUrl + doc.filename,
                 messages: doc.messages
             });

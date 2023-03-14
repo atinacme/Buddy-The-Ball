@@ -98,7 +98,6 @@ require('./app/routes/messages.routes')(app);
 require('./app/routes/calendar.routes')(app);
 require('./app/routes/attendance.routes')(app);
 require('./app/routes/regionalmanager.routes')(app);
-require('./app/routes/award.routes')(app);
 require('./app/routes/region.routes')(app);
 
 // set port, listen for requests

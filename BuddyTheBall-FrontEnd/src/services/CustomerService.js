@@ -39,8 +39,12 @@ const GetMessagesBySenderIdReceiverIdService = async (sender_id, receiver_id) =>
     return await HttpRequest("GET", `${baseUrl}/getMessagesBySenderIdReceiverId/${sender_id}/${receiver_id}`, null);
 };
 
+const GetAwardPhotosService = async () => {
+    return await HttpRequest("GET", `${baseUrl}/getAwardPhotos`, null);
+};
+
 export {
     GetCustomersService, GetCustomerWithSchoolIdService, GetParticularCustomerPhotosService, GetParticularCustomerService,
     GetCustomerParticularPhotoService, UpdateCustomerPhotosOnMessageService, CreateAndUpdateMessageService, GetMessagesBySenderIdService,
-    GetMessagesBySenderIdReceiverIdService
+    GetMessagesBySenderIdReceiverIdService, GetAwardPhotosService
 };

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Text, SafeAreaView, TextInput, StyleSheet, Button, Image, Alert, ScrollView, TouchableOpacity } from "react-native";
+import { Text, SafeAreaView, TextInput, StyleSheet, Image, Alert, ScrollView, TouchableOpacity, View } from "react-native";
 import { MultipleSelectList } from 'react-native-dropdown-select-list';
 import buddy from '../assets/buddy.png';
 import { useSelector } from "react-redux";
@@ -7,18 +7,41 @@ import { SignUpService } from '../services/UserAuthService';
 import { Formik } from 'formik';
 import * as yup from 'yup';
 import LinearGradient from 'react-native-linear-gradient';
-
+import { GetAwardPhotosService } from '../services/CustomerService';
 
 export default function CustomerCreation({ navigation }) {
     const [data, setData] = useState([]);
     const [selected, setSelected] = useState([]);
+    const [awardList, setAwardList] = useState([]);
+    const [awardSelected, setAwardSelected] = useState({
+        name: '',
+        image: ''
+    });
+    const [visible, setVisible] = useState(false);
     const state = useSelector((state) => state);
 
     useEffect(() => {
         const added = state.authPage.auth_data?.assigned_schools.map(v => Object.assign(v, { key: v._id, value: v.school_name }));
         const result = added.filter(v => { return (v.region == state.authPage.auth_data?.assigned_region); });
         setData(result);
+
+        const getAwardsList = async () => {
+            const result = await GetAwardPhotosService();
+            if (result) {
+                setAwardList(result);
+            }
+        };
+        getAwardsList();
     }, []);
+
+    const toggleDropdown = () => {
+        setVisible(!visible);
+    };
+
+    const handleSelectAward = (v) => {
+        setVisible(!visible);
+        setAwardSelected({ name: v.name, image: v.url });
+    };
 
     const loginValidationSchema = yup.object().shape({
         email: yup
@@ -49,10 +72,7 @@ export default function CustomerCreation({ navigation }) {
             .required('Number of Buddy Books Read  is required'),
         jersey_size: yup
             .string()
-            .required('Jersey Size is required'),
-        current_award: yup
-            .string()
-            .required('Current Award is required')
+            .required('Jersey Size is required')
     });
 
     const handleAddCustomer = async (values) => {
@@ -70,7 +90,7 @@ export default function CustomerCreation({ navigation }) {
                 handed: values.handed,
                 num_buddy_books_read: values.num_buddy_books_read,
                 jersey_size: values.jersey_size,
-                current_award: values.current_award
+                current_award: awardSelected
             };
             const result = await SignUpService(data);
             if (result) {
@@ -109,8 +129,7 @@ export default function CustomerCreation({ navigation }) {
                             wristband_level: '',
                             handed: '',
                             num_buddy_books_read: '',
-                            jersey_size: '',
-                            current_award: ''
+                            jersey_size: ''
                         }}
                         onSubmit={(values) => handleAddCustomer(values)}
                     >
@@ -240,23 +259,27 @@ export default function CustomerCreation({ navigation }) {
                                     <Text style={{ fontSize: 10, color: 'red' }}>{errors.jersey_size}</Text>
                                 }
                                 <Text style={styles.label}>Current Award</Text>
-                                <TextInput
-                                    name="current_award"
-                                    placeholder="Current Award"
-                                    onChangeText={handleChange('current_award')}
-                                    onBlur={handleBlur('current_award')}
-                                    value={values.current_award}
-                                    style={styles.input}
-                                />
-                                {errors.current_award &&
-                                    <Text style={{ fontSize: 10, color: 'red' }}>{errors.current_award}</Text>
-                                }
-                                {/* <Button
-                                title="Submit"
-                                color="#000"
-                                style={{ marginTop: 40, marginBottom: 40 }}
-                                onPress={handleSubmit}
-                            /> */}
+                                <TouchableOpacity onPress={toggleDropdown}>
+                                    <View style={styles.buttonText}>{awardSelected.image ? <Image source={{ uri: awardSelected.image }} style={styles.buttonImage} /> : <Text>Select the Award</Text>}</View>
+                                </TouchableOpacity>
+                                {visible &&
+                                    (<View style={styles.award}>
+                                        {visible && awardList.map(v => {
+                                            return (
+                                                <ScrollView showsVerticalScrollIndicator>
+                                                    <TouchableOpacity key={v._id} onPress={() => handleSelectAward(v)}>
+                                                        <Image source={{ uri: v.url }} style={{ height: 100, width: 100 }} />
+                                                    </TouchableOpacity>
+                                                </ScrollView>
+                                            );
+                                        })}
+                                    </View>
+                                    )}
+                                {/* <SelectList
+                                    setSelected={(val) => setAwardSelected(val)}
+                                    data={awardList}
+                                    save="value"
+                                /> */}
                                 <TouchableOpacity onPress={handleSubmit}>
                                     <Text style={styles.submit}>Submit</Text>
                                 </TouchableOpacity>
@@ -325,5 +348,19 @@ const styles = StyleSheet.create({
         color: '#000',
         paddingTop: 10,
         paddingBottom: 0
+    },
+    buttonText: {
+        borderWidth: 1,
+        borderRadius: 5,
+        padding: 10
+    },
+    award: {
+        borderWidth: 1,
+        borderRadius: 5,
+        padding: 10
+    },
+    buttonImage: {
+        height: 100,
+        width: 100
     }
 });
