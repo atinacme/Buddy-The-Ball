@@ -1,4 +1,6 @@
 const config = require("../config/auth.config");
+var jwt = require("jsonwebtoken");
+var bcrypt = require("bcryptjs");
 const db = require("../models");
 const User = db.user;
 const Role = db.role;
@@ -7,16 +9,12 @@ const School = db.school;
 const Coach = db.coach;
 const RegionalManager = db.regionalmanager;
 
-var jwt = require("jsonwebtoken");
-var bcrypt = require("bcryptjs");
-
 exports.signup = (req, res) => {
     const user = new User({
         // username: req.body.username,
         email: req.body.email,
         password: bcrypt.hashSync(req.body.password, 8)
     });
-
     user.save((err, user) => {
         if (err) {
             res.status(500).send({ message: err });
@@ -25,6 +23,10 @@ exports.signup = (req, res) => {
 
         if (req.body.roles) {
             if (req.body.roles[0] === "customer") {
+                const current_award = {
+                    name: req.body.current_award ? req.body.current_award.name : null,
+                    image: req.body.current_award ? req.body.current_award.image : null
+                };
                 const customer = new Customer({
                     user_id: user._id,
                     email: req.body.email,
@@ -32,11 +34,12 @@ exports.signup = (req, res) => {
                     parent_name: req.body.parent_name,
                     player_name: req.body.player_name,
                     player_age: req.body.player_age,
-                    wristband_level: req.body.wristband_level,
+                    wristband_level: req.body.wristband_level ? req.body.wristband_level : null,
                     handed: req.body.handed,
+                    created_by: req.body.created_by,
                     num_buddy_books_read: req.body.num_buddy_books_read,
-                    jersey_size: req.body.jersey_size,
-                    current_award: req.body.current_award
+                    jersey_size: req.body.jersey_size ? req.body.jersey_size : null,
+                    current_award: current_award
                 });
 
                 customer.save((err, customer) => {
@@ -87,7 +90,7 @@ exports.signup = (req, res) => {
                                     customers: customer
                                 }
                             })
-                                .then(data => console.log(data));
+                                .then();
                         }));
                 });
             }
@@ -132,6 +135,17 @@ exports.signup = (req, res) => {
                                 });
                             }
                         );
+                        req.body.assigned_schools.forEach(v => {
+                            School.find({ school_name: v })
+                                .then((data => {
+                                    School.findByIdAndUpdate(data[0]._id, {
+                                        $push: {
+                                            coaches: coach
+                                        }
+                                    })
+                                        .then();
+                                }));
+                        });
                     }
                 });
             }

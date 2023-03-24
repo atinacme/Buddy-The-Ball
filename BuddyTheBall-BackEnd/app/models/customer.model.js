@@ -21,7 +21,11 @@ const Customer = mongoose.model(
             type: mongoose.Schema.Types.ObjectId,
             ref: "Coach"
         },
-        current_award: String,
+        attendance: Array,
+        total_absent: String,
+        total_present: String,
+        created_by: String,
+        current_award: Object,
         profile_data: {
             photo_id: String,
             fieldname: String,

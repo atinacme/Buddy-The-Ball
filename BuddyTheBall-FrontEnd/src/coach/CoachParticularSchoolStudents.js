@@ -76,6 +76,7 @@ export default function CoachParticularSchoolStudents({ route }) {
             coach_id: state.authPage.auth_data?._id,
             school_id: route.params.schoolItem._id,
             user_id: item.user_id,
+            customer_id: item._id,
             customer: item.player_name,
             time_period: route.params.schoolItem.timePeriod,
             attendance_date: selectedDate,
@@ -90,58 +91,58 @@ export default function CoachParticularSchoolStudents({ route }) {
 
     return (
         <LinearGradient colors={['#BCD7EF', '#D1E3AA', '#E3EE68', '#E1DA00']} style={styles.linearGradient}>
-        <SafeAreaView style={styles.wrapper}>
-        <ScrollView style={styles.scrollView}>
-            <View style={styles.searchSection}>
-                <TextInput
-                    style={styles.input}
-                    value={searchTerm}
-                    onChangeText={(e) => setSearchTerm(e)}
-                    placeholder="Student Attendance"
-                    placeholderTextColor="#fff"
-                    underlineColorAndroid="transparent"
-                />
-                <Icon style={styles.searchIcon} name="search" size={20} color="#fff" />
-            </View>
-            <View style={styles.calendarSection}>
-                <View style={styles.calendarSectionLeft}>
-                    <Icon style={styles.searchIcon} name="calendar" size={20} color="#fff" />
-                    <SelectList
-                        setSelected={(val) => {
-                            setSearchTerm("");
-                            setSelectedDate(val);
-                        }}
-                        data={allDates?.value}
-                        save="value"
-                        placeholder="Select Date"
-                        search={false}
-                        arrowicon={<Icon name="caret-down" size={20} color="#fff" />}
-                        boxStyles={{ borderWidth: 0 }}
-                        inputStyles={{ color: '#fff', paddingRight: 10 }}
-                        dropdownTextStyles={{ color: '#fff' }}
-                        defaultOption={{ key: allDates.key[0], value: allDates.value[0] }}
-                    />
-                </View>
-                <View style={styles.verticleLine}></View>
-                <View style={styles.calendarSectionRight}>
-                    <Text style={styles.calendarSectionText}>{route.params.schoolItem.school}</Text>
-                </View>
-            </View>
-            {customers.length > 0 && customers.map(v => {
-                return (
-                    <View key={v._id} style={styles.listSection}>
-                        {console.log("inside--->", v)}
-                        <TouchableOpacity
-                            // onPress={() => setModalVisible(!modalVisible)}
-                            style={styles.listSectionLeft}
-                        >
-                            <Image source={buddy} style={styles.listProfilePic} />
-                            <View>
-                                <Text style={styles.listTitleText}>{v.customer}</Text>
-                                <Text style={styles.listSeeText}>Click to see details</Text>
-                            </View>
-                        </TouchableOpacity>
-                        {/* <View style={styles.centeredView}>
+            <SafeAreaView style={styles.wrapper}>
+                <ScrollView style={styles.scrollView}>
+                    <View style={styles.searchSection}>
+                        <TextInput
+                            style={styles.input}
+                            value={searchTerm}
+                            onChangeText={(e) => setSearchTerm(e)}
+                            placeholder="Student Attendance"
+                            placeholderTextColor="#fff"
+                            underlineColorAndroid="transparent"
+                        />
+                        <Icon style={styles.searchIcon} name="search" size={20} color="#fff" />
+                    </View>
+                    <View style={styles.calendarSection}>
+                        <View style={styles.calendarSectionLeft}>
+                            <Icon style={styles.searchIcon} name="calendar" size={20} color="#fff" />
+                            <SelectList
+                                setSelected={(val) => {
+                                    setSearchTerm("");
+                                    setSelectedDate(val);
+                                }}
+                                data={allDates?.value}
+                                save="value"
+                                placeholder="Select Date"
+                                search={false}
+                                arrowicon={<Icon name="caret-down" size={20} color="#fff" />}
+                                boxStyles={{ borderWidth: 0 }}
+                                inputStyles={{ color: '#fff', paddingRight: 10 }}
+                                dropdownTextStyles={{ color: '#fff' }}
+                                defaultOption={{ key: allDates.key[0], value: allDates.value[0] }}
+                            />
+                        </View>
+                        <View style={styles.verticleLine}></View>
+                        <View style={styles.calendarSectionRight}>
+                            <Text style={styles.calendarSectionText}>{route.params.schoolItem.school}</Text>
+                        </View>
+                    </View>
+                    {customers.length > 0 && customers.map(v => {
+                        return (
+                            <View key={v._id} style={styles.listSection}>
+                                {console.log("inside--->", v)}
+                                <TouchableOpacity
+                                    // onPress={() => setModalVisible(!modalVisible)}
+                                    style={styles.listSectionLeft}
+                                >
+                                    <Image source={buddy} style={styles.listProfilePic} />
+                                    <View>
+                                        <Text style={styles.listTitleText}>{v.customer}</Text>
+                                        <Text style={styles.listSeeText}>Click to see details</Text>
+                                    </View>
+                                </TouchableOpacity>
+                                {/* <View style={styles.centeredView}>
                             <Modal
                                 animationType="slide"
                                 transparent={true}
@@ -189,14 +190,14 @@ export default function CoachParticularSchoolStudents({ route }) {
                                 </View>
                             </Modal>
                         </View> */}
-                        <TouchableOpacity key={v._id} style={v.attendance === 'NA' ? styles.listSectionRight : v.attendance === 'P' ? styles.listSectionRightPresent : styles.listSectionRightAbsent} onPress={() => handleAttendance(v)}>
-                            <Text style={styles.attendanceText}>{v.attendance === 'NA' ? 'NA' : v.attendance === 'P' ? 'P' : 'A'}</Text>
-                        </TouchableOpacity>
-                    </View>
-                );
-            })}
-            </ScrollView>
-        </SafeAreaView>
+                                <TouchableOpacity key={v._id} style={v.attendance === 'NA' ? styles.listSectionRight : v.attendance === 'P' ? styles.listSectionRightPresent : styles.listSectionRightAbsent} onPress={() => handleAttendance(v)}>
+                                    <Text style={styles.attendanceText}>{v.attendance === 'NA' ? 'NA' : v.attendance === 'P' ? 'P' : 'A'}</Text>
+                                </TouchableOpacity>
+                            </View>
+                        );
+                    })}
+                </ScrollView>
+            </SafeAreaView>
         </LinearGradient>
     );
 }

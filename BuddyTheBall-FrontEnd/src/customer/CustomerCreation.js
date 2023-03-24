@@ -86,6 +86,7 @@ export default function CustomerCreation({ navigation }) {
                 player_age: values.player_age,
                 wristband_level: values.wristband_level,
                 school: selected,
+                created_by: 'coach',
                 coach: state.authPage.auth_data?.coach_name,
                 handed: values.handed,
                 num_buddy_books_read: values.num_buddy_books_read,
@@ -215,6 +216,14 @@ export default function CustomerCreation({ navigation }) {
                                     <Text style={{ fontSize: 10, color: 'red' }}>{errors.wristband_level}</Text>
                                 }
                                 <Text style={styles.label}>Schools</Text>
+                                <MultipleSelectList
+                                    setSelected={(val) => setSelected(val)}
+                                    data={data}
+                                    save="value"
+                                    onSelect={() => alert(selected)}
+                                    label="Selected Schools"
+                                />
+                                <Text style={styles.label}>Slots</Text>
                                 <MultipleSelectList
                                     setSelected={(val) => setSelected(val)}
                                     data={data}

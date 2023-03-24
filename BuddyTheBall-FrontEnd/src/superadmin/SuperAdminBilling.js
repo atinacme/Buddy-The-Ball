@@ -1,57 +1,53 @@
-import React from 'react';
-import { SafeAreaView, StyleSheet, ScrollView, View, Text, TouchableOpacity } from 'react-native';
+import React, { useState } from 'react';
+import { SafeAreaView, StyleSheet, ScrollView, View, Text, TouchableOpacity, TouchableHighlight } from 'react-native';
 import { DataTable } from 'react-native-paper';
 import LinearGradient from 'react-native-linear-gradient';
+import { useEffect } from 'react';
+import { GetCustomersOfParticularCoachOfParticularSchool } from '../services/CoachService';
+import { GetSchoolsService } from '../services/SchoolService';
 
 export default function SuperAdminBilling({ navigation }) {
-    const billingList = [
-        {
-            child_id: 565490,
-            child_name: 'Rebecca',
-            school: '7306',
-            class_date: 'Aug/September'
-        },
-        {
-            child_id: 671762,
-            child_name: 'Mariah Stew',
-            school: '7306',
-            class_date: 'Aug/September'
-        },
-        {
-            child_id: 733983,
-            child_name: ' Layla Smith',
-            school: '7306',
-            class_date: 'Aug/September'
-        },
-        {
-            child_id: 881522,
-            child_name: ' Natalie Erkens',
-            school: '7306',
-            class_date: 'Aug/September'
-        },
-    ];
+    const [schools, setSchools] = useState([]);
+
+    useEffect(() => {
+        try {
+            const getSchools = async () => {
+                const result = await GetSchoolsService();
+                if (result) {
+                    setSchools(result);
+                }
+            };
+            getSchools();
+        } catch (e) { }
+    }, []);
     return (
         <LinearGradient colors={['#BCD7EF', '#D1E3AA', '#E3EE68', '#E1DA00']} style={styles.linearGradient}>
-            <SafeAreaView style={styles.bottom}>
-                <ScrollView horizontal style={styles.border}>
-                    <DataTable style={styles.container}>
-                        <DataTable.Header style={styles.tableHeader}>
-                            <DataTable.Title style={styles.title}>Child #</DataTable.Title>
-                            <DataTable.Title style={styles.title}>Child Name</DataTable.Title>
-                            <DataTable.Title style={styles.title}>School #</DataTable.Title>
-                            <DataTable.Title style={styles.title}>Class Date</DataTable.Title>
-                        </DataTable.Header>
-                        {billingList.map(item => {
-                            return (
-                                <DataTable.Row key={item.child_id}>
-                                    <DataTable.Cell>{item.child_id}</DataTable.Cell>
-                                    <DataTable.Cell>{item.child_name}</DataTable.Cell>
-                                    <DataTable.Cell>{item.school}</DataTable.Cell>
-                                    <DataTable.Cell>{item.class_date}</DataTable.Cell>
-                                </DataTable.Row>
-                            );
-                        })}
-                    </DataTable>
+            <SafeAreaView style={styles.wrapper}>
+                <ScrollView>
+                    {schools.map((school, index) => {
+                        return (
+                            <View key={index} style={styles.stdWrapper}>
+                                <Text style={styles.title}>{school.school_name}</Text>
+                                {school.coaches.length > 0 ?
+                                    <>
+                                        {school.coaches.map((v, indexNew) => {
+                                            return (
+                                                <TouchableOpacity key={indexNew} onPress={() => navigation.navigate("SuperAdmin Billing Coach School", { coach: v, school: school })}>
+                                                    <View key={indexNew} style={styles.stddesc}>
+                                                        <Text style={styles.content}>{v.coach_name}</Text>
+                                                    </View>
+                                                </TouchableOpacity>
+                                            );
+                                        })}
+                                    </>
+                                    :
+                                    <View style={styles.stddesc}>
+                                        <Text style={styles.content}>No Coach!!</Text>
+                                    </View>
+                                }
+                            </View>
+                        );
+                    })}
                 </ScrollView>
                 <TouchableOpacity onPress={() => navigation.navigate("SuperAdmin Dashboard")}>
                     <Text style={styles.backbtn}>Back</Text>
@@ -62,14 +58,18 @@ export default function SuperAdminBilling({ navigation }) {
 }
 
 const styles = StyleSheet.create({
-    bottom: {
+    wrapper: {
+        marginTop: 60,
+        paddingLeft: 10,
+        paddingRight: 10,
         flex: 1,
-        position: 'relative',
-        marginBottom: 56,
-        marginTop: 60
+        justifyContent: 'flex-end'
+    },
+    stdWrapper: {
+        flex: 1,
     },
     backbtn: {
-        borderColor: "#ffc000",
+        borderColor: "#fff",
         paddingTop: 10,
         paddingBottom: 10,
         backgroundColor: "#ff8400",
@@ -77,40 +77,29 @@ const styles = StyleSheet.create({
         borderRadius: 10,
         textAlign: "center",
         fontWeight: "700",
-        marginTop: 5,
-        position: 'absolute',
+        marginTop: 25,
         display: 'flex',
         right: 0,
-        width: 100,
-        justifyContent: 'flex-end'
+        width: 150,
+        position: 'absolute',
+        bottom: 0,
+        marginBottom: 10
     },
-    scrollView: {
-        marginHorizontal: 5,
+    title: {
+        color: '#000',
+        textAlign: 'center',
+        fontSize: 20,
+        textTransform: 'uppercase',
+        fontFamily: 'LemonJuice',
+        paddingBottom: 20
+    },
+    content: {
+        fontSize: 14,
+        padding: 10,
+        borderColor: '#000',
+        borderWidth: 1,
     },
     linearGradient: {
         flex: 1,
-        paddingLeft: 15,
-        paddingRight: 15,
-        borderRadius: 5
-    },
-    container: {
-        width: 400,
-        marginLeft: 'auto',
-        marginRight: 'auto',
-        fontFamily: 'LemonJuice',
-        fontSize: 12,
-        overflow: 'scroll',
-        borderWidth: 2,
-        borderColor: '#ffc000',
-        backgroundColor: '#fff',
-        margin: 10
-    },
-    tableHeader: {
-        textAlign: 'center',
-        fontFamily: 'LemonJuice',
-        color: '#fff'
-    },
-    title: {
-        fontSize: 10,
     }
 });

@@ -75,6 +75,7 @@ export default function RegionalManagerParticularSchoolStudents({ route }) {
             coach_id: state.authPage.auth_data?._id,
             school_id: route.params.schoolItem._id,
             user_id: item.user_id,
+            customer_id: item._id,
             customer: item.player_name,
             time_period: route.params.schoolItem.timePeriod,
             attendance_date: selectedDate,

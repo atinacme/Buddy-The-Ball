@@ -57,6 +57,8 @@ exports.findCustomersOfParticularCoachOfParticularSchool = (req, res) => {
     const schoolId = req.params.schoolId;
 
     Customer.find({ coach: coachId, school: schoolId })
+        .populate("coach", "-__v")
+        .populate("school", "-__v")
         .then(data => {
             if (!data)
                 res.status(404).send({ message: "Not found Coach with id " + id });

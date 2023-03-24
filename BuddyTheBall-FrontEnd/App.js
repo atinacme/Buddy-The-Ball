@@ -22,6 +22,8 @@ import CustomerMessageCreation from './src/customer/CustomerMessageCreation';
 import CustomerParticularMessage from './src/customer/CustomerParticularMessage';
 import CoachCreation from './src/coach/CoachCreation.js';
 import CoachDashboard from './src/coach/CoachDashboard.js';
+import CoachCustomers from './src/coach/CoachCustomers';
+import CoachCustomerDescription from './src/coach/CoachCustomerDescription';
 import CoachSchoolsPhotos from './src/coach/CoachSchoolsPhotos.js';
 import CoachPhotoCreation from './src/coach/CoachPhotoCreation.js';
 import CoachParticularSchoolPhotos from './src/coach/CoachParticularSchoolPhotos.js';
@@ -33,6 +35,7 @@ import CoachSchoolList from './src/coach/CoachSchoolList.js';
 import CoachParticularSchoolStudents from './src/coach/CoachParticularSchoolStudents.js';
 import SuperAdminDashboard from './src/superadmin/SuperAdminDashboard.js';
 import SuperAdminBilling from './src/superadmin/SuperAdminBilling.js';
+import SuperAdminBillingCoachSchool from './src/superadmin/SuperAdminBillingCoachSchool';
 import SuperAdminCoaches from './src/superadmin/SuperAdminCoaches.js';
 import SuperAdminCoachDescription from './src/superadmin/SuperAdminCoachDescription';
 import SuperAdminSchools from './src/superadmin/SuperAdminSchools.js';
@@ -84,6 +87,8 @@ const App = () => {
             <Stack.Screen name="Customer Particular Message" component={CustomerParticularMessage} />
             <Stack.Screen name="Coach Creation" component={CoachCreation} />
             <Stack.Screen name="Coach Dashboard" options={{ headerBackVisible: false, headerTitleAlign: 'center' }} component={CoachDashboard} />
+            <Stack.Screen name="Coach Customers" component={CoachCustomers} />
+            <Stack.Screen name="Coach Customer Description" component={CoachCustomerDescription} />
             <Stack.Screen name="Coach Schools Photos" component={CoachSchoolsPhotos} />
             <Stack.Screen name="Coach Photo Creation" component={CoachPhotoCreation} />
             <Stack.Screen name="Coach Particular School Photos" component={CoachParticularSchoolPhotos} />
@@ -95,6 +100,7 @@ const App = () => {
             <Stack.Screen name="Coach Particular School Students" component={CoachParticularSchoolStudents} />
             <Stack.Screen name="SuperAdmin Dashboard" options={{ headerTitleAlign: 'center' }} component={SuperAdminDashboard} />
             <Stack.Screen name="SuperAdmin Billing" component={SuperAdminBilling} />
+            <Stack.Screen name="SuperAdmin Billing Coach School" component={SuperAdminBillingCoachSchool} />
             <Stack.Screen name="SuperAdmin Coaches" component={SuperAdminCoaches} />
             <Stack.Screen name="SuperAdmin Coach Description" component={SuperAdminCoachDescription} />
             <Stack.Screen name="SuperAdmin Schools" component={SuperAdminSchools} />

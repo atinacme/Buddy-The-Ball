@@ -15,7 +15,7 @@ module.exports = function (app) {
 
     app.get("/api/getParticularCustomer/:id", controller.findParticularCustomer);
 
-    app.put("/api/updateCustomer/:id", controller.updateCustomer);
+    app.put("/api/updateCustomer/:userId/:customerId", controller.updateCustomer);
 
     app.delete("/api/deleteCustomer/:id", controller.deleteCustomer);
 };

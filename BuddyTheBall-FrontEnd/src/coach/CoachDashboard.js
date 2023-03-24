@@ -125,8 +125,8 @@ export default function CoachDashboard({ navigation }) {
                     <TouchableOpacity onPress={() => navigation.navigate("Coach School List")}>
                         <Text style={{ ...styles.adminContainer, ...styles.adminBg4 }}> SCHOOLS</Text>
                     </TouchableOpacity>
-                    <TouchableOpacity onPress={() => navigation.navigate("Customer Creation")}>
-                        <Text style={{ ...styles.adminContainer, ...styles.adminBg5 }}>Customer  reation</Text>
+                    <TouchableOpacity onPress={() => navigation.navigate("Coach Customers")}>
+                        <Text style={{ ...styles.adminContainer, ...styles.adminBg5 }}>Customers</Text>
                     </TouchableOpacity>
                 </Text>
                 <View style={styles.adminbtn}>

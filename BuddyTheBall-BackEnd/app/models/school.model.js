@@ -6,7 +6,8 @@ const School = mongoose.model(
         school_name: String,
         region: String,
         assigned_day: String,
-        customers: Array
+        customers: Array,
+        coaches: Array
     })
 );
 
