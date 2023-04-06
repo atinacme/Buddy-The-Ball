@@ -4,15 +4,17 @@ const Customer = db.customer;
 
 const createAndUpdateAttendance = async (req, res) => {
     try {
-        const check = await Attendance.find({ user_id: req.body.user_id, attendance_date: req.body.attendance_date });
+        console.log("gasv--->", req.body.child_id, req.body.session_id);
+        const check = await Attendance.find({ child_id: req.body.child_id, session_id: req.body.session_id });
         if (check.length > 0) {
+            console.log("come update");
             const data = await Attendance.findOneAndUpdate({
-                user_id: req.body.user_id, attendance_date: req.body.attendance_date
+                child_id: req.body.child_id, session_id: req.body.session_id
             }, { attendance: req.body.attendance });
             if (!data) {
                 res.status(404).send({ message: 'Attendance not updated!!' });
             } else {
-                Attendance.find().then(data => {
+                Attendance.find({ child_id: req.body.child_id }).then(data => {
                     if (!data) {
                         res.status(404).send({
                             message: `Cannot update Customer with id=${req.body.customer_id}. Maybe Customer was not found!`
@@ -22,99 +24,100 @@ const createAndUpdateAttendance = async (req, res) => {
                             obj[v.attendance] = (obj[v.attendance] || 0) + 1;
                             return obj;
                         }, {});
-                        Customer.update({ 'attendance.attendance_date': req.body.attendance_date }, {
-                            '$set': {
-                                'attendance.$.attendance': req.body.attendance
-                            },
-                            total_absent: 'A' in attendanceRes ? attendanceRes.A : null,
-                            total_present: 'P' in attendanceRes ? attendanceRes.P : null
-                        })
-                            .then(data => {
-                                if (!data) {
-                                    res.status(404).send({
-                                        message: `Cannot update Customer with id=${req.body.customer_id}. Maybe Customer was not found!`
-                                    });
-                                } else res.send({ message: "Attendance was updated successfully." });
-                            })
-                            .catch(err => {
-                                res.status(500).send({
-                                    message: "Error updating Customer with id=" + req.body.customer_id
-                                });
+                        Customer.findById(req.body.customer_id)
+                            .then(newdata => {
+                                console.log("user update--->", data, newdata);
+                                if (newdata) {
+                                    Customer.updateOne({ 'children_data._id': req.body.child_id }, {
+                                        '$set': {
+                                            // 'children_data.$.attendance': data,
+                                            'children_data.$.total_absent': 'A' in attendanceRes ? attendanceRes.A : null,
+                                            'children_data.$.total_present': 'P' in attendanceRes ? attendanceRes.P : null
+                                        }
+                                    })
+                                        .then(data => {
+                                            if (!data) {
+                                                res.status(404).send({
+                                                    message: `Cannot update Customer with id=${req.body.customer_id}. Maybe Customer was not found!`
+                                                });
+                                            } else res.send({ message: "User Customer was updated successfully." });
+                                        })
+                                        .catch(err => {
+                                            res.status(500).send({
+                                                message: "Error updating Customer with id=" + req.body.customer_id
+                                            });
+                                        });
+                                }
                             });
                     }
                 });
             }
-            //  return res.status(200).send({ message: 'Attendance Updated Successfully!!' });
         } else {
+            console.log("come create");
             const attendance = new Attendance({
                 coach_id: req.body.coach_id,
                 school_id: req.body.school_id,
                 user_id: req.body.user_id,
                 customer_id: req.body.customer_id,
                 customer: req.body.customer,
-                time_period: req.body.time_period,
+                child_id: req.body.child_id,
+                player_name: req.body.player_name,
+                session_id: req.body.session_id,
                 attendance_date: req.body.attendance_date,
                 attendance: req.body.attendance,
-                start_date: req.body.start_date,
-                end_data: req.body.end_data
+                start_time: req.body.start_time,
+                end_time: req.body.end_time
             });
             const data = attendance.save(attendance);
             if (!data) {
                 res.status(404).send({ message: 'Attendance not created' });
             } else {
                 data.then(newData => {
+                    console.log("hdgshd--->", data, newData);
                     if (!newData) {
                         res.status(404).send({
                             message: `Cannot update Customer with id=${req.body.customer_id}. Maybe Customer was not found!`
                         });
                     } else {
-                        Attendance.find().then(data => {
-                            if (!data) {
-                                res.status(404).send({
-                                    message: `Cannot update Customer with id=${req.body.customer_id}. Maybe Customer was not found!`
-                                });
-                            } {
-                                var attendanceRes = data.reduce(function (obj, v) {
-                                    obj[v.attendance] = (obj[v.attendance] || 0) + 1;
-                                    return obj;
-                                }, {});
-                                Customer.findByIdAndUpdate(req.body.customer_id,
-                                    {
-                                        $push: {
-                                            attendance: {
-                                                coach_id: req.body.coach_id,
-                                                school_id: req.body.school_id,
-                                                user_id: req.body.user_id,
-                                                customer_id: req.body.customer_id,
-                                                customer: req.body.customer,
-                                                time_period: req.body.time_period,
-                                                attendance_date: req.body.attendance_date,
-                                                attendance: req.body.attendance,
-                                                start_date: req.body.start_date,
-                                                end_data: req.body.end_data
-                                            }
-                                        },
-                                        total_absent: 'A' in attendanceRes ? attendanceRes.A : null,
-                                        total_present: 'P' in attendanceRes ? attendanceRes.P : null
-                                    }, { useFindAndModify: false })
-                                    .then(data => {
-                                        if (!data) {
-                                            res.status(404).send({
-                                                message: `Cannot update Customer with id=${req.body.customer_id}. Maybe Customer was not found!`
-                                            });
-                                        } else res.send({ message: "User Customer was updated successfully." });
+                        // Attendance.find().then(data => {
+                        //     if (!data) {
+                        //         res.status(404).send({
+                        //             message: `Cannot update Customer with id=${req.body.customer_id}. Maybe Customer was not found!`
+                        //         });
+                        //     } {
+                        var attendanceRes = [newData].reduce(function (obj, v) {
+                            obj[v.attendance] = (obj[v.attendance] || 0) + 1;
+                            return obj;
+                        }, {});
+                        Customer.findById(req.body.customer_id)
+                            .then(data => {
+                                console.log("user--->", data);
+                                if (data) {
+                                    Customer.updateOne({ 'children_data._id': req.body.child_id }, {
+                                        '$set': {
+                                            'children_data.$.attendance': [newData._id],
+                                            'children_data.$.total_absent': 'A' in attendanceRes ? attendanceRes.A : null,
+                                            'children_data.$.total_present': 'P' in attendanceRes ? attendanceRes.P : null
+                                        }
                                     })
-                                    .catch(err => {
-                                        res.status(500).send({
-                                            message: "Error updating Customer with id=" + req.body.customer_id
+                                        .then(data => {
+                                            if (!data) {
+                                                res.status(404).send({
+                                                    message: `Cannot update Customer with id=${req.body.customer_id}. Maybe Customer was not found!`
+                                                });
+                                            } else res.send({ message: "User Customer was updated successfully." });
+                                        })
+                                        .catch(err => {
+                                            res.status(500).send({
+                                                message: "Error updating Customer with id=" + req.body.customer_id
+                                            });
                                         });
-                                    });
-                            }
-                        });
+                                }
+                            });
                     }
+                    //     });
+                    // }
                 });
-
-                // res.status(200).send({ data: data, message: 'Attendance Created Successfully!!' });
             }
         }
     } catch (err) {
@@ -125,6 +128,17 @@ const createAndUpdateAttendance = async (req, res) => {
 const getAttendanceByDate = async (req, res) => {
     try {
         const data = await Attendance.find({ attendance_date: req.body.attendance_date });
+        if (!data) {
+            res.status(404).send({ message: 'Attendance not fetched' });
+        } return res.status(200).send({ data: data, message: 'Attendance Fetched Successfully!!' });
+    } catch (err) {
+        res.status(500).send(err);
+    }
+};
+
+const getAttendanceBySession = async (req, res) => {
+    try {
+        const data = await Attendance.find({ session_id: req.body.session_id });
         if (!data) {
             res.status(404).send({ message: 'Attendance not fetched' });
         } return res.status(200).send({ data: data, message: 'Attendance Fetched Successfully!!' });
@@ -144,4 +158,4 @@ const deleteAttendanceByDate = async (req, res) => {
     }
 };
 
-module.exports = { createAndUpdateAttendance, getAttendanceByDate, deleteAttendanceByDate };
+module.exports = { createAndUpdateAttendance, getAttendanceByDate, getAttendanceBySession, deleteAttendanceByDate };

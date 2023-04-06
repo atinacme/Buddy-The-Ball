@@ -27,6 +27,9 @@ import CoachCustomerDescription from './src/coach/CoachCustomerDescription';
 import CoachSchoolsPhotos from './src/coach/CoachSchoolsPhotos.js';
 import CoachPhotoCreation from './src/coach/CoachPhotoCreation.js';
 import CoachParticularSchoolPhotos from './src/coach/CoachParticularSchoolPhotos.js';
+import CoachSchedules from './src/coach/CoachSchedules';
+import CoachScheduleCreation from './src/coach/CoachScheduleCreation';
+import CoachScheduleDescription from './src/coach/CoachScheduleDescription';
 import CoachCalendar from './src/coach/CoachCalendar.js';
 import CoachMessages from './src/coach/CoachMessages.js';
 import CoachMessageCreation from './src/coach/CoachMessageCreation';
@@ -36,6 +39,7 @@ import CoachParticularSchoolStudents from './src/coach/CoachParticularSchoolStud
 import SuperAdminDashboard from './src/superadmin/SuperAdminDashboard.js';
 import SuperAdminBilling from './src/superadmin/SuperAdminBilling.js';
 import SuperAdminBillingCoachSchool from './src/superadmin/SuperAdminBillingCoachSchool';
+import SuperAdminInvoiceCoachSchool from './src/superadmin/SuperAdminInvoiceCoachSchool';
 import SuperAdminCoaches from './src/superadmin/SuperAdminCoaches.js';
 import SuperAdminCoachDescription from './src/superadmin/SuperAdminCoachDescription';
 import SuperAdminSchools from './src/superadmin/SuperAdminSchools.js';
@@ -45,6 +49,7 @@ import SuperAdminPhotos from './src/superadmin/SuperAdminPhotos.js';
 import SuperAdminStudents from './src/superadmin/SuperAdminStudents.js';
 import SuperAdminSettings from './src/superadmin/SuperAdminSettings.js';
 import SuperAdminMessages from './src/superadmin/SuperAdminMessages';
+import SuperAdminCalendar from './src/superadmin/SuperAdminCalendar';
 import SuperAdminMessageCreation from './src/superadmin/SuperAdminMessageCreation';
 import SuperAdminParticularMessage from './src/superadmin/SuperAdminParticularMessage';
 import SuperAdminRegionalManagers from './src/superadmin/SuperAdminRegionalManagers';
@@ -92,6 +97,9 @@ const App = () => {
             <Stack.Screen name="Coach Schools Photos" component={CoachSchoolsPhotos} />
             <Stack.Screen name="Coach Photo Creation" component={CoachPhotoCreation} />
             <Stack.Screen name="Coach Particular School Photos" component={CoachParticularSchoolPhotos} />
+            <Stack.Screen name="Coach Schedules" component={CoachSchedules} />
+            <Stack.Screen name="Coach Schedule Creation" component={CoachScheduleCreation} />
+            <Stack.Screen name="Coach Schedule Description" component={CoachScheduleDescription} />
             <Stack.Screen name="Coach Calendar" component={CoachCalendar} />
             <Stack.Screen name="Coach Messages" component={CoachMessages} />
             <Stack.Screen name="Coach Message Creation" component={CoachMessageCreation} />
@@ -101,6 +109,7 @@ const App = () => {
             <Stack.Screen name="SuperAdmin Dashboard" options={{ headerTitleAlign: 'center' }} component={SuperAdminDashboard} />
             <Stack.Screen name="SuperAdmin Billing" component={SuperAdminBilling} />
             <Stack.Screen name="SuperAdmin Billing Coach School" component={SuperAdminBillingCoachSchool} />
+            <Stack.Screen name="SuperAdmin Invoice Coach School" component={SuperAdminInvoiceCoachSchool} />
             <Stack.Screen name="SuperAdmin Coaches" component={SuperAdminCoaches} />
             <Stack.Screen name="SuperAdmin Coach Description" component={SuperAdminCoachDescription} />
             <Stack.Screen name="SuperAdmin Schools" component={SuperAdminSchools} />
@@ -110,6 +119,7 @@ const App = () => {
             <Stack.Screen name="SuperAdmin Students" component={SuperAdminStudents} />
             <Stack.Screen name="SuperAdmin Settings" options={{ headerBackVisible: false, headerTitleAlign: 'center' }} component={SuperAdminSettings} />
             <Stack.Screen name="SuperAdmin Messages" component={SuperAdminMessages} />
+            <Stack.Screen name="SuperAdmin Calendar" component={SuperAdminCalendar} />
             <Stack.Screen name="SuperAdmin Message Creation" component={SuperAdminMessageCreation} />
             <Stack.Screen name="SuperAdmin Particular Message" component={SuperAdminParticularMessage} />
             <Stack.Screen name="SuperAdmin Regional Manager" component={SuperAdminRegionalManagers} />

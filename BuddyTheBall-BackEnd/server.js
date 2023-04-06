@@ -99,6 +99,7 @@ require('./app/routes/calendar.routes')(app);
 require('./app/routes/attendance.routes')(app);
 require('./app/routes/regionalmanager.routes')(app);
 require('./app/routes/region.routes')(app);
+require('./app/routes/schedule.routes')(app);
 
 // set port, listen for requests
 const PORT = process.env.PORT || 8080;

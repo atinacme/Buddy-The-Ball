@@ -6,7 +6,13 @@ const School = mongoose.model(
         school_name: String,
         region: String,
         assigned_day: String,
-        customers: Array,
+        address: String,
+        customers: [
+            {
+                type: mongoose.Schema.Types.ObjectId,
+                ref: "Customer"
+            }
+        ],
         coaches: Array
     })
 );

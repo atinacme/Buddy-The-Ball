@@ -92,7 +92,7 @@ export default function RegionalManagerCoachCreation({ navigation }) {
     const handleCreate = () => {
         setAssignSlot(prevState => [...prevState, assignCal]);
         setModalVisible(!modalVisible);
-        setMarkedDates([]);
+        setMarkedDates({});
         setAssignCal({
             timePeriod: '',
             startDate: '',
@@ -110,7 +110,6 @@ export default function RegionalManagerCoachCreation({ navigation }) {
                 coach_name: coachData.coach_name,
                 assigned_region: state.authPage.auth_data?.assigned_region,
                 assigned_schools: selected,
-                assign_slot: assignSlot,
                 assigned_by: 'Regional Manager',
                 assigned_by_user_id: state.authPage.auth_data?._id,
                 tennis_club: coachData.tennis_club,
@@ -171,85 +170,6 @@ export default function RegionalManagerCoachCreation({ navigation }) {
                         onSelect={() => alert(selected)}
                         label="Selected Schools"
                     />
-                    <View style={{ flexDirection: 'row', textAlign: 'center', alignItems: 'center', justifyContent: 'space-between' }}>
-                        <Text style={styles.label}>Assign Period</Text>
-                        <Pressable
-                            style={[styles.plusButton, styles.buttonOpen]}
-                            onPress={() => setModalVisible(!modalVisible)}>
-                            <Text style={styles.textPlus}>+</Text>
-                        </Pressable>
-                    </View>
-                    <View style={styles.centeredView}>
-                        <Modal
-                            animationType="slide"
-                            transparent={true}
-                            visible={modalVisible}
-                            onRequestClose={() => {
-                                setModalVisible(!modalVisible);
-                            }}
-                        >
-                            <View style={styles.centeredView}>
-                                <View style={styles.modalView}>
-                                    <ScrollView style={styles.scrollView}>
-                                        <View>
-                                            <View style={styles.schoolList}>
-                                                <SelectList
-                                                    key="key"
-                                                    setSelected={(val) => setAssignCal({ ...assignCal, school: val })}
-                                                    data={data}
-                                                    save="value"
-                                                />
-                                            </View>
-                                            <View style={styles.container}>
-                                                <Calendar
-                                                    minDate={Date()}
-                                                    monthFormat={"MMMM yyyy"}
-                                                    markedDates={markedDates}
-                                                    markingType="period"
-                                                    hideExtraDays={true}
-                                                    hideDayNames={true}
-                                                    onDayPress={onDayPress}
-                                                />
-                                            </View>
-                                        </View>
-                                        <Pressable
-                                            style={[styles.button, styles.buttonOpen]}
-                                            onPress={handleCreate}>
-                                            <Text style={styles.textStyle}>Create</Text>
-                                        </Pressable>
-                                        <Pressable
-                                            style={[styles.button, styles.buttonClose]}
-                                            onPress={() => {
-                                                setModalVisible(!modalVisible);
-                                            }}>
-                                            <Text style={styles.textStyle}>Don't Create !!</Text>
-                                        </Pressable>
-                                    </ScrollView>
-                                </View>
-                            </View>
-                        </Modal>
-                    </View>
-                    {assignSlot.length > 0 && assignSlot.map((item, index) => {
-                        return (
-                            <View key={index} style={{
-                                alignItems: 'center',
-                                flexDirection: 'row',
-                                justifyContent: 'space-between'
-                            }}>
-                                <View style={{ flexDirection: 'column' }}>
-                                    <Text>{item.school}</Text>
-                                    <Text>{item.startDate} to {item.endDate}</Text>
-                                </View>
-                                <Pressable
-                                    style={[styles.agendaButton, styles.buttonClose]}
-                                    onPress={() => {
-                                        setAssignSlot(assignSlot.filter((slot) => slot.startDate !== item.startDate));
-                                    }}>
-                                    <Text style={styles.agendaCrossBtn}>X</Text>
-                                </Pressable>
-                            </View>
-                        );
-                    })}
                     <Text style={styles.label}>Tennis Club</Text>
                     <TextInput
                         style={styles.input}

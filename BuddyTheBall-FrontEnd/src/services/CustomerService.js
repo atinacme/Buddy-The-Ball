@@ -47,8 +47,12 @@ const GetAwardPhotosService = async () => {
     return await HttpRequest("GET", `${baseUrl}/getAwardPhotos`, null);
 };
 
+const GetCustomerWithSlot = async (data) => {
+    return await HttpRequest("POST", `${baseUrl}/findCustomerWithSlot`, data);
+};
+
 export {
     GetCustomersService, GetCustomerWithSchoolIdService, GetParticularCustomerPhotosService, GetParticularCustomerService,
     UpdateCustomerService, GetCustomerParticularPhotoService, UpdateCustomerPhotosOnMessageService, CreateAndUpdateMessageService,
-    GetMessagesBySenderIdService, GetMessagesBySenderIdReceiverIdService, GetAwardPhotosService
+    GetMessagesBySenderIdService, GetMessagesBySenderIdReceiverIdService, GetAwardPhotosService, GetCustomerWithSlot
 };

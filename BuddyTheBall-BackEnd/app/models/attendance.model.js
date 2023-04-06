@@ -8,11 +8,13 @@ const Attendance = mongoose.model(
         user_id: String,
         customer_id: String,
         customer: String,
-        time_period: Object,
+        child_id: String,
+        player_name: String,
+        session_id: String,
         attendance_date: String,
         attendance: { type: String, default: 'NA' },
-        start_date: String,
-        end_data: String,
+        start_time: String,
+        end_time: String,
         time: { type: Date, default: Date.now }
     })
 );

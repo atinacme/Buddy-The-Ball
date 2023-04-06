@@ -39,6 +39,8 @@ exports.getCoachesOfParticularRegionalManager = (req, res) => {
     const id = req.params.id;
 
     Coach.find({ assigned_by_user_id: id })
+        .populate("schedules")
+        .populate("schedules.school", "-__v")
         .then(data => {
             if (!data)
                 res.status(404).send({ message: "Not found Coaches with id " + id });

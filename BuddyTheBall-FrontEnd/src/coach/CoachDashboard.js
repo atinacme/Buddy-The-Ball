@@ -116,17 +116,17 @@ export default function CoachDashboard({ navigation }) {
                     <TouchableOpacity onPress={() => navigation.navigate("Coach Schools Photos")}>
                         <Text style={{ ...styles.adminContainer, ...styles.adminBg1 }}>PHOTOS</Text>
                     </TouchableOpacity>
-                    <TouchableOpacity onPress={() => navigation.navigate("Coach Calendar")} >
-                        <Text style={{ ...styles.adminContainer, ...styles.adminBg2 }}> CALENDAR</Text>
+                    <TouchableOpacity onPress={() => navigation.navigate("Coach Schedules")} >
+                        <Text style={{ ...styles.adminContainer, ...styles.adminBg2 }}>SCHEDULE</Text>
                     </TouchableOpacity>
                     <TouchableOpacity onPress={() => navigation.navigate("Coach Messages")}>
                         <Text style={{ ...styles.adminContainer, ...styles.adminBg3 }}>MESSAGES</Text>
                     </TouchableOpacity>
                     <TouchableOpacity onPress={() => navigation.navigate("Coach School List")}>
-                        <Text style={{ ...styles.adminContainer, ...styles.adminBg4 }}> SCHOOLS</Text>
+                        <Text style={{ ...styles.adminContainer, ...styles.adminBg4 }}>SCHOOLS</Text>
                     </TouchableOpacity>
                     <TouchableOpacity onPress={() => navigation.navigate("Coach Customers")}>
-                        <Text style={{ ...styles.adminContainer, ...styles.adminBg5 }}>Customers</Text>
+                        <Text style={{ ...styles.adminContainer, ...styles.adminBg5 }}>CUSTOMERS</Text>
                     </TouchableOpacity>
                 </Text>
                 <View style={styles.adminbtn}>

@@ -6,20 +6,20 @@ import { useSelector } from "react-redux";
 import LinearGradient from 'react-native-linear-gradient';
 import { GetCoachesOfParticularRegionalManager } from '../services/RegionalManagerService';
 import Config from '../../Config';
+import { GetAllCoachesService } from '../services/CoachService';
 
-export default function RegionalManagerCalendar({ navigation }) {
-    const state = useSelector((state) => state);
+export default function SuperAdminCalendar({ navigation }) {
     const [coaches, setCoaches] = useState([]);
 
     useEffect(() => {
         try {
-            const getRegionalManagerCoaches = async () => {
-                const result = await GetCoachesOfParticularRegionalManager(state.authPage.auth_data?._id);
+            const getCoaches = async () => {
+                const result = await GetAllCoachesService();
                 if (result.length > 0) {
                     setCoaches(result);
                 }
             };
-            getRegionalManagerCoaches();
+            getCoaches();
         } catch (e) { }
     }, []);
 
@@ -42,7 +42,7 @@ export default function RegionalManagerCalendar({ navigation }) {
                         );
                     })}
                 </ScrollView>
-                <TouchableOpacity onPress={() => navigation.navigate("Regional Manager Dashboard")}>
+                <TouchableOpacity onPress={() => navigation.navigate("Super Admin Dashboard")}>
                     <Text style={styles.backbtn}>Back</Text>
                 </TouchableOpacity>
             </SafeAreaView>

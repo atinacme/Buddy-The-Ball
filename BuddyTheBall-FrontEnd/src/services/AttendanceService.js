@@ -11,6 +11,10 @@ const GetAttendanceByDateService = async (data) => {
     return await HttpRequest("POST", `${baseUrl}/getAttendanceByDate`, data);
 };
 
+const GetAttendanceBySessionService = async (data) => {
+    return await HttpRequest("POST", `${baseUrl}/getAttendanceBySession`, data);
+};
+
 export {
-    CreateAndUpdateAttendanceService, GetAttendanceByDateService
+    CreateAndUpdateAttendanceService, GetAttendanceByDateService, GetAttendanceBySessionService
 };

@@ -243,7 +243,7 @@ export default function RegionalManagerCoachDescription({ navigation, route }) {
                     onSelect={() => alert(selected)}
                     label="Selected Schools"
                 />
-                <View style={{ flexDirection: 'row', textAlign: 'center', alignItems: 'center', justifyContent: 'space-between' }}>
+                {/* <View style={{ flexDirection: 'row', textAlign: 'center', alignItems: 'center', justifyContent: 'space-between' }}>
                     <Text style={styles.label}>Assign Period</Text>
                     <Pressable
                         style={[styles.plusButton, styles.buttonOpen]}
@@ -320,7 +320,7 @@ export default function RegionalManagerCoachDescription({ navigation, route }) {
                             </Pressable>
                         </View>
                     );
-                })}
+                })} */}
                 <Text style={styles.label}>Tennis Club</Text>
                 <TextInput
                     style={styles.input}

@@ -1,8 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { SafeAreaView, StyleSheet, ScrollView, View, Text, TouchableOpacity, TouchableHighlight } from 'react-native';
 import { DataTable } from 'react-native-paper';
 import LinearGradient from 'react-native-linear-gradient';
-import { useEffect } from 'react';
 import { GetCustomersOfParticularCoachOfParticularSchool } from '../services/CoachService';
 import { GetSchoolsService } from '../services/SchoolService';
 
@@ -20,6 +19,7 @@ export default function SuperAdminBilling({ navigation }) {
             getSchools();
         } catch (e) { }
     }, []);
+
     return (
         <LinearGradient colors={['#BCD7EF', '#D1E3AA', '#E3EE68', '#E1DA00']} style={styles.linearGradient}>
             <SafeAreaView style={styles.wrapper}>

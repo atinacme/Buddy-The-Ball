@@ -3,14 +3,17 @@ import { Text, SafeAreaView, TextInput, StyleSheet, Button, Image, Alert, Scroll
 import buddy from '../assets/buddy.png';
 import { SelectList } from 'react-native-dropdown-select-list';
 import { GetParticularSchoolService, SchoolUpdationService } from '../services/SchoolService';
+import { GetAllRegionsService } from '../services/RegionService';
 
 export default function SuperAdminSchoolDescription({ navigation, route }) {
     const [schoolData, setSchoolData] = useState({
         school_id: "",
         school_name: "",
         region: "",
-        assigned_day: ""
+        assigned_day: "",
+        address: ""
     });
+    const [regions, setRegions] = useState([]);
     const regionList = [
         {
             key: "Kanpur",
@@ -69,11 +72,22 @@ export default function SuperAdminSchoolDescription({ navigation, route }) {
                         school_id: result._id,
                         school_name: result.school_name,
                         region: result.region,
-                        assigned_day: result.assigned_day
+                        assigned_day: result.assigned_day,
+                        address: result.address
                     });
                 }
             };
             getParticularCoach();
+        } catch (e) { }
+        try {
+            const getRegions = async () => {
+                const result = await GetAllRegionsService();
+                if (result) {
+                    result.map(v => Object.assign(v, { key: v.region_name, value: v.region_name }));
+                    setRegions(result);
+                }
+            };
+            getRegions();
         } catch (e) { }
     }, []);
 
@@ -83,6 +97,7 @@ export default function SuperAdminSchoolDescription({ navigation, route }) {
                 school_name: schoolData.school_name,
                 region: schoolData.region,
                 assigned_day: schoolData.assigned_day,
+                address: schoolData.address
             };
             const result = await SchoolUpdationService(schoolData.school_id, data);
             if (result) {
@@ -118,7 +133,7 @@ export default function SuperAdminSchoolDescription({ navigation, route }) {
                 <Text style={styles.label}>Region</Text>
                 <SelectList
                     setSelected={(val) => setSchoolData({ ...schoolData, region: val })}
-                    data={regionList}
+                    data={regions}
                     save="key"
                     defaultOption={{ key: schoolData.region, value: schoolData.region }}
                 />
@@ -128,6 +143,12 @@ export default function SuperAdminSchoolDescription({ navigation, route }) {
                     data={dayList}
                     save="key"
                     defaultOption={{ key: schoolData.assigned_day, value: schoolData.assigned_day }}
+                />
+                <Text style={styles.label}>Address</Text>
+                <TextInput
+                    style={styles.input}
+                    onChangeText={(e) => setSchoolData({ ...schoolData, address: e })}
+                    value={schoolData.address}
                 />
                 <View style={{ marginTop: 20 }}>
                     <Button

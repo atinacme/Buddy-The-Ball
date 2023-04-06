@@ -13,5 +13,7 @@ module.exports = function (app) {
 
     app.post("/api/getAttendanceByDate", controller.getAttendanceByDate);
 
+    app.post("/api/getAttendanceBySession", controller.getAttendanceBySession);
+
     app.delete("/api/deleteAttendanceByDate/:id", controller.deleteAttendanceByDate);
 };

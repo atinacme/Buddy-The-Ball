@@ -61,7 +61,10 @@ export default function SuperAdminSchoolCreation({ navigation }) {
             .required('Region is required'),
         assigned_day: yup
             .string()
-            .required('Assigned Day is required')
+            .required('Assigned Day is required'),
+        address: yup
+            .string()
+            .required('Address is Required')
     });
 
     const handleAddSchool = async (values) => {
@@ -70,6 +73,7 @@ export default function SuperAdminSchoolCreation({ navigation }) {
                 school_name: values.school_name,
                 region: values.region,
                 assigned_day: values.assigned_day,
+                address: values.address
             };
             const result = await SchoolCreationService(data);
             if (result) {
@@ -99,7 +103,7 @@ export default function SuperAdminSchoolCreation({ navigation }) {
                     <Image source={buddy} style={{ width: 200, height: 100, marginLeft: 'auto', marginRight: 'auto' }} />
                     <Formik
                         validationSchema={loginValidationSchema}
-                        initialValues={{ school_name: '', region: '', assigned_day: '' }}
+                        initialValues={{ school_name: '', region: '', assigned_day: '', address: '' }}
                         onSubmit={(values) => handleAddSchool(values)}
                     >
                         {({
@@ -117,7 +121,7 @@ export default function SuperAdminSchoolCreation({ navigation }) {
                                     placeholder="School"
                                     onChangeText={handleChange('school_name')}
                                     onBlur={handleBlur('school_name')}
-                                    value={values.school}
+                                    value={values.school_name}
                                     style={styles.input}
                                 />
                                 {errors.school_name &&
@@ -141,7 +145,18 @@ export default function SuperAdminSchoolCreation({ navigation }) {
                                 {errors.assigned_day &&
                                     <Text style={{ fontSize: 10, color: 'red' }}>{errors.assigned_day}</Text>
                                 }
-
+                                <Text style={styles.label}>Address</Text>
+                                <TextInput
+                                    name="address"
+                                    placeholder="Address"
+                                    onChangeText={handleChange('address')}
+                                    onBlur={handleBlur('address')}
+                                    value={values.address}
+                                    style={styles.input}
+                                />
+                                {errors.address &&
+                                    <Text style={{ fontSize: 10, color: 'red' }}>{errors.address}</Text>
+                                }
                                 <TouchableOpacity onPress={handleSubmit}>
                                     <Text style={styles.btnWrapper}>Submit</Text>
                                 </TouchableOpacity>

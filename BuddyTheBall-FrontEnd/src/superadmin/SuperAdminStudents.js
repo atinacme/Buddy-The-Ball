@@ -5,6 +5,7 @@ import LinearGradient from 'react-native-linear-gradient';
 
 export default function SuperAdminStudents({ navigation }) {
     const [customers, setCustomers] = useState([]);
+
     useEffect(() => {
         try {
             const getCustomers = async () => {
@@ -29,7 +30,23 @@ export default function SuperAdminStudents({ navigation }) {
                                         {customer.customers.map((v, indexNew) => {
                                             return (
                                                 <View key={indexNew} style={styles.stddesc}>
-                                                    <Text style={styles.content}>{v.player_name}</Text>
+                                                    <Text>Customer Name: {v.parent_name}</Text>
+                                                    <Text>Customer Email: {v.email}</Text>
+                                                    <Text>Customer Id: {v._id}</Text>
+                                                    <Text>Customer User Id: {v.user_id}</Text>
+                                                    {customer.customers.length > 0 && v.children_data.map(u => {
+                                                        return (
+                                                            <View style={styles.content}>
+                                                                <Text>Player Name: {u.player_name}</Text>
+                                                                <Text>Player Age: {u.player_age}</Text>
+                                                                <Text>Wristband Level: {u.wristband_level}</Text>
+                                                                <Text>Handed: {u.handed}</Text>
+                                                                <Text>Number of Buddy Books Read: {u.num_buddy_books_read}</Text>
+                                                                <Text>Jersey Size: {u.jersey_size}</Text>
+                                                                <Text>Current Award: {u.current_award.name}</Text>
+                                                            </View>
+                                                        );
+                                                    })}
                                                 </View>
                                             );
                                         })}

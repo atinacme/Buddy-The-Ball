@@ -6,17 +6,18 @@ import Icon from 'react-native-vector-icons/FontAwesome5';
 import buddy from '../assets/buddy.png';
 import moment from 'moment';
 import { GetCustomersOfParticularCoachOfParticularSchool } from '../services/CoachService';
-import { CreateAndUpdateAttendanceService, GetAttendanceByDateService } from '../services/AttendanceService';
+import { CreateAndUpdateAttendanceService, GetAttendanceByDateService, GetAttendanceBySessionService } from '../services/AttendanceService';
 import LinearGradient from 'react-native-linear-gradient';
-
+import { GetCustomerWithSlot } from '../services/CustomerService';
 
 export default function CoachParticularSchoolStudents({ route }) {
     const state = useSelector((state) => state);
     const [allDates, setAllDates] = useState({ key: '', value: '' });
-    const [selectedDate, setSelectedDate] = useState(route.params.schoolItem.startDate);
+    const [selectedDate, setSelectedDate] = useState(route.params.sessionItem.startDate);
     const [modalVisible, setModalVisible] = useState(false);
     const [customers, setCustomers] = useState([]);
     const [searchTerm, setSearchTerm] = useState("");
+    const [attendanceResult, setAttendanceResult] = useState(false);
 
     function dateRange(startDate, endDate, steps = 1) {
         const dateArray = [];
@@ -28,36 +29,88 @@ export default function CoachParticularSchoolStudents({ route }) {
         }
         return dateArray;
     }
-
+    // console.log("sessin-->", route.params.sessionItem);
     useEffect(() => {
-        let range = dateRange(route.params.schoolItem.startDate, route.params.schoolItem.endDate);
-        setAllDates({ key: range, value: range });
         try {
             const getCustomers = async () => {
-                const result = await GetCustomersOfParticularCoachOfParticularSchool(state.authPage.auth_data?._id, route.params.schoolItem._id);
+                const data = { coach: state.authPage.auth_data?._id, slot: route.params.sessionItem._id };
+                const result = await GetCustomerWithSlot(data);
                 if (result) {
-                    var customers = result.map(v => ({ ...v, customer: v.player_name, attendance: 'NA' }));
-                    const data = {
-                        attendance_date: selectedDate
+                    // setCustomers(result);
+                    var removeEmpty = result.filter(v => v.children_data.length !== 0);
+                    var cust = removeEmpty.map(v => {
+                        return v.children_data.map(u => ({ ...u, coach_id: route.params.sessionItem.coach_id, session_id: route.params.sessionItem._id, customer: v._doc.parent_name, email: v._doc.email, customer_id: v._doc._id, customer_user_id: v._doc.user_id, attendance: 'NA' }));
+                    });
+                    var allCust = [];
+                    cust.forEach(element => {
+                        element.forEach(v => {
+                            allCust.push(v);
+                        });
+                    });
+                    setCustomers(allCust);
+                    const newData = {
+                        session_id: route.params.sessionItem._id
                     };
-                    const result1 = await GetAttendanceByDateService(data);
-                    if (result1) {
-                        var res = customers.filter(function (item) {
-                            return !result1.data.find(function (newitem) {
-                                return item.user_id === newitem.user_id;
+                    console.log("route out--->", allCust);
+                    const result1 = await GetAttendanceBySessionService(newData);
+                    if (result1.data.length > 0) {
+                        result1.data.forEach(v => {
+                            delete v._id;
+                        });
+                        const newArrayOfObj = result1.data.map(({
+                            child_id: _id,
+                            user_id: customer_user_id,
+                            ...rest
+                        }) => ({
+                            _id,
+                            customer_user_id,
+                            ...rest
+                        }));
+                        console.log("route in--->", result1.data, newArrayOfObj);
+                        var res = allCust.filter(function (item) {
+                            console.log("item all Cust--->", item);
+                            return !newArrayOfObj.find(function (newitem) {
+                                console.log("new obj--->", newitem);
+                                return item._id === newitem._id;
                             });
                         });
-                        var concat = result1.data.concat(res);
-                        var results = concat.length > 0 && concat.filter(v =>
-                            v.customer.toLowerCase().includes(searchTerm.toLowerCase())
-                        );
-                        setCustomers(results);
+                        var concat = newArrayOfObj.concat(res);
+                        console.log("date--->", concat);
+                        setCustomers(concat);
                     }
                 }
             };
             getCustomers();
         } catch (e) { }
-    }, [selectedDate, searchTerm]);
+        // let range = dateRange(route.params.sessionItem.startDate, route.params.sessionItem.endDate);
+        // setAllDates({ key: range, value: range });
+        // try {
+        //     const getCustomers = async () => {
+        //         const result = await GetCustomersOfParticularCoachOfParticularSchool(state.authPage.auth_data?._id, route.params.sessionItem._id);
+        //         if (result) {
+        //             var customers = result.map(v => ({ ...v, customer: v.player_name, attendance: 'NA' }));
+        //             const data = {
+        //                 attendance_date: selectedDate
+        //             };
+        //             const result1 = await GetAttendanceByDateService(data);
+        //             if (result1) {
+        //                 var res = customers.filter(function (item) {
+        //                     return !result1.data.find(function (newitem) {
+        //                         return item.user_id === newitem.user_id;
+        //                     });
+        //                 });
+        //                 var concat = result1.data.concat(res);
+        //                 var results = concat.length > 0 && concat.filter(v =>
+        //                     v.customer.toLowerCase().includes(searchTerm.toLowerCase())
+        //                 );
+        //                 setCustomers(results);
+        //             }
+        //         }
+        //     };
+        //     getCustomers();
+        // } catch (e) { }
+    }, []);
+
 
     const handleAttendance = async (item) => {
         var array = [...customers];
@@ -72,20 +125,27 @@ export default function CoachParticularSchoolStudents({ route }) {
             array[index]['attendance'] = 'P';
             setCustomers(array);
         }
+        console.log("item--->", item);
         const data = {
             coach_id: state.authPage.auth_data?._id,
-            school_id: route.params.schoolItem._id,
-            user_id: item.user_id,
-            customer_id: item._id,
-            customer: item.player_name,
-            time_period: route.params.schoolItem.timePeriod,
-            attendance_date: selectedDate,
+            school_id: item.school,
+            user_id: item.customer_user_id,
+            customer_id: item.customer_id,
+            customer: item.customer,
+            child_id: item._id,
+            player_name: item.player_name,
+            session_id: item.session_id,
+            attendance_date: route.params.sessionItem.date,
             attendance: item.attendance,
-            start_date: route.params.schoolItem.startDate,
-            end_data: route.params.schoolItem.endDate
+            start_time: route.params.sessionItem.start_time,
+            end_time: route.params.sessionItem.end_time
         };
         try {
-            await CreateAndUpdateAttendanceService(data);
+            const result = await CreateAndUpdateAttendanceService(data);
+            if (result) {
+                console.log("allshd--->", result);
+                setAttendanceResult(!attendanceResult);
+            }
         } catch (e) { }
     };
 
@@ -97,7 +157,12 @@ export default function CoachParticularSchoolStudents({ route }) {
                         <TextInput
                             style={styles.input}
                             value={searchTerm}
-                            onChangeText={(e) => setSearchTerm(e)}
+                            onChangeText={(e) => {
+                                var results = customers.length > 0 && customers.filter(v =>
+                                    v.player_name.toLowerCase().includes(e.toLowerCase())
+                                );
+                                setCustomers(results);
+                            }}
                             placeholder="Student Attendance"
                             placeholderTextColor="#fff"
                             underlineColorAndroid="transparent"
@@ -107,7 +172,8 @@ export default function CoachParticularSchoolStudents({ route }) {
                     <View style={styles.calendarSection}>
                         <View style={styles.calendarSectionLeft}>
                             <Icon style={styles.searchIcon} name="calendar" size={20} color="#fff" />
-                            <SelectList
+                            <Text style={{ color: "#fff", paddingTop: 10 }}>{route.params.sessionItem.date}</Text>
+                            {/* <SelectList
                                 setSelected={(val) => {
                                     setSearchTerm("");
                                     setSelectedDate(val);
@@ -121,14 +187,14 @@ export default function CoachParticularSchoolStudents({ route }) {
                                 inputStyles={{ color: '#fff', paddingRight: 10 }}
                                 dropdownTextStyles={{ color: '#fff' }}
                                 defaultOption={{ key: allDates.key[0], value: allDates.value[0] }}
-                            />
+                            /> */}
                         </View>
                         <View style={styles.verticleLine}></View>
                         <View style={styles.calendarSectionRight}>
-                            <Text style={styles.calendarSectionText}>{route.params.schoolItem.school}</Text>
+                            <Text style={styles.calendarSectionText}>{route.params.sessionItem.school.school_name}</Text>
                         </View>
                     </View>
-                    {customers.length > 0 && customers.map(v => {
+                    {customers !== undefined && customers.length > 0 && customers.map(v => {
                         return (
                             <View key={v._id} style={styles.listSection}>
                                 {console.log("inside--->", v)}
@@ -137,10 +203,12 @@ export default function CoachParticularSchoolStudents({ route }) {
                                     style={styles.listSectionLeft}
                                 >
                                     <Image source={buddy} style={styles.listProfilePic} />
+                                    {/* {v.children_data.map(u => { */}
                                     <View>
-                                        <Text style={styles.listTitleText}>{v.customer}</Text>
+                                        <Text style={styles.listTitleText}>{v.player_name}</Text>
                                         <Text style={styles.listSeeText}>Click to see details</Text>
                                     </View>
+                                    {/* })} */}
                                 </TouchableOpacity>
                                 {/* <View style={styles.centeredView}>
                             <Modal

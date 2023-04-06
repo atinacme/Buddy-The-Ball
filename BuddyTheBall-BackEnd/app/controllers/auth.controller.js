@@ -10,6 +10,7 @@ const Coach = db.coach;
 const RegionalManager = db.regionalmanager;
 
 exports.signup = (req, res) => {
+    console.log("req--->", req.body);
     const user = new User({
         // username: req.body.username,
         email: req.body.email,
@@ -23,23 +24,35 @@ exports.signup = (req, res) => {
 
         if (req.body.roles) {
             if (req.body.roles[0] === "customer") {
-                const current_award = {
-                    name: req.body.current_award ? req.body.current_award.name : null,
-                    image: req.body.current_award ? req.body.current_award.image : null
-                };
+                var children_data = [];
+                req.body.children_data.forEach(element => {
+                    console.log("cust--->", element);
+                    const current_award = {
+                        name: element.current_award ? element.current_award.name : null,
+                        image: element.current_award ? element.current_award.image : null
+                    };
+                    // console.log("sdfce--->", data);
+                    children_data.push({
+                        player_name: element.player_name,
+                        player_age: element.player_age,
+                        wristband_level: element.wristband_level ? element.wristband_level : null,
+                        school: element.school,
+                        slot: element.slot,
+                        handed: element.handed,
+                        num_buddy_books_read: element.num_buddy_books_read,
+                        jersey_size: element.jersey_size ? element.jersey_size : null,
+                        current_award: current_award
+                    });
+                });
+                console.log("push--->", children_data);
                 const customer = new Customer({
                     user_id: user._id,
                     email: req.body.email,
                     password: req.body.password,
                     parent_name: req.body.parent_name,
-                    player_name: req.body.player_name,
-                    player_age: req.body.player_age,
-                    wristband_level: req.body.wristband_level ? req.body.wristband_level : null,
-                    handed: req.body.handed,
                     created_by: req.body.created_by,
-                    num_buddy_books_read: req.body.num_buddy_books_read,
-                    jersey_size: req.body.jersey_size ? req.body.jersey_size : null,
-                    current_award: current_award
+                    coach: req.body.coach,
+                    children_data: children_data
                 });
 
                 customer.save((err, customer) => {
@@ -47,51 +60,20 @@ exports.signup = (req, res) => {
                         res.status(500).send({ message: err });
                         return;
                     }
-                    if (req.body.school) {
-                        School.find(
-                            {
-                                school_name: { $in: req.body.school }
-                            },
-                            (err, school) => {
-                                if (err) {
-                                    res.status(500).send({ message: err });
-                                    return;
-                                }
-
-                                customer.school = school.map(school => school._id);
+                    var schoolsList = [];
+                    req.body.children_data.forEach(element => {
+                        schoolsList.push(element.school);
+                    });
+                    const school_arr = schoolsList.filter((item, index) => schoolsList.indexOf(item) === index);
+                    console.log("xcdgs--->", schoolsList, school_arr);
+                    school_arr.forEach(v => {
+                        School.findByIdAndUpdate(v, {
+                            $push: {
+                                customers: customer._id
                             }
-                        );
-                    }
-                    if (req.body.coach) {
-                        Coach.find(
-                            {
-                                coach_name: { $in: req.body.coach }
-                            },
-                            (err, coach) => {
-                                if (err) {
-                                    res.status(500).send({ message: err });
-                                    return;
-                                }
-
-                                customer.coach = coach.map(coach => coach._id);
-                                customer.save(err => {
-                                    if (err) {
-                                        res.status(500).send({ message: err });
-                                        return;
-                                    }
-                                });
-                            }
-                        );
-                    }
-                    School.find({ school_name: req.body.school })
-                        .then((data => {
-                            School.findByIdAndUpdate(data[0]._id, {
-                                $push: {
-                                    customers: customer
-                                }
-                            })
-                                .then();
-                        }));
+                        })
+                            .then();
+                    });
                 });
             }
             if (req.body.roles[0] === "coach") {
@@ -102,7 +84,6 @@ exports.signup = (req, res) => {
                     coach_name: req.body.coach_name,
                     tennis_club: req.body.tennis_club,
                     assigned_region: req.body.assigned_region,
-                    assign_slot: req.body.assign_slot,
                     assigned_by: req.body.assigned_by,
                     assigned_by_user_id: req.body.assigned_by_user_id,
                     favorite_pro_player: req.body.favorite_pro_player,
@@ -250,6 +231,7 @@ exports.signin = (req, res) => {
                     email: req.body.email
                 })
                     .populate("assigned_schools", "-__v")
+                    .populate("schedules", "-__v")
                     .exec((err, coach_data) => {
                         if (err) {
                             res.status(500).send({ message: err });

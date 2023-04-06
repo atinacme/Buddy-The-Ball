@@ -8,6 +8,7 @@ const Customer = db.customer;
 exports.getCoaches = (req, res) => {
     Coach.find()
         .populate("assigned_schools", "-__v")
+        .populate("schedules", "-__v")
         .then(data => {
             res.send(data);
         })
@@ -56,18 +57,18 @@ exports.findCustomersOfParticularCoachOfParticularSchool = (req, res) => {
     const coachId = req.params.coachId;
     const schoolId = req.params.schoolId;
 
-    Customer.find({ coach: coachId, school: schoolId })
+    Customer.find({ coach: coachId, 'children_data.school': schoolId })
         .populate("coach", "-__v")
-        .populate("school", "-__v")
+        .populate("children_data.school", "-__v")
         .then(data => {
             if (!data)
-                res.status(404).send({ message: "Not found Coach with id " + id });
+                res.status(404).send({ message: "Not found Coach with id " + coachId });
             else res.send(data);
         })
         .catch(err => {
             res
                 .status(500)
-                .send({ message: "Error retrieving Coach with id=" + id });
+                .send({ message: "Error retrieving Coach with id=" + coachId });
         });
 };
 
@@ -99,7 +100,6 @@ exports.updateCoach = (req, res) => {
                                 tennis_club: req.body.tennis_club,
                                 assigned_region: req.body.assigned_region,
                                 assigned_schools: school,
-                                assign_slot: req.body.assign_slot,
                                 assigned_by: req.body.assigned_by,
                                 assigned_by_user_id: req.body.assigned_by_user_id,
                                 favorite_pro_player: req.body.favorite_pro_player,

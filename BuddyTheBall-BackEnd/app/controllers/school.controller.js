@@ -11,7 +11,8 @@ exports.createSchool = (req, res) => {
     const school = new School({
         school_name: req.body.school_name,
         region: req.body.region,
-        assigned_day: req.body.assigned_day
+        assigned_day: req.body.assigned_day,
+        address: req.body.address
     });
 
     // Save School in the database
@@ -30,6 +31,7 @@ exports.createSchool = (req, res) => {
 
 exports.getSchools = (req, res) => {
     School.find()
+        .populate("customers")
         .then(data => {
             res.send(data);
         })

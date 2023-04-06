@@ -23,6 +23,12 @@ const Coach = mongoose.model(
             agenda_data: Array,
             time: { type: Date, default: Date.now }
         }],
+        schedules: [
+            {
+                type: mongoose.Schema.Types.ObjectId,
+                ref: "Schedule"
+            }
+        ],
         assigned_by: String,
         assigned_by_user_id: String,
         assign_slot: Array,

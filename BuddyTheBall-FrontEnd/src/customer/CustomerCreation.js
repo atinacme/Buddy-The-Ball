@@ -1,24 +1,26 @@
 import React, { useEffect, useState } from 'react';
 import { Text, SafeAreaView, TextInput, StyleSheet, Image, Alert, ScrollView, TouchableOpacity, View } from "react-native";
-import { MultipleSelectList } from 'react-native-dropdown-select-list';
+import { SelectList, MultipleSelectList } from 'react-native-dropdown-select-list';
+import CheckBox from '@react-native-community/checkbox';
 import buddy from '../assets/buddy.png';
+import DateTimePicker from '@react-native-community/datetimepicker';
 import { useSelector } from "react-redux";
 import { SignUpService } from '../services/UserAuthService';
 import { Formik } from 'formik';
 import * as yup from 'yup';
 import LinearGradient from 'react-native-linear-gradient';
 import { GetAwardPhotosService } from '../services/CustomerService';
-
+let newItems = [];
 export default function CustomerCreation({ navigation }) {
-    const [data, setData] = useState([]);
-    const [selected, setSelected] = useState([]);
-    const [awardList, setAwardList] = useState([]);
-    const [awardSelected, setAwardSelected] = useState({
-        name: '',
-        image: ''
-    });
-    const [visible, setVisible] = useState(false);
     const state = useSelector((state) => state);
+    const [data, setData] = useState([]);
+    const [awardList, setAwardList] = useState([]);
+    const [parentData, setParentData] = useState({
+        email: '',
+        password: '',
+        parent_name: ''
+    });
+    const [childrenData, setChildrenData] = useState([]);
 
     useEffect(() => {
         const added = state.authPage.auth_data?.assigned_schools.map(v => Object.assign(v, { key: v._id, value: v.school_name }));
@@ -34,64 +36,19 @@ export default function CustomerCreation({ navigation }) {
         getAwardsList();
     }, []);
 
-    const toggleDropdown = () => {
-        setVisible(!visible);
-    };
-
-    const handleSelectAward = (v) => {
-        setVisible(!visible);
-        setAwardSelected({ name: v.name, image: v.url });
-    };
-
-    const loginValidationSchema = yup.object().shape({
-        email: yup
-            .string()
-            .email("Please enter valid email")
-            .required('Email Address is Required'),
-        password: yup
-            .string()
-            .min(8, ({ min }) => `Password must be at least ${min} characters`)
-            .required('Password is required'),
-        parent_name: yup
-            .string()
-            .required('Parent Name is required'),
-        player_name: yup
-            .string()
-            .required('Player Name is required'),
-        player_age: yup
-            .string()
-            .required('Player Age is required'),
-        wristband_level: yup
-            .string()
-            .required('Wrist Band Level is required'),
-        handed: yup
-            .string()
-            .required('Handed is required'),
-        num_buddy_books_read: yup
-            .string()
-            .required('Number of Buddy Books Read  is required'),
-        jersey_size: yup
-            .string()
-            .required('Jersey Size is required')
-    });
-
     const handleAddCustomer = async (values) => {
         try {
+            childrenData.forEach(v => delete v.calendar_visible);
+            childrenData.forEach(v => delete v.slot_list);
+            childrenData.forEach(v => delete v.visible);
             const data = {
-                email: values.email,
-                password: values.password,
+                email: parentData.email,
+                password: parentData.password,
                 roles: ['customer'],
-                parent_name: values.parent_name,
-                player_name: values.player_name,
-                player_age: values.player_age,
-                wristband_level: values.wristband_level,
-                school: selected,
+                parent_name: parentData.parent_name,
                 created_by: 'coach',
-                coach: state.authPage.auth_data?.coach_name,
-                handed: values.handed,
-                num_buddy_books_read: values.num_buddy_books_read,
-                jersey_size: values.jersey_size,
-                current_award: awardSelected
+                coach: state.authPage.auth_data?._id,
+                children_data: childrenData
             };
             const result = await SignUpService(data);
             if (result) {
@@ -114,169 +71,224 @@ export default function CustomerCreation({ navigation }) {
         }
     };
 
+    console.log("childrenData--->", childrenData);
+
     return (
         <LinearGradient colors={['#BCD7EF', '#D1E3AA', '#E3EE68', '#E1DA00']} style={styles.linearGradient}>
             <SafeAreaView style={styles.wrapper}>
                 <ScrollView style={styles.scrollView}>
                     <Image source={buddy} style={{ width: 200, height: 100, marginLeft: 'auto', marginRight: 'auto' }} />
-                    <Formik
-                        validationSchema={loginValidationSchema}
-                        initialValues={{
-                            email: '',
-                            password: '',
-                            parent_name: '',
-                            player_name: '',
-                            player_age: '',
-                            wristband_level: '',
-                            handed: '',
-                            num_buddy_books_read: '',
-                            jersey_size: ''
-                        }}
-                        onSubmit={(values) => handleAddCustomer(values)}
-                    >
-                        {({
-                            handleChange,
-                            handleBlur,
-                            handleSubmit,
-                            values,
-                            errors,
-                            isValid,
-                        }) => (
-                            <>
-                                <Text style={styles.label}>Email</Text>
-                                <TextInput
-                                    name="email"
-                                    placeholder="Email Address"
-                                    onChangeText={handleChange('email')}
-                                    onBlur={handleBlur('email')}
-                                    value={values.email}
-                                    style={styles.input}
-                                />
-                                {errors.email &&
-                                    <Text style={{ fontSize: 10, color: 'red' }}>{errors.email}</Text>
-                                }
-                                <Text style={styles.label}>Password</Text>
-                                <TextInput
-                                    name="password"
-                                    placeholder="Password"
-                                    onChangeText={handleChange('password')}
-                                    onBlur={handleBlur('password')}
-                                    value={values.password}
-                                    style={styles.input}
-                                />
-                                {errors.password &&
-                                    <Text style={{ fontSize: 10, color: 'red' }}>{errors.password}</Text>
-                                }
-                                <Text style={styles.label}>Parent Name</Text>
-                                <TextInput
-                                    name="parent_name"
-                                    placeholder="Password"
-                                    onChangeText={handleChange('parent_name')}
-                                    onBlur={handleBlur('parent_name')}
-                                    value={values.parent_name}
-                                    style={styles.input}
-                                />
-                                {errors.parent_name &&
-                                    <Text style={{ fontSize: 10, color: 'red' }}>{errors.parent_name}</Text>
-                                }
+                    <Text style={styles.label}>Email</Text>
+                    <TextInput
+                        name="email"
+                        placeholder="Email Address"
+                        onChangeText={(val) => setParentData({ ...parentData, email: val })}
+                        value={parentData.email}
+                        style={styles.input}
+                    />
+                    {!parentData.email &&
+                        <Text style={{ fontSize: 10, color: 'red' }}>Email is Required</Text>
+                    }
+                    <Text style={styles.label}>Password</Text>
+                    <TextInput
+                        name="password"
+                        placeholder="Password"
+                        onChangeText={(val) => setParentData({ ...parentData, password: val })}
+                        value={parentData.password}
+                        style={styles.input}
+                    />
+                    {!parentData.password &&
+                        <Text style={{ fontSize: 10, color: 'red' }}>Password is Required</Text>
+                    }
+                    <Text style={styles.label}>Parent Name</Text>
+                    <TextInput
+                        name="parent_name"
+                        placeholder="Parent Name"
+                        onChangeText={(val) => setParentData({ ...parentData, parent_name: val })}
+                        value={parentData.parent_name}
+                        style={styles.input}
+                    />
+                    {!parentData.parent_name &&
+                        <Text style={{ fontSize: 10, color: 'red' }}>Parent Name is Required</Text>
+                    }
+                    <View>
+                        <Text style={styles.label}>Child</Text><TouchableOpacity onPress={() => {
+                            setChildrenData([...childrenData, {
+                                player_name: '',
+                                calendar_visible: false,
+                                player_age: '',
+                                wristband_level: '',
+                                school: '',
+                                slot_list: [],
+                                slot: '',
+                                handed: '',
+                                num_buddy_books_read: '',
+                                jersey_size: '',
+                                visible: false,
+                                current_award: { name: '', image: '' }
+                            }]);
+                        }}><Text>+</Text></TouchableOpacity>
+                    </View>
+                    {childrenData.length > 0 && childrenData.map((item, index) => {
+                        return (
+                            <View key={index}>
                                 <Text style={styles.label}>Player Name</Text>
                                 <TextInput
                                     name="player_name"
                                     placeholder="Player Name"
-                                    onChangeText={handleChange('player_name')}
-                                    onBlur={handleBlur('player_name')}
-                                    value={values.player_name}
+                                    onChangeText={(val) => {
+                                        let newArr = [...childrenData];
+                                        newArr[index].player_name = val;
+                                        setChildrenData(newArr);
+                                    }}
+                                    value={item.player_name}
                                     style={styles.input}
                                 />
-                                {errors.player_name &&
-                                    <Text style={{ fontSize: 10, color: 'red' }}>{errors.player_name}</Text>
+                                {!item.player_name &&
+                                    <Text style={{ fontSize: 10, color: 'red' }}>Player Name is Required</Text>
                                 }
-                                <Text style={styles.label}>Player Age</Text>
-                                <TextInput
-                                    name="player_age"
-                                    placeholder="Player Age"
-                                    onChangeText={handleChange('player_age')}
-                                    onBlur={handleBlur('player_age')}
-                                    value={values.player_age}
-                                    style={styles.input}
-                                />
-                                {errors.player_age &&
-                                    <Text style={{ fontSize: 10, color: 'red' }}>{errors.player_age}</Text>
+                                <Text style={styles.label}>Player Age</Text><Text onPress={() => {
+                                    let newArr = [...childrenData];
+                                    newArr[index].calendar_visible = !newArr[index].calendar_visible;
+                                    setChildrenData(newArr);
+                                }}>+</Text>
+                                {item.calendar_visible && (
+                                    <DateTimePicker
+                                        testID="dateTimePicker"
+                                        value={new Date()}
+                                        mode={'date'}
+                                        onChange={(event, selectedDate) => {
+                                            var ageDifMs = Date.now() - selectedDate.getTime();
+                                            var ageDate = new Date(ageDifMs);
+                                            var age = Math.abs(ageDate.getUTCFullYear() - 1970);
+                                            let newArr = [...childrenData];
+                                            newArr[index].calendar_visible = !newArr[index].calendar_visible;
+                                            newArr[index].player_age = age;
+                                            setChildrenData(newArr);
+                                        }}
+                                    />
+                                )}
+                                <Text>Age: {item.player_age}</Text>
+                                {!item.player_age &&
+                                    <Text style={{ fontSize: 10, color: 'red' }}>Player Age is Required</Text>
                                 }
                                 <Text style={styles.label}>WristBand Level</Text>
                                 <TextInput
                                     name="wristband_level"
                                     placeholder="WristBand Level"
-                                    onChangeText={handleChange('wristband_level')}
-                                    onBlur={handleBlur('wristband_level')}
-                                    value={values.wristband_level}
+                                    onChangeText={(val) => {
+                                        let newArr = [...childrenData];
+                                        newArr[index].wristband_level = val;
+                                        setChildrenData(newArr);
+                                    }}
+                                    value={item.wristband_level}
                                     style={styles.input}
                                 />
-                                {errors.wristband_level &&
-                                    <Text style={{ fontSize: 10, color: 'red' }}>{errors.wristband_level}</Text>
+                                {!item.wristband_level &&
+                                    <Text style={{ fontSize: 10, color: 'red' }}>WristBand Level is Required</Text>
                                 }
-                                <Text style={styles.label}>Schools</Text>
-                                <MultipleSelectList
-                                    setSelected={(val) => setSelected(val)}
+                                <Text style={styles.label}>School</Text>
+                                <SelectList
+                                    setSelected={(val) => {
+                                        let newArr = [...childrenData];
+                                        newArr[index].school = val;
+                                        setChildrenData(newArr);
+                                        // setSelected(val);
+                                    }}
                                     data={data}
-                                    save="value"
-                                    onSelect={() => alert(selected)}
-                                    label="Selected Schools"
+                                    save="key"
+                                    onSelect={() => {
+                                        let newArr = [...childrenData];
+                                        const slots = state.authPage.auth_data?.schedules.map((v) => Object.assign(v, { key: v._id, value: `${v.date} (${v.start_time} to ${v.end_time})` }));
+                                        const result = slots.filter(v => { return (v.school == item.school); });
+                                        newArr[index].slot_list = result;
+                                        setChildrenData(newArr);
+                                    }}
+                                    label="Selected School"
                                 />
-                                <Text style={styles.label}>Slots</Text>
-                                <MultipleSelectList
-                                    setSelected={(val) => setSelected(val)}
-                                    data={data}
-                                    save="value"
-                                    onSelect={() => alert(selected)}
-                                    label="Selected Schools"
+                                {!item.school &&
+                                    <Text style={{ fontSize: 10, color: 'red' }}>School is Required</Text>
+                                }
+                                <Text style={styles.label}>Slot</Text>
+                                <SelectList
+                                    setSelected={(val) => {
+                                        let newArr = [...childrenData];
+                                        newArr[index].slot = val;
+                                        setChildrenData(newArr);
+                                    }}
+                                    data={item.slot_list}
+                                    save="key"
+                                    label="Selected Slot"
                                 />
+                                {!item.slot &&
+                                    <Text style={{ fontSize: 10, color: 'red' }}>Slot is Required</Text>
+                                }
                                 <Text style={styles.label}>Handed</Text>
                                 <TextInput
                                     name="handed"
                                     placeholder="Handed"
-                                    onChangeText={handleChange('handed')}
-                                    onBlur={handleBlur('handed')}
-                                    value={values.handed}
+                                    onChangeText={(val) => {
+                                        let newArr = [...childrenData];
+                                        newArr[index].handed = val;
+                                        setChildrenData(newArr);
+                                    }}
+                                    value={item.handed}
                                     style={styles.input}
                                 />
-                                {errors.handed &&
-                                    <Text style={{ fontSize: 10, color: 'red' }}>{errors.handed}</Text>
+                                {!item.handed &&
+                                    <Text style={{ fontSize: 10, color: 'red' }}>Handed is Required</Text>
                                 }
                                 <Text style={styles.label}>Number of Buddy Books Read</Text>
                                 <TextInput
                                     name="num_buddy_books_read"
                                     placeholder="Number of Buddy Books Read"
-                                    onChangeText={handleChange('num_buddy_books_read')}
-                                    onBlur={handleBlur('num_buddy_books_read')}
-                                    value={values.num_buddy_books_read}
+                                    onChangeText={(val) => {
+                                        let newArr = [...childrenData];
+                                        newArr[index].num_buddy_books_read = val;
+                                        setChildrenData(newArr);
+                                    }}
+                                    value={item.num_buddy_books_read}
                                     style={styles.input}
                                 />
-                                {errors.num_buddy_books_read &&
-                                    <Text style={{ fontSize: 10, color: 'red' }}>{errors.num_buddy_books_read}</Text>
+                                {!item.num_buddy_books_read &&
+                                    <Text style={{ fontSize: 10, color: 'red' }}>Number of Buddy Books Read is Required</Text>
                                 }
                                 <Text style={styles.label}>Jersey Size</Text>
                                 <TextInput
                                     name="jersey_size"
                                     placeholder="Jersey Size"
-                                    onChangeText={handleChange('jersey_size')}
-                                    onBlur={handleBlur('jersey_size')}
-                                    value={values.jersey_size}
+                                    onChangeText={(val) => {
+                                        let newArr = [...childrenData];
+                                        newArr[index].jersey_size = val;
+                                        setChildrenData(newArr);
+                                    }}
+                                    value={item.jersey_size}
                                     style={styles.input}
                                 />
-                                {errors.jersey_size &&
-                                    <Text style={{ fontSize: 10, color: 'red' }}>{errors.jersey_size}</Text>
+                                {!item.jersey_size &&
+                                    <Text style={{ fontSize: 10, color: 'red' }}>Jersey Size is Required</Text>
                                 }
                                 <Text style={styles.label}>Current Award</Text>
-                                <TouchableOpacity onPress={toggleDropdown}>
-                                    <View style={styles.buttonText}>{awardSelected.image ? <Image source={{ uri: awardSelected.image }} style={styles.buttonImage} /> : <Text>Select the Award</Text>}</View>
+                                <TouchableOpacity onPress={() => {
+                                    let newArr = [...childrenData];
+                                    newArr[index].visible = !newArr[index].visible;
+                                    setChildrenData(newArr);
+                                }}>
+                                    {/* <View style={styles.buttonText}><Text>Select the Award</Text></View> */}
+                                    <View style={styles.buttonText}>{item.current_award.image ? <Image source={{ uri: item.current_award.image }} style={styles.buttonImage} /> : <Text>Select the Award</Text>}</View>
                                 </TouchableOpacity>
-                                {visible &&
+                                {item.visible &&
                                     (<View style={styles.award}>
-                                        {visible && awardList.map(v => {
+                                        {item.visible && awardList.map(v => {
                                             return (
                                                 <ScrollView showsVerticalScrollIndicator>
-                                                    <TouchableOpacity key={v._id} onPress={() => handleSelectAward(v)}>
+                                                    <TouchableOpacity key={v.index} onPress={() => {
+                                                        let newArr = [...childrenData];
+                                                        newArr[index].current_award.name = v.name;
+                                                        newArr[index].current_award.image = v.url;
+                                                        newArr[index].visible = !newArr[index].visible;
+                                                        setChildrenData(newArr);
+                                                    }}>
                                                         <Image source={{ uri: v.url }} style={{ height: 100, width: 100 }} />
                                                     </TouchableOpacity>
                                                 </ScrollView>
@@ -284,17 +296,30 @@ export default function CustomerCreation({ navigation }) {
                                         })}
                                     </View>
                                     )}
-                                {/* <SelectList
-                                    setSelected={(val) => setAwardSelected(val)}
-                                    data={awardList}
-                                    save="value"
-                                /> */}
-                                <TouchableOpacity onPress={handleSubmit}>
-                                    <Text style={styles.submit}>Submit</Text>
+                                {!item.current_award.name &&
+                                    <Text style={{ fontSize: 10, color: 'red' }}>Current Award is Required</Text>
+                                }
+                                <TouchableOpacity
+                                    // style={[styles.agendaButton, styles.buttonClose]}
+                                    onPress={() => {
+                                        var array = [...childrenData];
+                                        var indexData = array.indexOf(item);
+                                        if (indexData !== -1) {
+                                            array.splice(indexData, 1);
+                                            setChildrenData(array);
+                                        }
+                                    }}>
+                                    <Text >Remove</Text>
                                 </TouchableOpacity>
-                            </>
+                            </View>
+                        );
+                    })}
+                    <TouchableOpacity onPress={handleAddCustomer}>
+                        <Text style={styles.submit}>Submit</Text>
+                    </TouchableOpacity>
+                    {/* </>
                         )}
-                    </Formik>
+                    </Formik> */}
                 </ScrollView>
                 <TouchableOpacity onPress={() => navigation.navigate("Coach Dashboard")}>
                     <Text style={styles.backbtn}>Back</Text>

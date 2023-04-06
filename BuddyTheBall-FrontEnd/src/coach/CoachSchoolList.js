@@ -1,15 +1,16 @@
 import React, { useEffect, useState } from 'react';
-import { SafeAreaView, Text, StyleSheet, TouchableOpacity, Alert, ScrollView } from 'react-native';
+import { SafeAreaView, Text, StyleSheet, TouchableOpacity, Alert, ScrollView, View } from 'react-native';
 import { useSelector } from "react-redux";
 import { DataTable } from 'react-native-paper';
 import moment from 'moment';
 import LinearGradient from 'react-native-linear-gradient';
-
+import { GetScheduleByDateAndCoachService } from '../services/ScheduleService';
 
 export default function CoachSchoolList({ navigation }) {
     const state = useSelector((state) => state);
     const allSchoolData = state.authPage.auth_data?.assigned_schools;
     const [allDates, setAllDates] = useState([]);
+    const [schedules, setSchedules] = useState([]);
 
     const mergeByProperty = (target, source) => {
         source.forEach(sourceElement => {
@@ -19,53 +20,104 @@ export default function CoachSchoolList({ navigation }) {
             targetElement ? Object.assign(targetElement, sourceElement) : target.push(sourceElement);
         });
     };
+    const date = Date.parse(moment().format());
+    const unixTimeZero = Date.parse('2023-04-03T12:50');
+
 
     useEffect(() => {
-        const result = state.authPage.auth_data?.assigned_schools.filter(v => { return (v.region == state.authPage.auth_data?.assigned_region); });
-        const assign_school = result[0].school_name;
-        state.authPage.auth_data?.assign_slot.filter(element => {
-            if (element.school === assign_school) {
-                let timeStartStamp = moment(element.startDate);
-                let timeEndStamp = moment(element.endDate);
-                setAllDates([timeStartStamp, timeEndStamp]);
-            }
-        });
-        mergeByProperty(allSchoolData, state.authPage.auth_data?.assign_slot);
+        try {
+            const getSchedules = async () => {
+                const data = { date: moment().format('YYYY-MM-DD'), user_id: state.authPage.auth_data?.user_id };
+                const result = await GetScheduleByDateAndCoachService(data);
+                if (result) {
+                    result.forEach(v => {
+                        var timeStart = v.start_time.replace(/ /g, '');
+                        var timeStartString = timeStart.includes('AM') ? timeStart.replace('AM', '') : timeStart.replace('PM', '');
+                        var dateTimeStartString = v.date + 'T' + timeStartString;
+                        var timeEnd = v.end_time.replace(/ /g, '');
+                        var timeEndString = timeEnd.includes('AM') ? timeEnd.replace('AM', '') : timeEnd.replace('PM', '');
+                        var dateTimeEndString = v.date + 'T' + timeEndString;
+                        var currentDateTimeString = Date.parse(moment().format());
+                        if (currentDateTimeString >= Date.parse(dateTimeStartString) && currentDateTimeString <= Date.parse(dateTimeEndString)) {
+                            Object.assign(v, { session: 'current' });
+                            setSchedules([v]);
+                        } else if (currentDateTimeString <= Date.parse(dateTimeStartString)) {
+                            Object.assign(v, { session: 'upcoming' });
+                            setSchedules(prevState => [...prevState, v]);
+                        } else {
+                            Object.assign(v, { session: 'completed' });
+                            setSchedules(prevState => [...prevState, v]);
+                        }
+                    });
+                    console.log("tym--->", schedules);
+                }
+            };
+            getSchedules();
+        }
+        catch (e) { }
+        // const result = state.authPage.auth_data?.assigned_schools.filter(v => { return (v.region == state.authPage.auth_data?.assigned_region); });
+        // const assign_school = result[0].school_name;
+        // state.authPage.auth_data?.assign_slot.filter(element => {
+        //     if (element.school === assign_school) {
+        //         let timeStartStamp = moment(element.startDate);
+        //         let timeEndStamp = moment(element.endDate);
+        //         setAllDates([timeStartStamp, timeEndStamp]);
+        //     }
+        // });
+        // mergeByProperty(allSchoolData, state.authPage.auth_data?.assign_slot);
     }, []);
+    console.log('date--->', schedules);
 
     return (
         <LinearGradient colors={['#BCD7EF', '#D1E3AA', '#E3EE68', '#E1DA00']} style={styles.linearGradient}>
             <SafeAreaView style={styles.wrapper}>
                 <ScrollView style={styles.scrollView}>
                     <Text>CURRENT REGION: {state.authPage.auth_data?.assigned_region}</Text>
-                    <Text>CURRENT SEASON: FALL - {allDates.length > 0 && <>{moment(allDates[0]).format("MMM D")} - {moment(allDates[1]).format("MMM D")}</>}</Text>
-                    <DataTable style={styles.container}>
-                        <DataTable.Header style={styles.tableHeader}>
-                            <DataTable.Title>DAY</DataTable.Title>
-                            <DataTable.Title>SCHOOL</DataTable.Title>
-                        </DataTable.Header>
-                        {allSchoolData.length > 0 && allSchoolData.map(item => {
-                            return (
-                                <TouchableOpacity key={item._id} onPress={() => item.region.indexOf(state.authPage.auth_data?.assigned_region) > -1 ?
-                                    navigation.navigate("Coach Particular School Students", { schoolItem: item })
-                                    : Alert.alert(
-                                        "Alert",
-                                        "You are not assigned to this School!",
-                                        [
-                                            {
-                                                text: "OK"
-                                            }
-                                        ]
-                                    )} style={styles.cachpicWrap}
-                                >
-                                    <DataTable.Row>
-                                        <DataTable.Cell>{item.assigned_day}</DataTable.Cell>
-                                        <DataTable.Cell>{item.school_name}</DataTable.Cell>
-                                    </DataTable.Row>
-                                </TouchableOpacity>
-                            );
-                        })}
-                    </DataTable>
+                    {schedules.length > 0 && schedules.map(item => {
+                        return (
+                            <View key={item._id}>
+                                {item.session === 'upcoming' ?
+                                    <Text>UPCOMING SEASON: FALL - {item.date} - {item.start_time} {item.end_time}</Text>
+                                    : item.session === 'current' ?
+                                        <Text>CURRENT SEASON: FALL - {item.date} - {item.start_time} {item.end_time}</Text>
+                                        :
+                                        <Text>COMPLETED SEASON: FALL - {item.date} - {item.start_time} {item.end_time}</Text>
+                                }
+                                <DataTable style={styles.container}>
+                                    <DataTable.Header style={styles.tableHeader}>
+                                        <DataTable.Title>DAY</DataTable.Title>
+                                        <DataTable.Title>SCHOOL</DataTable.Title>
+                                    </DataTable.Header>
+                                    <TouchableOpacity key={item._id} onPress={() => item.session === 'current' ?
+                                        navigation.navigate("Coach Particular School Students", { sessionItem: item })
+                                        : item.session === 'upcoming' ? Alert.alert(
+                                            "Alert",
+                                            "You can Enter as the Session Starts!",
+                                            [
+                                                {
+                                                    text: "OK"
+                                                }
+                                            ]
+                                        ) : Alert.alert(
+                                            "Alert",
+                                            "You can't Enter as the Session is Completed!",
+                                            [
+                                                {
+                                                    text: "OK"
+                                                }
+                                            ]
+                                        )
+                                    } style={styles.cachpicWrap}
+                                    >
+                                        <DataTable.Row>
+                                            <DataTable.Cell>{item.school.assigned_day}</DataTable.Cell>
+                                            <DataTable.Cell>{item.school.school_name}</DataTable.Cell>
+                                        </DataTable.Row>
+                                    </TouchableOpacity>
+                                </DataTable>
+                            </View>
+                        );
+                    })}
                 </ScrollView>
                 <TouchableOpacity onPress={() => navigation.navigate("Coach Dashboard")}>
                     <Text style={styles.backbtn}>Back</Text>

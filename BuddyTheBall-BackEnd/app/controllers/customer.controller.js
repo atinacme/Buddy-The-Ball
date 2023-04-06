@@ -5,7 +5,7 @@ const Customer = db.customer;
 
 exports.getCustomers = (req, res) => {
     Customer.find()
-        .populate("school", "-__v")
+        .populate("children_data.school", "-__v")
         .populate("coach", "-__v")
         .then(data => {
             res.send(data);
@@ -36,7 +36,7 @@ exports.findCustomerWithSchoolId = (req, res) => {
 exports.findParticularCustomer = (req, res) => {
     const id = req.params.id;
     Customer.findById(id)
-        .populate("school", "-__v")
+        .populate("children_data.school", "-__v")
         .populate("coach", "-__v")
         .then(data => {
             if (!data)
@@ -68,17 +68,12 @@ exports.updateCustomer = (req, res) => {
                     message: `Cannot update User with id=${userId}. Maybe User was not found!`
                 });
             } else {
-                const current_award = {
-                    name: req.body.current_award ? req.body.current_award.name : null,
-                    image: req.body.current_award ? req.body.current_award.image : null
-                };
                 Customer.findByIdAndUpdate(customerId,
                     {
                         password: req.body.password,
-                        wristband_level: req.body.wristband_level,
-                        tennis_club: req.body.tennis_club,
-                        jersey_size: req.body.jersey_size,
-                        current_award: current_award,
+                        email: req.body.email,
+                        parent_name: req.body.parent_name,
+                        children_data: req.body.children_data
                     }, { useFindAndModify: false })
                     .then(data => {
                         if (!data) {
@@ -97,6 +92,32 @@ exports.updateCustomer = (req, res) => {
         .catch(err => {
             res.status(500).send({
                 message: "Error updating User with id=" + userId
+            });
+        });
+};
+
+exports.findCustomerWithSlot = (req, res) => {
+    console.log("cdscdsc--->",);
+    Customer.find({ coach: req.body.coach })
+        .then(data => {
+            var cust = data.map((element) => {
+                return { ...element, children_data: element.children_data.filter((subElement) => subElement.slot === req.body.slot) };
+            });
+            cust.forEach(v => {
+                delete v.$__;
+                delete v.$isNew;
+            });
+            if (!data) {
+                res.status(404).send({
+                    message: `Maybe Customer was not found!`
+                });
+            } else {
+                res.send(cust);
+            }
+        })
+        .catch(err => {
+            res.status(500).send({
+                message: "Could not find Customer"
             });
         });
 };
