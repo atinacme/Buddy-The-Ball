@@ -31,15 +31,25 @@ exports.createSchool = (req, res) => {
 
 exports.getSchools = (req, res) => {
     School.find()
-        .populate("customers")
-        .then(data => {
+        .populate("customers coaches classes")
+        .populate([{
+            path: 'classes', populate: {
+                path: 'schedules',
+                model: 'Schedule',
+                populate: {
+                    path: 'coaches',
+                    model: 'Coach'
+                },
+            },
+        }, {
+            path: 'classes', populate: {
+                path: 'school',
+                model: 'School'
+            },
+        }])
+        .exec(function (err, data) {
+            if (err) return res.status(404).send({ message: "Not found Schools" });
             res.send(data);
-        })
-        .catch(err => {
-            res.status(500).send({
-                message:
-                    err.message || "Some error occurred while retrieving schools."
-            });
         });
 };
 
@@ -60,17 +70,17 @@ exports.findParticularSchool = (req, res) => {
 };
 
 exports.findRegionWiseSchools = (req, res) => {
-    School.find({ region: req.body.region })
-        .then(data => {
-            if (!data)
-                res.status(404).send({ message: "Not found School with id " + id });
-            else res.send(data);
-        })
-        .catch(err => {
-            res
-                .status(500)
-                .send({ message: "Error retrieving School with id=" + id });
+    School.find({ region: req.body.region }).populate("customers").populate("coaches").exec(function (err, docs) {
+        var options = {
+            path: 'coaches.schedules',
+            model: 'Schedule'
+        };
+        if (err) return res.status(404).send({ message: "Not found School" });
+        School.populate(docs, options, function (err, data) {
+            if (err) return res.status(500).send({ message: "Error retrieving School" });
+            res.send(data);
         });
+    });
 };
 
 exports.updateSchool = (req, res) => {

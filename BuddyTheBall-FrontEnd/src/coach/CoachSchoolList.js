@@ -4,67 +4,58 @@ import { useSelector } from "react-redux";
 import { DataTable } from 'react-native-paper';
 import moment from 'moment';
 import LinearGradient from 'react-native-linear-gradient';
-import { GetScheduleByDateAndCoachService } from '../services/ScheduleService';
+import { GetClassCreatedByUserIdService } from '../services/ClassService';
 
 export default function CoachSchoolList({ navigation }) {
     const state = useSelector((state) => state);
-    const allSchoolData = state.authPage.auth_data?.assigned_schools;
-    const [allDates, setAllDates] = useState([]);
     const [schedules, setSchedules] = useState([]);
-
-    const mergeByProperty = (target, source) => {
-        source.forEach(sourceElement => {
-            let targetElement = target.find(targetElement => {
-                return sourceElement.school === targetElement.school_name;
-            });
-            targetElement ? Object.assign(targetElement, sourceElement) : target.push(sourceElement);
-        });
-    };
-    const date = Date.parse(moment().format());
-    const unixTimeZero = Date.parse('2023-04-03T12:50');
-
+    function getYear(timestamp) {
+        return (new Date(timestamp * 1000)).getFullYear();
+    }
+    function getMon(timestamp) {
+        return (new Date(timestamp * 1000)).getMonth();
+    }
+    function getDate(timestamp) {
+        return (new Date(timestamp * 1000)).getDate();
+    }
 
     useEffect(() => {
         try {
-            const getSchedules = async () => {
-                const data = { date: moment().format('YYYY-MM-DD'), user_id: state.authPage.auth_data?.user_id };
-                const result = await GetScheduleByDateAndCoachService(data);
+            const getClasses = async () => {
+                const data = { created_by_user_id: state.authPage.auth_data?.user_id }
+                const result = await GetClassCreatedByUserIdService(data)
                 if (result) {
-                    result.forEach(v => {
-                        var timeStart = v.start_time.replace(/ /g, '');
-                        var timeStartString = timeStart.includes('AM') ? timeStart.replace('AM', '') : timeStart.replace('PM', '');
-                        var dateTimeStartString = v.date + 'T' + timeStartString;
-                        var timeEnd = v.end_time.replace(/ /g, '');
-                        var timeEndString = timeEnd.includes('AM') ? timeEnd.replace('AM', '') : timeEnd.replace('PM', '');
-                        var dateTimeEndString = v.date + 'T' + timeEndString;
-                        var currentDateTimeString = Date.parse(moment().format());
-                        if (currentDateTimeString >= Date.parse(dateTimeStartString) && currentDateTimeString <= Date.parse(dateTimeEndString)) {
-                            Object.assign(v, { session: 'current' });
-                            setSchedules([v]);
-                        } else if (currentDateTimeString <= Date.parse(dateTimeStartString)) {
-                            Object.assign(v, { session: 'upcoming' });
-                            setSchedules(prevState => [...prevState, v]);
-                        } else {
-                            Object.assign(v, { session: 'completed' });
-                            setSchedules(prevState => [...prevState, v]);
-                        }
-                    });
-                    console.log("tym--->", schedules);
+                    result.forEach(u => {
+                        u.schedules.forEach(v => {
+                            var local = new Date(v.date).toLocaleDateString()
+                            var newdate = local.split("/").reverse().join("-");
+                            var timestamp = new Date(newdate).getTime() / 1000
+                            var startTime = moment(v.start_time, ["h:mm A"]).format("HH:mm")
+                            var startTimeSplit = startTime.split(":")
+                            var dateTimeStartString = new Date(getYear(timestamp), getMon(timestamp), getDate(timestamp), startTimeSplit[0], startTimeSplit[1])
+                            var parsedTimeStartString = Date.parse(dateTimeStartString)
+                            var endTime = moment(v.end_time, ["h:mm A"]).format("HH:mm")
+                            var endTimeSplit = endTime.split(":")
+                            var dateTimeEndString = new Date(getYear(timestamp), getMon(timestamp), getDate(timestamp), endTimeSplit[0], endTimeSplit[1])
+                            var parsedTimeEndString = Date.parse(dateTimeEndString)
+                            var parsedCurrentDateTimeString = Date.parse(moment().utcOffset("+05:30").format())
+                            if (parsedCurrentDateTimeString >= parsedTimeStartString && parsedCurrentDateTimeString <= parsedTimeEndString) {
+                                Object.assign(u, { session: 'current', date: v.date, start_time: v.start_time, end_time: v.end_time });
+                                setSchedules([u]);
+                            } else if (parsedCurrentDateTimeString <= parsedTimeStartString) {
+                                Object.assign(u, { session: 'upcoming', date: v.date, start_time: v.start_time, end_time: v.end_time });
+                                setSchedules(prevState => [...prevState, u]);
+                            } else {
+                                Object.assign(u, { session: 'completed', date: v.date, start_time: v.start_time, end_time: v.end_time });
+                                setSchedules(prevState => [...prevState, u]);
+                            }
+                        });
+                    })
                 }
-            };
-            getSchedules();
+            }
+            getClasses()
         }
         catch (e) { }
-        // const result = state.authPage.auth_data?.assigned_schools.filter(v => { return (v.region == state.authPage.auth_data?.assigned_region); });
-        // const assign_school = result[0].school_name;
-        // state.authPage.auth_data?.assign_slot.filter(element => {
-        //     if (element.school === assign_school) {
-        //         let timeStartStamp = moment(element.startDate);
-        //         let timeEndStamp = moment(element.endDate);
-        //         setAllDates([timeStartStamp, timeEndStamp]);
-        //     }
-        // });
-        // mergeByProperty(allSchoolData, state.authPage.auth_data?.assign_slot);
     }, []);
     console.log('date--->', schedules);
 

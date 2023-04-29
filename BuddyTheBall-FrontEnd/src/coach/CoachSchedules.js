@@ -1,9 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import { SafeAreaView, Text, StyleSheet, TouchableOpacity, View, ScrollView } from 'react-native';
+import { SafeAreaView, Text, StyleSheet, TouchableOpacity, View, ScrollView, Alert } from 'react-native';
 import { useSelector } from "react-redux";
 import { DataTable } from 'react-native-paper';
 import LinearGradient from 'react-native-linear-gradient';
-import moment from 'moment';
 import { GetScheduleByCoachService } from '../services/ScheduleService';
 
 export default function CoachSchedules({ navigation }) {
@@ -13,7 +12,8 @@ export default function CoachSchedules({ navigation }) {
     useEffect(() => {
         try {
             const getSchedules = async () => {
-                const result = await GetScheduleByCoachService(state.authPage.auth_data?.user_id);
+                const data = { coach_id: state.authPage.auth_data?.user_id, regional_manager_id: state.authPage.auth_data?.assigned_by_user_id }
+                const result = await GetScheduleByCoachService(data);
                 if (result) {
                     setSchedules(result);
                 }
@@ -29,18 +29,27 @@ export default function CoachSchedules({ navigation }) {
                     <View>
                         <DataTable style={styles.container}>
                             <DataTable.Header style={styles.tableHeader}>
-                                <DataTable.Title>SCHOOL</DataTable.Title>
                                 <DataTable.Title>STATUS</DataTable.Title>
+                                <DataTable.Title>CREATED BY</DataTable.Title>
                                 <DataTable.Title>DATE</DataTable.Title>
                                 <DataTable.Title>TIMINGS</DataTable.Title>
                             </DataTable.Header>
                             {schedules.length > 0 && schedules.map(item => {
-                                { console.log("xgs--->", item); }
                                 return (
-                                    <TouchableOpacity key={item._id} onPress={() => navigation.navigate("Coach Schedule Description", { scheduleData: item })}>
+                                    <TouchableOpacity key={item._id} onPress={() => item.created_by === 'coach' ?
+                                        navigation.navigate("Coach Schedule Description", { scheduleData: item })
+                                        : Alert.alert(
+                                            "Alert",
+                                            "You can't Edit this!",
+                                            [
+                                                {
+                                                    text: "OK"
+                                                }
+                                            ]
+                                        )}>
                                         <DataTable.Row>
-                                            <DataTable.Cell>{item.school.school_name}</DataTable.Cell>
                                             <DataTable.Cell>{item.status}</DataTable.Cell>
+                                            <DataTable.Cell>{item.created_by_name === state.authPage.auth_data?.coach_name ? 'You' : item.created_by_name}</DataTable.Cell>
                                             <DataTable.Cell>{item.date}</DataTable.Cell>
                                             <DataTable.Cell>{item.start_time} to {item.end_time}</DataTable.Cell>
                                         </DataTable.Row>

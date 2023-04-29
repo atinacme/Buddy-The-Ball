@@ -116,8 +116,8 @@ export default function CoachDashboard({ navigation }) {
                     <TouchableOpacity onPress={() => navigation.navigate("Coach Schools Photos")}>
                         <Text style={{ ...styles.adminContainer, ...styles.adminBg1 }}>PHOTOS</Text>
                     </TouchableOpacity>
-                    <TouchableOpacity onPress={() => navigation.navigate("Coach Schedules")} >
-                        <Text style={{ ...styles.adminContainer, ...styles.adminBg2 }}>SCHEDULE</Text>
+                    <TouchableOpacity onPress={() => navigation.navigate("Coach Schedules")}>
+                        <Text style={{ ...styles.adminContainer, ...styles.adminBg2 }}>SCHEDULES</Text>
                     </TouchableOpacity>
                     <TouchableOpacity onPress={() => navigation.navigate("Coach Messages")}>
                         <Text style={{ ...styles.adminContainer, ...styles.adminBg3 }}>MESSAGES</Text>
@@ -128,6 +128,9 @@ export default function CoachDashboard({ navigation }) {
                     <TouchableOpacity onPress={() => navigation.navigate("Coach Customers")}>
                         <Text style={{ ...styles.adminContainer, ...styles.adminBg5 }}>CUSTOMERS</Text>
                     </TouchableOpacity>
+                    <TouchableOpacity onPress={() => navigation.navigate("Coach Classes")} >
+                        <Text style={{ ...styles.adminContainer, ...styles.adminBg2 }}>CLASSES</Text>
+                    </TouchableOpacity>
                 </Text>
                 <View style={styles.adminbtn}>
                     <TouchableOpacity onPress={() => {
@@ -136,9 +139,6 @@ export default function CoachDashboard({ navigation }) {
                     }}>
                         <Text style={styles.btnWrapper}>Logout</Text>
                     </TouchableOpacity>
-                    <TouchableOpacity>
-                        <Text style={styles.backbtn}>Back</Text>
-                    </TouchableOpacity>
                 </View>
             </SafeAreaView>
         </LinearGradient>
@@ -146,17 +146,18 @@ export default function CoachDashboard({ navigation }) {
 }
 
 const styles = StyleSheet.create({
+    linearGradient: {
+        flex: 1,
+    },
     adminbtn: {
         display: 'flex',
-        alignItems: 'center',
+        // alignItems: 'center',
         flexDirection: 'row',
-        justifyContent: 'space-between',
+        justifyContent: 'center',
         position: 'absolute',
         bottom: 0,
         width: '100%',
-        paddingTop: 40,
         paddingBottom: 20
-
     },
     backbtn: {
         borderColor: "#fff",
@@ -180,16 +181,16 @@ const styles = StyleSheet.create({
         textAlign: "center",
         fontWeight: "700",
         marginTop: 25,
-        width: 120,
+        width: 320,
     },
     adminWrapper: {
         display: 'flex',
-        alignItems: 'center',
+        // alignItems: 'center',
         flexWrap: 'wrap',
-        justifyContent: 'space-between',
-        marginTop: 30,
-        marginBottom: 30,
-        paddingBottom: 50
+        // justifyContent: 'space-between',
+        // marginTop: 30,
+        // marginBottom: 30,
+        paddingBottom: 50,
     },
     adminContainer: {
         width: 155,

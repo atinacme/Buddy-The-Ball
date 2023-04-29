@@ -8,13 +8,12 @@ import { GetCustomerParticularPhotoService, UpdateCustomerPhotosOnMessageService
 import { SafeAreaView } from 'react-native-safe-area-context';
 import LinearGradient from 'react-native-linear-gradient';
 
-
 export default function CustomerParticularPhoto({ navigation, route }) {
     const state = useSelector((state) => state);
     const [message, setMessage] = useState("");
     const [onLoadMessages, setOnloadMessages] = useState([]);
     const [msgResult, setMsgResult] = useState();
-    const messanger = state.authPage.roles[0] === "ROLE_CUSTOMER" ? state.authPage.auth_data?.player_name :
+    const messanger = state.authPage.roles[0] === "ROLE_CUSTOMER" ? state.authPage.auth_data?.parent_name :
         state.authPage.roles[0] === "ROLE_COACH" ? state.authPage.auth_data?.coach_name : state.authPage.auth_data?.regional_manager_name;
 
     useEffect(() => {

@@ -15,8 +15,8 @@ const GetParticularCoachService = async (id) => {
     return await HttpRequest("GET", `${baseUrl}/getParticularCoach/${id}`, null);
 };
 
-const GetCustomersOfParticularCoachService = async (id) => {
-    return await HttpRequest("GET", `${baseUrl}/getCustomersOfParticularCoach/${id}`, null);
+const GetCustomersOfParticularCoachService = async (data) => {
+    return await HttpRequest("POST", `${baseUrl}/getCustomersOfParticularCoach`, data);
 };
 
 const GetCustomersOfParticularCoachOfParticularSchool = async (coachId, schoolId) => {

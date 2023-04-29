@@ -102,18 +102,35 @@ export default function CustomerDashboard({ navigation }) {
                         onPress={handleUpload}
                     />
                 )}
-                {state.authPage.auth_data?.profile_data && state.authPage.auth_data?.profile_data.url === undefined ? <Text style={styles.playPara}>Upload Player Picture</Text> : null}
-                {state.authPage.auth_data && (
+                {state.authPage?.auth_data?.profile_data && state.authPage.auth_data?.profile_data.url === undefined ? <Text style={styles.playPara}>Upload Player Picture</Text> : null}
+                {state.authPage?.auth_data && (
                     <>
-                        <Text style={styles.heading}>{state.authPage.auth_data?.player_name}</Text>
-                        <Text>Parent Name: {state.authPage.auth_data?.parent_name}</Text>
-                        <Text>Player Age: {state.authPage.auth_data?.player_age}</Text>
-                        <Text>Wristband Level: {state.authPage.auth_data?.wristband_level}</Text>
-                        <Text>Handed: {state.authPage.auth_data?.handed}</Text>
-                        <Text>Number of Buddy Books Read: {state.authPage.auth_data?.num_buddy_books_read}</Text>
-                        <Text>Jersey Size: {state.authPage.auth_data?.jersey_size}</Text>
-                        <Text>School Name: {state.authPage.auth_data?.school && state.authPage.auth_data?.school.school_name ? state.authPage.auth_data?.school.school_name : null}</Text>
-                        <Text>Coach Name: {state.authPage.auth_data?.coach && state.authPage.auth_data?.coach.coach_name ? state.authPage.auth_data?.coach.coach_name : null}</Text>
+                        <Text style={styles.heading}>{state.authPage.auth_data?.parent_name}</Text>
+                        {state.authPage?.auth_data?.children_data?.map(v => {
+                            { console.log("dhfh---->", v) }
+                            return (
+                                <>
+                                    <Text>Player Name: {v.player_name}</Text>
+                                    <Text>Player Age: {v.player_age}</Text>
+                                    <Text>Wristband Level: {v.wristband_level}</Text>
+                                    <Text>Handed: {v.handed}</Text>
+                                    <Text>Number of Buddy Books Read: {v.num_buddy_books_read}</Text>
+                                    <Text>Jersey Size: {v.jersey_size}</Text>
+                                    <Text>Class Created By: {v.class.created_by_name}</Text>
+                                    <Text>Class Schedules:</Text>
+                                    {v.class?.schedules?.map((q, index) => {
+                                        return (
+                                            <>
+                                                <Text>Schedule {index + 1}</Text>
+                                                <Text>
+                                                    On {q.date} From {q.start_time} to {q.end_time} By {q.coaches.map(w => w.coach_name)}
+                                                </Text>
+                                            </>
+                                        )
+                                    })}
+                                </>
+                            )
+                        })}
                     </>
                 )}
                 <View style={styles.dashContentWrap}>

@@ -13,7 +13,18 @@ const School = mongoose.model(
                 ref: "Customer"
             }
         ],
-        coaches: Array
+        coaches: [
+            {
+                type: mongoose.Schema.Types.ObjectId,
+                ref: "Coach"
+            }
+        ],
+        classes: [
+            {
+                type: mongoose.Schema.Types.ObjectId,
+                ref: "Class"
+            }
+        ]
     })
 );
 

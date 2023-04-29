@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { SafeAreaView, StyleSheet, View, TouchableHighlight, TouchableOpacity, ScrollView, Text } from 'react-native';
 import { DataTable } from 'react-native-paper';
-import { GetSchoolsService } from '../services/SchoolService';
 import LinearGradient from 'react-native-linear-gradient';
 import { GetCustomersOfParticularCoachOfParticularSchool } from '../services/CoachService';
 import RNHTMLtoPDF from 'react-native-html-to-pdf';
@@ -78,10 +77,6 @@ export default function SuperAdminInvoiceCoachSchool({ navigation, route }) {
                 <tr>
                     <td>Invoice Month:</td>
                     <td>${route.params.school._id}</td>
-                </tr>
-                <tr>
-                    <td>School_ID:</td>
-                    <td>${customerData.invoice_number}</td>
                 </tr>
                 <tr>
                     <td>School Brand:</td>
@@ -183,10 +178,6 @@ export default function SuperAdminInvoiceCoachSchool({ navigation, route }) {
                         <DataTable.Row>
                             <DataTable.Cell>Invoice Month:</DataTable.Cell>
                             <DataTable.Cell>{customerData.invoice_month}</DataTable.Cell>
-                        </DataTable.Row>
-                        <DataTable.Row>
-                            <DataTable.Cell>School_ID:</DataTable.Cell>
-                            <DataTable.Cell>{route.params.school._id}</DataTable.Cell>
                         </DataTable.Row>
                         <DataTable.Row>
                             <DataTable.Cell>School Brand:</DataTable.Cell>

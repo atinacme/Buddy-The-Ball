@@ -38,18 +38,16 @@ exports.findParticularCoach = (req, res) => {
 };
 
 exports.findCustomersOfParticularCoach = (req, res) => {
-    const id = req.params.id;
-
-    Customer.find({ coach: id })
+    Customer.find({ created_by_user_id: { $in: [req.body.coach_id, req.body.regional_manager_id] } })
         .then(data => {
             if (!data)
-                res.status(404).send({ message: "Not found Coach with id " + id });
+                res.status(404).send({ message: "Not found Customers" });
             else res.send(data);
         })
         .catch(err => {
             res
                 .status(500)
-                .send({ message: "Error retrieving Coach with id=" + id });
+                .send({ message: "Error retrieving Customer" });
         });
 };
 

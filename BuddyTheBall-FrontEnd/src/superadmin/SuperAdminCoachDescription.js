@@ -35,6 +35,7 @@ export default function SuperAdminCoachDescription({ navigation, route }) {
         endDate: '',
         school: ''
     });
+    console.log("xds--->", route.params.coach)
     const territoryList = [
         {
             key: "Kanpur",

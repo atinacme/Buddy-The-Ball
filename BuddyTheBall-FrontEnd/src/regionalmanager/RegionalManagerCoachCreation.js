@@ -1,11 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import { Text, SafeAreaView, TextInput, StyleSheet, TouchableOpacity, Button, Image, Alert, ScrollView, View, Modal, Pressable } from "react-native";
-import { SelectList, MultipleSelectList } from 'react-native-dropdown-select-list';
+import { Text, SafeAreaView, TextInput, StyleSheet, TouchableOpacity, Image, Alert, ScrollView } from "react-native";
+import { MultipleSelectList } from 'react-native-dropdown-select-list';
 import buddy from '../assets/buddy.png';
-import { GetRegionWiseSchools, GetSchoolsService } from '../services/SchoolService';
+import { GetRegionWiseSchools } from '../services/SchoolService';
 import { SignUpService } from '../services/UserAuthService';
-import { Calendar } from 'react-native-calendars';
-import moment from 'moment';
 import LinearGradient from 'react-native-linear-gradient';
 import { useSelector } from 'react-redux';
 
@@ -13,17 +11,6 @@ export default function RegionalManagerCoachCreation({ navigation }) {
     const state = useSelector((state) => state);
     const [data, setData] = useState([]);
     const [selected, setSelected] = useState([]);
-    const [modalVisible, setModalVisible] = useState(false);
-    const [markedDates, setMarkedDates] = useState({});
-    const [isStartDatePicked, setIsStartDatePicked] = useState(false);
-    const [startDate, setStartDate] = useState('');
-    const [assignSlot, setAssignSlot] = useState([]);
-    const [assignCal, setAssignCal] = useState({
-        timePeriod: '',
-        startDate: '',
-        endDate: '',
-        school: ''
-    });
     const [coachData, setCoachData] = useState({
         email: "",
         password: "",
@@ -34,6 +21,7 @@ export default function RegionalManagerCoachCreation({ navigation }) {
         handed: "",
         favorite_drill: ""
     });
+
     useEffect(() => {
         try {
             const getAllSchools = async () => {
@@ -46,61 +34,6 @@ export default function RegionalManagerCoachCreation({ navigation }) {
         } catch (e) { }
     }, []);
 
-    function dateRange(startDate, endDate, steps = 1) {
-        const dateArray = [];
-        let currentDate = new Date(startDate);
-        while (currentDate <= new Date(endDate)) {
-            let dateNew = moment(new Date(currentDate)).format('YYYY-MM-DD');
-            dateArray.push(dateNew);
-            currentDate.setUTCDate(currentDate.getUTCDate() + steps);
-        }
-        dateArray.shift();
-        return dateArray;
-    }
-
-    const onDayPress = (day) => {
-        if (isStartDatePicked == false) {
-            let markedDates = {};
-            markedDates[day.dateString] = { startingDay: true, color: '#00B0BF', textColor: '#FFFFFF' };
-            setMarkedDates(markedDates);
-            setIsStartDatePicked(true);
-            setStartDate(day.dateString);
-            setAssignCal({ ...assignCal, startDate: day.dateString });
-        } else {
-            let endDate = moment(day.dateString);
-            let range = endDate.diff(startDate, 'days');
-            let allRange = dateRange(startDate, endDate);
-            let currentDate = new Date(endDate);
-            let utcEndDate = currentDate.setUTCDate(currentDate.getUTCDate());
-            let newDate = moment(new Date(utcEndDate)).format('YYYY-MM-DD');
-            allRange.push(newDate);
-            if (range > 0) {
-                for (let i = 0; i <= allRange.length - 1; i++) {
-                    markedDates[allRange[i]] = { color: '#50cebb', textColor: '#FFFFFF' };
-                }
-                markedDates[Object.keys(markedDates)[Object.keys(markedDates).length - 1]] = { endingDay: true, color: '#00B0BF', textColor: '#FFFFFF' };
-                setMarkedDates(markedDates);
-                setIsStartDatePicked(false);
-                setStartDate('');
-                setAssignCal({ ...assignCal, timePeriod: markedDates, endDate: day.dateString });
-            } else {
-                alert('Select an upcomming date!');
-            }
-        }
-    };
-
-    const handleCreate = () => {
-        setAssignSlot(prevState => [...prevState, assignCal]);
-        setModalVisible(!modalVisible);
-        setMarkedDates({});
-        setAssignCal({
-            timePeriod: '',
-            startDate: '',
-            endDate: '',
-            school: ''
-        });
-    };
-
     const handleSignUp = async () => {
         try {
             const data = {
@@ -111,7 +44,7 @@ export default function RegionalManagerCoachCreation({ navigation }) {
                 assigned_region: state.authPage.auth_data?.assigned_region,
                 assigned_schools: selected,
                 assigned_by: 'Regional Manager',
-                assigned_by_user_id: state.authPage.auth_data?._id,
+                assigned_by_user_id: state.authPage.auth_data?.user_id,
                 tennis_club: coachData.tennis_club,
                 favorite_pro_player: coachData.favorite_pro_player,
                 handed: coachData.handed,
@@ -142,7 +75,6 @@ export default function RegionalManagerCoachCreation({ navigation }) {
         <LinearGradient colors={['#BCD7EF', '#D1E3AA', '#E3EE68', '#E1DA00']} style={styles.linearGradient}>
             <SafeAreaView style={styles.wrapper}>
                 <ScrollView style={styles.scrollView}>
-                    {/* <Text style={styles.heading}>Coach Creation</Text> */}
                     <Image source={buddy} style={{ width: 200, height: 100, marginLeft: 'auto', marginRight: 'auto' }} />
                     <Text style={styles.label}>Email</Text>
                     <TextInput

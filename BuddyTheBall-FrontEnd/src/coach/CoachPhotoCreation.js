@@ -8,19 +8,18 @@ import axios from 'axios';
 import Config from '../../Config';
 import LinearGradient from 'react-native-linear-gradient';
 
-
 export default function CoachPhotoCreation({ navigation, route }) {
     const [customerData, setCustomerData] = useState([]);
     const [customerId, setCustomerId] = useState();
     const [selectedFile, setSelectedFile] = useState(null);
     const state = useSelector((state) => state);
-
+    console.log("d-->", route.params.schoolId)
     useEffect(() => {
         try {
             const handleStudentList = async () => {
                 const result = await GetCustomerWithSchoolIdService(route.params.schoolId);
                 if (result) {
-                    setCustomerData(result.map(v => Object.assign(v, { key: v._id, value: v.player_name })));
+                    setCustomerData(result.map(v => Object.assign(v, { key: v._id, value: v.parent_name })));
                 }
             };
             handleStudentList();
@@ -78,7 +77,7 @@ export default function CoachPhotoCreation({ navigation, route }) {
         <LinearGradient colors={['#BCD7EF', '#D1E3AA', '#E3EE68', '#E1DA00']} style={styles.linearGradient}>
             <SafeAreaView style={styles.wrapper}>
                 <ScrollView style={styles.scrollView}>
-                    <Text style={styles.label}>Students List</Text>
+                    <Text style={styles.label}>Customers List</Text>
                     <SelectList
                         setSelected={(val) => setCustomerId(val)}
                         data={customerData}

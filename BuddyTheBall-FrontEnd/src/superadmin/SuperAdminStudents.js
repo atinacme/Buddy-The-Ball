@@ -17,10 +17,11 @@ export default function SuperAdminStudents({ navigation }) {
             getCustomers();
         } catch (e) { }
     });
+
     return (
         <LinearGradient colors={['#BCD7EF', '#D1E3AA', '#E3EE68', '#E1DA00']} style={styles.linearGradient}>
             <SafeAreaView style={styles.wrapper}>
-                <ScrollView>
+                <ScrollView style={styles.scrollView}>
                     {customers.map((customer, index) => {
                         return (
                             <View key={index} style={styles.stdWrapper}>
@@ -60,6 +61,9 @@ export default function SuperAdminStudents({ navigation }) {
                         );
                     })}
                 </ScrollView>
+                <TouchableOpacity onPress={() => navigation.navigate("SuperAdmin Customer Creation")}>
+                    <Text style={styles.cust_btn}>Customer Creation</Text>
+                </TouchableOpacity>
                 <TouchableOpacity onPress={() => navigation.navigate("SuperAdmin Dashboard")}>
                     <Text style={styles.backbtn}>Back</Text>
                 </TouchableOpacity>
@@ -78,12 +82,27 @@ const styles = StyleSheet.create({
     },
     stdWrapper: {
         flex: 1,
-
     },
-    // stdWrapper: {
-    //     padding: 10,
-    //     backgroundColor: '#fff'
-    // },
+    scrollView: {
+        marginHorizontal: 5,
+    },
+    cust_btn: {
+        borderColor: "#fff",
+        paddingTop: 10,
+        paddingBottom: 10,
+        backgroundColor: "#ff8400",
+        borderWidth: 3,
+        borderRadius: 10,
+        textAlign: "center",
+        fontWeight: "700",
+        marginTop: 25,
+        display: 'flex',
+        left: 0,
+        width: 150,
+        position: 'absolute',
+        bottom: 0,
+        marginBottom: 10
+    },
     backbtn: {
         borderColor: "#fff",
         paddingTop: 10,

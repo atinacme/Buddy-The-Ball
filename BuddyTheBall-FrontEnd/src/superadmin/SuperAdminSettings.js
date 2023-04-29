@@ -10,6 +10,9 @@ export default function SuperAdminSettings({ navigation }) {
                     <TouchableOpacity onPress={() => navigation.navigate("SuperAdmin Regions")}>
                         <Text style={{ ...styles.adminContainer, ...styles.adminBg1 }}>REGIONS</Text>
                     </TouchableOpacity>
+                    <TouchableOpacity onPress={() => navigation.navigate("SuperAdmin Messages")}>
+                        <Text style={{ ...styles.adminContainer, ...styles.adminBg1 }}>MESSAGES</Text>
+                    </TouchableOpacity>
                 </Text>
                 <View style={styles.adminbtn}>
                     <TouchableOpacity onPress={() => navigation.navigate("SuperAdmin Dashboard")}>

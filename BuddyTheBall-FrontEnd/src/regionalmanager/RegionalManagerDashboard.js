@@ -114,12 +114,12 @@ export default function RegionalManagerDashboard({ navigation }) {
                         <TouchableOpacity onPress={() => navigation.navigate("Regional Manager Photos")}>
                             <Text style={{ ...styles.adminContainer, ...styles.adminBg1 }}>PHOTOS</Text>
                         </TouchableOpacity>
-                        <TouchableOpacity onPress={() => navigation.navigate("Regional Manager Calendar")}>
-                            <Text style={{ ...styles.adminContainer, ...styles.adminBg2 }}>CALENDAR</Text>
+                        <TouchableOpacity onPress={() => navigation.navigate("Regional Manager Customers")}>
+                            <Text style={{ ...styles.adminContainer, ...styles.adminBg2 }}>PARENTS</Text>
                         </TouchableOpacity>
-                        {/* <TouchableOpacity onPress={() => navigation.navigate("Coach Messages")}>
-                            <Text style={{ ...styles.adminContainer, ...styles.adminBg3 }}>MESSAGES</Text>
-                        </TouchableOpacity> */}
+                        <TouchableOpacity onPress={() => navigation.navigate("Regional Manager Calendar")}>
+                            <Text style={{ ...styles.adminContainer, ...styles.adminBg3 }}>CALENDAR</Text>
+                        </TouchableOpacity>
                         <TouchableOpacity onPress={() => navigation.navigate("Regional Manager Coaches")}>
                             <Text style={{ ...styles.adminContainer, ...styles.adminBg4 }}>COACHES</Text>
                         </TouchableOpacity>
@@ -132,7 +132,6 @@ export default function RegionalManagerDashboard({ navigation }) {
                             <Text style={styles.btnWrapper}>Logout</Text>
                         </TouchableOpacity>
                     </View>
-
                 </ScrollView>
             </SafeAreaView>
         </LinearGradient>
@@ -147,7 +146,7 @@ const styles = StyleSheet.create({
         display: 'flex',
         alignItems: 'center',
         flexDirection: 'row',
-        justifyContent: 'space-between',
+        justifyContent: 'center',
         position: 'absolute',
         bottom: 0,
         width: '100%',
@@ -176,7 +175,7 @@ const styles = StyleSheet.create({
         textAlign: "center",
         fontWeight: "700",
         marginTop: 25,
-        width: 120,
+        width: 320,
     },
     adminWrapper: {
         display: 'flex',

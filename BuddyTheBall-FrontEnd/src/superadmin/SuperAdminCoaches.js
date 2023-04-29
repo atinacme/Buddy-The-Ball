@@ -3,8 +3,10 @@ import { SafeAreaView, StyleSheet, View, Button, ScrollView, TouchableOpacity, T
 import { DataTable } from 'react-native-paper';
 import { GetAllCoachesService } from '../services/CoachService';
 import LinearGradient from 'react-native-linear-gradient';
+import { useSelector } from 'react-redux';
 
 export default function SuperAdminCoaches({ navigation }) {
+    const state = useSelector((state) => state);
     const [coaches, setCoaches] = useState([]);
 
     useEffect(() => {
@@ -26,10 +28,10 @@ export default function SuperAdminCoaches({ navigation }) {
                     <View>
                         <DataTable style={styles.container}>
                             <DataTable.Header style={styles.tableHeader}>
+                                <DataTable.Title>COACH</DataTable.Title>
                                 <DataTable.Title>REGION</DataTable.Title>
-                                <DataTable.Title>CITIES</DataTable.Title>
+                                <DataTable.Title>CREATED BY</DataTable.Title>
                                 <DataTable.Title>SCHOOL QTY</DataTable.Title>
-                                <DataTable.Title>ASSIGNED BY</DataTable.Title>
                             </DataTable.Header>
                             {coaches.map(item => {
                                 return (
@@ -37,8 +39,8 @@ export default function SuperAdminCoaches({ navigation }) {
                                         <DataTable.Row>
                                             <DataTable.Cell>{item.coach_name}</DataTable.Cell>
                                             <DataTable.Cell>{item.assigned_region}</DataTable.Cell>
+                                            <DataTable.Cell>{item.assigned_by_user_id === state.authPage?.id ? "You" : "Regional Manager"}</DataTable.Cell>
                                             <DataTable.Cell>{item.assigned_schools.length}</DataTable.Cell>
-                                            <DataTable.Cell>{item.assigned_by}</DataTable.Cell>
                                         </DataTable.Row>
                                     </TouchableOpacity>
                                 );
@@ -47,7 +49,7 @@ export default function SuperAdminCoaches({ navigation }) {
                     </View>
                 </ScrollView>
                 <View style={styles.adminbtn}>
-                    <TouchableOpacity onPress={() => navigation.navigate("Coach Creation")}>
+                    <TouchableOpacity onPress={() => navigation.navigate("SuperAdmin Coach Creation")}>
                         <Text style={styles.coach_cta}>Coach Creation</Text>
                     </TouchableOpacity>
                     <TouchableOpacity onPress={() => navigation.navigate("SuperAdmin Dashboard")}>

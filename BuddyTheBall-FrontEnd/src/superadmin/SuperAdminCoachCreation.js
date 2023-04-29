@@ -1,29 +1,29 @@
 import React, { useEffect, useState } from 'react';
-import { Text, SafeAreaView, TextInput, StyleSheet, TouchableOpacity, Button, Image, Alert, ScrollView, View, Modal, Pressable } from "react-native";
+import { Text, SafeAreaView, TextInput, StyleSheet, TouchableOpacity, Image, Alert, ScrollView } from "react-native";
 import { SelectList, MultipleSelectList } from 'react-native-dropdown-select-list';
 import buddy from '../assets/buddy.png';
-import { GetSchoolsService } from '../services/SchoolService';
+import { GetRegionWiseSchools } from '../services/SchoolService';
 import { SignUpService } from '../services/UserAuthService';
-import { Calendar } from 'react-native-calendars';
-import moment from 'moment';
 import LinearGradient from 'react-native-linear-gradient';
 import { GetAllRegionsService } from '../services/RegionService';
+import { useSelector } from 'react-redux';
 
-export default function CoachCreation({ navigation }) {
+export default function SuperAdminCoachCreation({ navigation }) {
+    const state = useSelector((state) => state);
     const [data, setData] = useState([]);
     const [selected, setSelected] = useState([]);
-    const [modalVisible, setModalVisible] = useState(false);
-    const [markedDates, setMarkedDates] = useState({});
-    const [isStartDatePicked, setIsStartDatePicked] = useState(false);
-    const [startDate, setStartDate] = useState('');
-    const [assignSlot, setAssignSlot] = useState([]);
+    // const [modalVisible, setModalVisible] = useState(false);
+    // const [markedDates, setMarkedDates] = useState({});
+    // const [isStartDatePicked, setIsStartDatePicked] = useState(false);
+    // const [startDate, setStartDate] = useState('');
+    // const [assignSlot, setAssignSlot] = useState([]);
+    // const [assignCal, setAssignCal] = useState({
+    //     timePeriod: '',
+    //     startDate: '',
+    //     endDate: '',
+    //     school: ''
+    // });
     const [regions, setRegions] = useState([]);
-    const [assignCal, setAssignCal] = useState({
-        timePeriod: '',
-        startDate: '',
-        endDate: '',
-        school: ''
-    });
     const [coachData, setCoachData] = useState({
         email: "",
         password: "",
@@ -48,71 +48,60 @@ export default function CoachCreation({ navigation }) {
         } catch (e) { }
     }, []);
 
-    useEffect(() => {
-        try {
-            const getAllSchools = async () => {
-                const result = await GetSchoolsService();
-                result.map(v => Object.assign(v, { key: v._id, value: v.school_name }));
-                setData(result);
-            };
-            getAllSchools();
-        } catch (e) { }
-    }, []);
+    // function dateRange(startDate, endDate, steps = 1) {
+    //     const dateArray = [];
+    //     let currentDate = new Date(startDate);
+    //     while (currentDate <= new Date(endDate)) {
+    //         let dateNew = moment(new Date(currentDate)).format('YYYY-MM-DD');
+    //         dateArray.push(dateNew);
+    //         currentDate.setUTCDate(currentDate.getUTCDate() + steps);
+    //     }
+    //     dateArray.shift();
+    //     return dateArray;
+    // }
 
-    function dateRange(startDate, endDate, steps = 1) {
-        const dateArray = [];
-        let currentDate = new Date(startDate);
-        while (currentDate <= new Date(endDate)) {
-            let dateNew = moment(new Date(currentDate)).format('YYYY-MM-DD');
-            dateArray.push(dateNew);
-            currentDate.setUTCDate(currentDate.getUTCDate() + steps);
-        }
-        dateArray.shift();
-        return dateArray;
-    }
+    // const onDayPress = (day) => {
+    //     if (isStartDatePicked == false) {
+    //         let markedDates = {};
+    //         markedDates[day.dateString] = { startingDay: true, color: '#00B0BF', textColor: '#FFFFFF' };
+    //         setMarkedDates(markedDates);
+    //         setIsStartDatePicked(true);
+    //         setStartDate(day.dateString);
+    //         setAssignCal({ ...assignCal, startDate: day.dateString });
+    //     } else {
+    //         let endDate = moment(day.dateString);
+    //         let range = endDate.diff(startDate, 'days');
+    //         let allRange = dateRange(startDate, endDate);
+    //         let currentDate = new Date(endDate);
+    //         let utcEndDate = currentDate.setUTCDate(currentDate.getUTCDate());
+    //         let newDate = moment(new Date(utcEndDate)).format('YYYY-MM-DD');
+    //         allRange.push(newDate);
+    //         if (range > 0) {
+    //             for (let i = 0; i <= allRange.length - 1; i++) {
+    //                 markedDates[allRange[i]] = { color: '#50cebb', textColor: '#FFFFFF' };
+    //             }
+    //             markedDates[Object.keys(markedDates)[Object.keys(markedDates).length - 1]] = { endingDay: true, color: '#00B0BF', textColor: '#FFFFFF' };
+    //             setMarkedDates(markedDates);
+    //             setIsStartDatePicked(false);
+    //             setStartDate('');
+    //             setAssignCal({ ...assignCal, timePeriod: markedDates, endDate: day.dateString });
+    //         } else {
+    //             alert('Select an upcomming date!');
+    //         }
+    //     }
+    // };
 
-    const onDayPress = (day) => {
-        if (isStartDatePicked == false) {
-            let markedDates = {};
-            markedDates[day.dateString] = { startingDay: true, color: '#00B0BF', textColor: '#FFFFFF' };
-            setMarkedDates(markedDates);
-            setIsStartDatePicked(true);
-            setStartDate(day.dateString);
-            setAssignCal({ ...assignCal, startDate: day.dateString });
-        } else {
-            let endDate = moment(day.dateString);
-            let range = endDate.diff(startDate, 'days');
-            let allRange = dateRange(startDate, endDate);
-            let currentDate = new Date(endDate);
-            let utcEndDate = currentDate.setUTCDate(currentDate.getUTCDate());
-            let newDate = moment(new Date(utcEndDate)).format('YYYY-MM-DD');
-            allRange.push(newDate);
-            if (range > 0) {
-                for (let i = 0; i <= allRange.length - 1; i++) {
-                    markedDates[allRange[i]] = { color: '#50cebb', textColor: '#FFFFFF' };
-                }
-                markedDates[Object.keys(markedDates)[Object.keys(markedDates).length - 1]] = { endingDay: true, color: '#00B0BF', textColor: '#FFFFFF' };
-                setMarkedDates(markedDates);
-                setIsStartDatePicked(false);
-                setStartDate('');
-                setAssignCal({ ...assignCal, timePeriod: markedDates, endDate: day.dateString });
-            } else {
-                alert('Select an upcomming date!');
-            }
-        }
-    };
-
-    const handleCreate = () => {
-        setAssignSlot(prevState => [...prevState, assignCal]);
-        setModalVisible(!modalVisible);
-        setMarkedDates([]);
-        setAssignCal({
-            timePeriod: '',
-            startDate: '',
-            endDate: '',
-            school: ''
-        });
-    };
+    // const handleCreate = () => {
+    //     setAssignSlot(prevState => [...prevState, assignCal]);
+    //     setModalVisible(!modalVisible);
+    //     setMarkedDates([]);
+    //     setAssignCal({
+    //         timePeriod: '',
+    //         startDate: '',
+    //         endDate: '',
+    //         school: ''
+    //     });
+    // };
 
     const handleSignUp = async () => {
         try {
@@ -123,7 +112,8 @@ export default function CoachCreation({ navigation }) {
                 coach_name: coachData.coach_name,
                 assigned_region: coachData.assigned_region,
                 assigned_schools: selected,
-                assign_slot: assignSlot,
+                assigned_by: 'Super Admin',
+                assigned_by_user_id: state.authPage?.id,
                 tennis_club: coachData.tennis_club,
                 favorite_pro_player: coachData.favorite_pro_player,
                 handed: coachData.handed,
@@ -154,7 +144,6 @@ export default function CoachCreation({ navigation }) {
         <LinearGradient colors={['#BCD7EF', '#D1E3AA', '#E3EE68', '#E1DA00']} style={styles.linearGradient}>
             <SafeAreaView style={styles.wrapper}>
                 <ScrollView style={styles.scrollView}>
-                    {/* <Text style={styles.heading}>Coach Creation</Text> */}
                     <Image source={buddy} style={{ width: 200, height: 100, marginLeft: 'auto', marginRight: 'auto' }} />
                     <Text style={styles.label}>Email</Text>
                     <TextInput
@@ -176,19 +165,25 @@ export default function CoachCreation({ navigation }) {
                     />
                     <Text style={styles.label}>Assigned Region</Text>
                     <SelectList
-                        setSelected={(val) => setCoachData({ ...coachData, assigned_region: val })}
+                        setSelected={async (val) => {
+                            setCoachData({ ...coachData, assigned_region: val })
+                            try {
+                                const data = { region: val }
+                                const result = await GetRegionWiseSchools(data);
+                                result.map(v => Object.assign(v, { key: v._id, value: v.school_name }));
+                                setData(result);
+                            } catch (e) { }
+                        }}
                         data={regions}
-                        save="key"
+                        save="value"
                     />
                     <Text style={styles.label}>Assigned Schools</Text>
                     <MultipleSelectList
                         setSelected={(val) => setSelected(val)}
                         data={data}
                         save="value"
-                        onSelect={() => alert(selected)}
-                        label="Selected Schools"
                     />
-                    <View style={{ flexDirection: 'row', textAlign: 'center', alignItems: 'center', justifyContent: 'space-between' }}>
+                    {/* <View style={{ flexDirection: 'row', textAlign: 'center', alignItems: 'center', justifyContent: 'space-between' }}>
                         <Text style={styles.label}>Assign Period</Text>
                         <Pressable
                             style={[styles.plusButton, styles.buttonOpen]}
@@ -266,7 +261,7 @@ export default function CoachCreation({ navigation }) {
                                 </Pressable>
                             </View>
                         );
-                    })}
+                    })} */}
                     <Text style={styles.label}>Tennis Club</Text>
                     <TextInput
                         style={styles.input}

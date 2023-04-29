@@ -6,13 +6,11 @@ import profile from '../assets/profile.png';
 import { useSelector } from "react-redux";
 import LinearGradient from 'react-native-linear-gradient';
 
-
 export default function CoachSchoolsPhotos({ navigation }) {
     const state = useSelector((state) => state);
     const schoolData = state.authPage.auth_data?.assigned_schools;
 
     return (
-
         <LinearGradient colors={['#BCD7EF', '#D1E3AA', '#E3EE68', '#E1DA00']} style={styles.linearGradient}>
             <SafeAreaView style={styles.wrapper}>
                 <ScrollView showsVerticalScrollIndicator>
@@ -54,9 +52,7 @@ export default function CoachSchoolsPhotos({ navigation }) {
                     <Text style={styles.backbtn}>Back</Text>
                 </TouchableOpacity>
             </SafeAreaView>
-
         </LinearGradient>
-
     );
 }
 
@@ -72,7 +68,6 @@ const styles = StyleSheet.create({
         marginBottom: 56,
         marginTop: 60
     },
-
     backbtn: {
         borderColor: "#fff",
         paddingTop: 10,
@@ -90,19 +85,6 @@ const styles = StyleSheet.create({
         width: 100,
         justifyContent: 'flex-end',
         bottom: -50
-    },
-    txtwrap: {
-        position: 'absolute',
-        bottom: 0,
-        justifyContent: 'space-between',
-        display: 'flex'
-    },
-    imgWrapper: {
-        position: 'relative',
-        // margin: 10,
-        width: '100%',
-        left: 0,
-        right: 0,
     },
     cardimg: {
         display: 'flex'
@@ -135,7 +117,6 @@ const styles = StyleSheet.create({
         left: 15,
         width: '100%'
     },
-
     cardBackground: {
         width: '100%',
         height: 200,

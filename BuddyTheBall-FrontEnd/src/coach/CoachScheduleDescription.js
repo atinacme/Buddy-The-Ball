@@ -32,10 +32,8 @@ export default function CoachScheduleDescription({ navigation, route }) {
         end: false
     });
     const [topic, setTopic] = useState(route.params.scheduleData.topic);
-    console.log("shsh---->", route.params.scheduleData, scheduleData, date, time);
 
     const onChange = (event, selectedDate) => {
-        console.log("onchange--->", selectedDate.toLocaleString());
         const currentDate = selectedDate;
         setShow(false);
         if (showType.date) {
@@ -78,14 +76,12 @@ export default function CoachScheduleDescription({ navigation, route }) {
 
     const handleUpdateSchedule = async () => {
         const data = {
-            coach_id: state.authPage.auth_data?._id,
-            user_id: state.authPage.auth_data?.user_id,
             date: initialScheduleData.date ? moment(scheduleData.date).format("YYYY-MM-DD") : date,
-            start_time: initialScheduleData.start ? moment(scheduleData.start).format('H:mm A') : time.start,
-            end_time: initialScheduleData.end ? moment(scheduleData.end).format('H:mm A') : time.end,
-            // school: school,
+            start_time: initialScheduleData.start ? moment(scheduleData.start).format('h:mm A') : time.start,
+            end_time: initialScheduleData.end ? moment(scheduleData.end).format('h:mm A') : time.end,
             topic: topic
         };
+        console.log("scg--->", route.params.scheduleData._id, data);
         const result = await UpdateScheduleService(route.params.scheduleData._id, data);
         if (result) {
             Alert.alert(
@@ -107,9 +103,8 @@ export default function CoachScheduleDescription({ navigation, route }) {
             <Button onPress={showStartTimepicker} title="Update Start Time" />
             <Button onPress={showEndTimepicker} title="Update End Time" />
             <Text style={styles.label}>Date : {initialScheduleData.date ? moment(scheduleData.date).format("YYYY-MM-DD") : date}</Text>
-            <Text style={styles.label}>Start Time : {initialScheduleData.start ? moment(scheduleData.start).format('H:mm A') : time.start}</Text>
-            <Text style={styles.label}>End Time :{initialScheduleData.end ? moment(scheduleData.end).format('H:mm A') : time.end}</Text>
-            <Text style={styles.label}>School : {route.params.scheduleData.school.school_name}</Text>
+            <Text style={styles.label}>Start Time : {initialScheduleData.start ? moment(scheduleData.start).format('h:mm A') : time.start}</Text>
+            <Text style={styles.label}>End Time :{initialScheduleData.end ? moment(scheduleData.end).format('h:mm A') : time.end}</Text>
             <View>
                 <Text style={styles.label}>Topic :</Text>
                 <TextInput
@@ -123,7 +118,6 @@ export default function CoachScheduleDescription({ navigation, route }) {
                     testID="dateTimePicker"
                     value={scheduleData.date}
                     mode={mode}
-                    is24Hour={true}
                     onChange={onChange}
                 />
             )}

@@ -1,5 +1,5 @@
 import React from 'react';
-import { SafeAreaView, Text, TouchableOpacity, StyleSheet, View, Button } from 'react-native';
+import { SafeAreaView, Text, TouchableOpacity, StyleSheet, View, ScrollView } from 'react-native';
 import { useDispatch } from "react-redux";
 import { AuthPageAction } from '../redux/Actions';
 import LinearGradient from 'react-native-linear-gradient';
@@ -10,35 +10,34 @@ export default function SuperAdminDashboard({ navigation }) {
     return (
         <LinearGradient colors={['#BCD7EF', '#D1E3AA', '#E3EE68', '#E1DA00']} style={styles.linearGradient}>
             <SafeAreaView style={styles.wrapper}>
-                <Text style={styles.adminWrapper}>
-                    <TouchableOpacity onPress={() => navigation.navigate("SuperAdmin Billing")}>
-                        <Text style={{ ...styles.adminContainer, ...styles.adminBg1 }}>BILLING / INVOICING</Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity onPress={() => navigation.navigate("SuperAdmin Coaches")}>
-                        <Text style={{ ...styles.adminContainer, ...styles.adminBg2 }}>COACHES</Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity onPress={() => navigation.navigate("SuperAdmin Photos")}>
-                        <Text style={{ ...styles.adminContainer, ...styles.adminBg3 }}>PHOTOS</Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity onPress={() => navigation.navigate("SuperAdmin Students")}>
-                        <Text style={{ ...styles.adminContainer, ...styles.adminBg4 }}>STUDENTS</Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity onPress={() => navigation.navigate("SuperAdmin Settings")}>
-                        <Text style={{ ...styles.adminContainer, ...styles.adminBg5 }}>SETTINGS</Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity onPress={() => navigation.navigate("SuperAdmin Schools")}>
-                        <Text style={{ ...styles.adminContainer, ...styles.adminBg6 }}>SCHOOLS</Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity onPress={() => navigation.navigate("SuperAdmin Messages")}>
-                        <Text style={{ ...styles.adminContainer, ...styles.adminBg7 }}>MESSAGING</Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity onPress={() => navigation.navigate("SuperAdmin Calendar")}>
-                        <Text style={{ ...styles.adminContainer, ...styles.adminBg8 }}>CALENDAR</Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity onPress={() => navigation.navigate("SuperAdmin Regional Manager")}>
-                        <Text style={{ ...styles.adminContainer, ...styles.adminBg8 }}>Regional Managers</Text>
-                    </TouchableOpacity>
-                </Text>
+                <ScrollView>
+                    <Text style={styles.adminWrapper}>
+                        <TouchableOpacity onPress={() => navigation.navigate("SuperAdmin Billing")}>
+                            <Text style={{ ...styles.adminContainer, ...styles.adminBg1 }}>BILLING / INVOICING</Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity onPress={() => navigation.navigate("SuperAdmin Coaches")}>
+                            <Text style={{ ...styles.adminContainer, ...styles.adminBg2 }}>COACHES</Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity onPress={() => navigation.navigate("SuperAdmin Photos")}>
+                            <Text style={{ ...styles.adminContainer, ...styles.adminBg3 }}>PHOTOS</Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity onPress={() => navigation.navigate("SuperAdmin Customers")}>
+                            <Text style={{ ...styles.adminContainer, ...styles.adminBg4 }}>PARENTS</Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity onPress={() => navigation.navigate("SuperAdmin Settings")}>
+                            <Text style={{ ...styles.adminContainer, ...styles.adminBg5 }}>SETTINGS</Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity onPress={() => navigation.navigate("SuperAdmin Schools")}>
+                            <Text style={{ ...styles.adminContainer, ...styles.adminBg6 }}>SCHOOLS</Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity onPress={() => navigation.navigate("SuperAdmin Calendar")}>
+                            <Text style={{ ...styles.adminContainer, ...styles.adminBg8 }}>CALENDAR</Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity onPress={() => navigation.navigate("SuperAdmin Regional Manager")}>
+                            <Text style={{ ...styles.adminContainer, ...styles.adminBg8 }}>Regional Managers</Text>
+                        </TouchableOpacity>
+                    </Text>
+                </ScrollView>
                 <View style={styles.adminbtn}>
                     <TouchableOpacity onPress={() => {
                         navigation.navigate("SignIn");
@@ -46,12 +45,8 @@ export default function SuperAdminDashboard({ navigation }) {
                     }}>
                         <Text style={styles.btnWrapper}>Logout</Text>
                     </TouchableOpacity>
-                    <TouchableOpacity>
-                        <Text style={styles.backbtn}>Back</Text>
-                    </TouchableOpacity>
                 </View>
             </SafeAreaView>
-
         </LinearGradient>
     );
 }
@@ -64,12 +59,11 @@ const styles = StyleSheet.create({
         display: 'flex',
         alignItems: 'center',
         flexDirection: 'row',
-        justifyContent: 'space-between',
+        justifyContent: 'center',
         position: 'absolute',
         bottom: 0,
         marginBottom: 10,
         width: '100%'
-
     },
     backbtn: {
         borderColor: "#fff",
@@ -92,8 +86,7 @@ const styles = StyleSheet.create({
         borderRadius: 10,
         textAlign: "center",
         fontWeight: "700",
-        marginTop: 25,
-        width: 120,
+        width: 320,
     },
     linearGradient: {
         flex: 1,

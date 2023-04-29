@@ -12,7 +12,7 @@ export default function RegionalManagerCoaches({ navigation }) {
     useEffect(() => {
         try {
             const getRegionalManagerCoaches = async () => {
-                const result = await GetCoachesOfParticularRegionalManager(state.authPage.auth_data?._id);
+                const result = await GetCoachesOfParticularRegionalManager(state.authPage.auth_data?.user_id);
                 if (result) {
                     setCoaches(result);
                 }

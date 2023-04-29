@@ -1,50 +1,26 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import {
-    SafeAreaView, TouchableOpacity, StyleSheet, Text, View, ScrollView
+    SafeAreaView, TouchableOpacity, StyleSheet, Text, View
 } from 'react-native';
-import { useSelector } from "react-redux";
 import LinearGradient from 'react-native-linear-gradient';
-import { GetCoachesOfParticularRegionalManager } from '../services/RegionalManagerService';
-import Config from '../../Config';
 
 export default function RegionalManagerCalendar({ navigation }) {
-    const state = useSelector((state) => state);
-    const [coaches, setCoaches] = useState([]);
-
-    useEffect(() => {
-        try {
-            const getRegionalManagerCoaches = async () => {
-                const result = await GetCoachesOfParticularRegionalManager(state.authPage.auth_data?._id);
-                if (result.length > 0) {
-                    setCoaches(result);
-                }
-            };
-            getRegionalManagerCoaches();
-        } catch (e) { }
-    }, []);
-
     return (
         <LinearGradient colors={['#BCD7EF', '#D1E3AA', '#E3EE68', '#E1DA00']} style={styles.linearGradient}>
             <SafeAreaView style={styles.wrapper}>
-                <ScrollView>
-                    {coaches.map((coach, index) => {
-                        return (
-                            <View key={index}>
-                                <View key={index} style={styles.stdWrapper}>
-                                    <Text style={styles.title}>Coach {coach.coach_name}</Text>
-                                    {coach.schedules.map((v => {
-                                        return (
-                                            <Text key={v._id} style={styles.title}>{v.date}:{v.start_time} {v.end_time}</Text>
-                                        );
-                                    }))}
-                                </View>
-                            </View>
-                        );
-                    })}
-                </ScrollView>
-                <TouchableOpacity onPress={() => navigation.navigate("Regional Manager Dashboard")}>
-                    <Text style={styles.backbtn}>Back</Text>
-                </TouchableOpacity>
+                <Text style={styles.adminWrapper}>
+                    <TouchableOpacity onPress={() => navigation.navigate("Regional Manager Schedules")}>
+                        <Text style={{ ...styles.adminContainer, ...styles.adminBg1 }}>SCHEDULES</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity onPress={() => navigation.navigate("Regional Manager Classes")}>
+                        <Text style={{ ...styles.adminContainer, ...styles.adminBg2 }}>CLASSES</Text>
+                    </TouchableOpacity>
+                </Text>
+                <View style={styles.adminbtn}>
+                    <TouchableOpacity onPress={() => navigation.navigate("Regional Manager Dashboard")}>
+                        <Text style={styles.backbtn}>Back</Text>
+                    </TouchableOpacity>
+                </View>
             </SafeAreaView>
         </LinearGradient>
     );
@@ -52,22 +28,19 @@ export default function RegionalManagerCalendar({ navigation }) {
 
 const styles = StyleSheet.create({
     wrapper: {
-        marginTop: 60,
-        paddingLeft: 10,
-        paddingRight: 10,
         flex: 1,
-        justifyContent: 'flex-end'
     },
-    stdWrapper: {
-        flex: 1,
-        borderWidth: 1,
-        borderColor: '#000',
-        marginTop: 10
+    adminbtn: {
+        display: 'flex',
+        alignItems: 'center',
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        position: 'absolute',
+        bottom: 0,
+        marginBottom: 10,
+        width: '100%'
+
     },
-    // stdWrapper: {
-    //     padding: 10,
-    //     backgroundColor: '#fff'
-    // },
     backbtn: {
         borderColor: "#fff",
         paddingTop: 10,
@@ -78,28 +51,73 @@ const styles = StyleSheet.create({
         textAlign: "center",
         fontWeight: "700",
         marginTop: 25,
-        display: 'flex',
-        right: 0,
-        width: 150,
-        position: 'absolute',
-        bottom: 0,
-        marginBottom: 10
+        width: 120,
     },
-    title: {
-        color: '#000',
-        textAlign: 'center',
-        fontSize: 20,
-        textTransform: 'uppercase',
-        fontFamily: 'LemonJuice',
-        paddingBottom: 20
-    },
-    content: {
-        fontSize: 14,
-        padding: 10,
-        borderColor: '#000',
-        borderWidth: 1,
+    btnWrapper: {
+        borderColor: "#fff",
+        paddingTop: 10,
+        paddingBottom: 10,
+        backgroundColor: "#ff8400",
+        borderWidth: 3,
+        borderRadius: 10,
+        textAlign: "center",
+        fontWeight: "700",
+        marginTop: 25,
+        width: 120,
     },
     linearGradient: {
         flex: 1,
+        paddingLeft: 15,
+        paddingRight: 15,
+        borderRadius: 5
     },
+    adminWrapper: {
+        display: 'flex',
+        alignItems: 'center',
+        flexWrap: 'wrap',
+        justifyContent: 'space-between',
+        marginTop: 80,
+    },
+    adminContainer: {
+        width: 155,
+        margin: 5,
+        padding: 35,
+        paddingLeft: 0,
+        paddingRight: 0,
+        color: '#000',
+        fontSize: 12,
+        height: 100,
+        borderRadius: 10,
+        textAlign: 'center',
+        lineHeight: 20,
+        borderWidth: 3,
+        borderColor: '#fff',
+        fontWeight: '600',
+        fontFamily: 'LemonJuice',
+        verticalAlign: 'middle'
+    },
+    adminBg1: {
+        backgroundColor: '#00b050'
+    },
+    adminBg2: {
+        backgroundColor: '#5b9bd5'
+    },
+    adminBg3: {
+        backgroundColor: '#ed7d31'
+    },
+    adminBg4: {
+        backgroundColor: '#ffc000'
+    },
+    adminBg5: {
+        backgroundColor: '#993366'
+    },
+    adminBg6: {
+        backgroundColor: '#ff0000'
+    },
+    adminBg7: {
+        backgroundColor: '#ffff00'
+    },
+    adminBg8: {
+        backgroundColor: 'blue'
+    }
 });

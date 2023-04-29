@@ -8,6 +8,7 @@ import moment from 'moment';
 
 export default function SuperAdminBillingCoachSchool({ navigation, route }) {
     const [customerData, setCustomerData] = useState([]);
+
     useEffect(() => {
         try {
             const handleCustomers = async () => {
@@ -22,7 +23,6 @@ export default function SuperAdminBillingCoachSchool({ navigation, route }) {
                         acc[item.slot] ? acc[item.slot].cells.push({ child: item }) : (acc[item.slot] = { slot: item.slot, cells: [{ child: item }] });
                         return acc;
                     }, {}));
-                    console.log("session--->", sessionWise);
                     setCustomerData(sessionWise);
                 }
             };
@@ -53,7 +53,7 @@ export default function SuperAdminBillingCoachSchool({ navigation, route }) {
             <div style="display: flex; flex-direction: column;">
             <table border='1'>
                 <tr>
-                    <th>School # ${route.params.school._id}</th>
+                    <th>School #</th>
                     <th>Date MM/DD/YY: ${moment().format('MM/DD/YY')}-${moment(new Date().setDate(new Date().getDate() + 30)).format('MM/DD/YY')}</th>
                 </tr>
                 <tr>
@@ -105,7 +105,7 @@ export default function SuperAdminBillingCoachSchool({ navigation, route }) {
                 </View>
                 <DataTable style={styles.container}>
                     <DataTable.Header style={styles.tableHeader}>
-                        <DataTable.Title style={styles.title}>School # {route.params.school._id}</DataTable.Title>
+                        <DataTable.Title style={styles.title}>School #</DataTable.Title>
                         <DataTable.Title style={styles.title}>Date MM/DD/YY: {moment().format('MM/DD/YY')}-{moment(new Date().setDate(new Date().getDate() + 30)).format('MM/DD/YY')}</DataTable.Title>
                     </DataTable.Header>
                     <DataTable.Row>
@@ -120,9 +120,6 @@ export default function SuperAdminBillingCoachSchool({ navigation, route }) {
                         {customerData.map(v => {
                             return (
                                 <>
-                                    <DataTable.Header style={styles.tableHeader}>
-                                        <DataTable.Title style={styles.title}>Session: {v.slot}</DataTable.Title>
-                                    </DataTable.Header>
                                     <DataTable.Header style={styles.tableHeader}>
                                         <DataTable.Title style={styles.title}>Child Name</DataTable.Title>
                                         <DataTable.Title style={styles.title}>Child ID</DataTable.Title>

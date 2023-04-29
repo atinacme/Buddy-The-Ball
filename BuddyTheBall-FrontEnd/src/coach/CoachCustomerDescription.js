@@ -3,9 +3,11 @@ import { Text, SafeAreaView, TextInput, StyleSheet, Image, Alert, ScrollView, To
 import buddy from '../assets/buddy.png';
 import { GetAwardPhotosService, GetParticularCustomerService, UpdateCustomerService } from '../services/CustomerService';
 import { SelectList } from 'react-native-dropdown-select-list';
+import { Dropdown } from 'react-native-element-dropdown';
 import LinearGradient from 'react-native-linear-gradient';
 import { useSelector } from 'react-redux';
 import DateTimePicker from '@react-native-community/datetimepicker';
+import { GetClassCreatedByUserIdService } from '../services/ClassService';
 
 export default function CoachCustomerDescription({ navigation, route }) {
     const state = useSelector((state) => state);
@@ -17,42 +19,43 @@ export default function CoachCustomerDescription({ navigation, route }) {
         children_data: []
     });
     const [awardList, setAwardList] = useState([]);
+    const [classList, setClassList] = useState([]);
 
     useEffect(() => {
-        const added = state.authPage.auth_data?.assigned_schools.map(v => Object.assign(v, { key: v._id, value: v.school_name }));
-        const result = added.filter(v => { return (v.region == state.authPage.auth_data?.assigned_region); });
-        setData(result);
+        // const added = state.authPage.auth_data?.assigned_schools.map(v => Object.assign(v, { key: v._id, value: v.school_name }));
+        // const result = added.filter(v => { return (v.region == state.authPage.auth_data?.assigned_region); });
+        // setData(result);
         try {
-            const getParticularCustomer = async () => {
-                const result = await GetParticularCustomerService(route.params.customerData._id);
-                if (result) {
-                    var childrenData = [];
-                    result.children_data.length > 0 && result.children_data.forEach(element => {
-                        childrenData.push({
-                            player_name: element.player_name,
-                            player_age: element.player_age,
-                            wristband_level: element.wristband_level,
-                            school: element.school._id,
-                            slot_list: state.authPage.auth_data?.schedules.map((v) => Object.assign(v, { key: `${v.date} (${v.start_time} to ${v.end_time})`, value: `${v.date} (${v.start_time} to ${v.end_time})` })).filter(v => { return (v.school == element.school._id); }),
-                            slot: element.slot,
-                            handed: element.handed,
-                            num_buddy_books_read: element.num_buddy_books_read,
-                            jersey_size: element.jersey_size,
-                            visible: false,
-                            current_award: { name: element.current_award.name, image: element.current_award.image }
-                        });
-                    });
-                    setCustomerData({
-                        user_id: result.user_id,
-                        email: result.email,
-                        password: result.password,
-                        parent_name: result.parent_name,
-                        created_by: result.created_by,
-                        children_data: childrenData
-                    });
-                }
-            };
-            getParticularCustomer();
+            // const getParticularCustomer = async () => {
+            //     const result = await GetParticularCustomerService(route.params.customerData._id);
+            //     if (result) {
+            //         var childrenData = [];
+            //         result.children_data.length > 0 && result.children_data.forEach(element => {
+            //             childrenData.push({
+            //                 player_name: element.player_name,
+            //                 player_age: element.player_age,
+            //                 wristband_level: element.wristband_level,
+            //                 school: element.school._id,
+            //                 slot_list: state.authPage.auth_data?.schedules.map((v) => Object.assign(v, { key: `${v.date} (${v.start_time} to ${v.end_time})`, value: `${v.date} (${v.start_time} to ${v.end_time})` })).filter(v => { return (v.school == element.school._id); }),
+            //                 slot: element.slot,
+            //                 handed: element.handed,
+            //                 num_buddy_books_read: element.num_buddy_books_read,
+            //                 jersey_size: element.jersey_size,
+            //                 visible: false,
+            //                 current_award: { name: element.current_award.name, image: element.current_award.image }
+            //             });
+            //         });
+            //         setCustomerData({
+            //             user_id: result.user_id,
+            //             email: result.email,
+            //             password: result.password,
+            //             parent_name: result.parent_name,
+            //             created_by: result.created_by,
+            //             children_data: childrenData
+            //         });
+            //     }
+            // };
+            // getParticularCustomer();
 
             const getAwardsList = async () => {
                 const result = await GetAwardPhotosService();
@@ -61,13 +64,60 @@ export default function CoachCustomerDescription({ navigation, route }) {
                 }
             };
             getAwardsList();
+
+            const getClasses = async () => {
+                const data = { created_by_user_id: state.authPage.auth_data?.user_id }
+                const result = await GetClassCreatedByUserIdService(data);
+                if (result) {
+                    result.map(v => {
+                        v.schedules.map(u => {
+                            Object.assign(v, { value: v._id, label: `Class from ${u.date} (${u.start_time} to ${u.end_time})` })
+                        })
+                    })
+                    setClassList(result)
+                    const result1 = await GetParticularCustomerService(route.params.customerData._id);
+                    if (result1) {
+                        var childrenData = [];
+                        result1.children_data.length > 0 && result1.children_data.forEach(element => {
+                            element.class.schedules.map(u => {
+                                Object.assign(element.class, { value: element.class._id, label: `Class from ${u.date} (${u.start_time} to ${u.end_time}) in ${element.class.school.school_name}` })
+                            })
+                            childrenData.push({
+                                player_name: element.player_name,
+                                player_age: element.player_age,
+                                wristband_level: element.wristband_level,
+                                class_list: result,
+                                class: element.class,
+                                // school: element.school._id,
+                                // slot_list: state.authPage.auth_data?.schedules.map((v) => Object.assign(v, { key: `${v.date} (${v.start_time} to ${v.end_time})`, value: `${v.date} (${v.start_time} to ${v.end_time})` })).filter(v => { return (v.school == element.school._id); }),
+                                // slot: element.slot,
+                                handed: element.handed,
+                                num_buddy_books_read: element.num_buddy_books_read,
+                                jersey_size: element.jersey_size,
+                                visible: false,
+                                current_award: { name: element.current_award.name, image: element.current_award.image }
+                            });
+                        });
+                        setCustomerData({
+                            user_id: result1.user_id,
+                            email: result1.email,
+                            password: result1.password,
+                            parent_name: result1.parent_name,
+                            created_by: result1.created_by,
+                            children_data: childrenData
+                        });
+                    }
+                }
+            }
+            getClasses()
         } catch (e) { }
     }, []);
 
     const handleCustomerUpdate = async () => {
         try {
             customerData.children_data.forEach(v => delete v.calendar_visible);
-            customerData.children_data.forEach(v => delete v.slot_list);
+            customerData.children_data.forEach(v => delete v.class_list);
+            // customerData.children_data.forEach(v => delete v.slot_list);
             customerData.children_data.forEach(v => delete v.visible);
             const data = {
                 email: customerData.email,
@@ -136,9 +186,11 @@ export default function CoachCustomerDescription({ navigation, route }) {
                                     calendar_visible: false,
                                     player_age: '',
                                     wristband_level: '',
-                                    school: '',
-                                    slot_list: [],
-                                    slot: '',
+                                    class_list: classList,
+                                    class: '',
+                                    // school: '',
+                                    // slot_list: [],
+                                    // slot: '',
                                     handed: '',
                                     num_buddy_books_read: '',
                                     jersey_size: '',
@@ -206,7 +258,30 @@ export default function CoachCustomerDescription({ navigation, route }) {
                                 {!item.wristband_level &&
                                     <Text style={{ fontSize: 10, color: 'red' }}>WristBand Level is Required</Text>
                                 }
-                                <Text style={styles.label}>School</Text>
+                                <Text style={styles.label}>Class</Text>
+                                <Dropdown
+                                    style={styles.dropdown}
+                                    placeholderStyle={styles.placeholderStyle}
+                                    selectedTextStyle={styles.selectedTextStyle}
+                                    inputSearchStyle={styles.inputSearchStyle}
+                                    iconStyle={styles.iconStyle}
+                                    data={item.class_list}
+                                    search
+                                    maxHeight={300}
+                                    labelField="label"
+                                    valueField="value"
+                                    searchPlaceholder="Search..."
+                                    value={item.class}
+                                    onChange={(val) => {
+                                        let newArr = [...customerData.children_data];
+                                        newArr[index].class = val;
+                                        setCustomerData({ ...customerData, children_data: newArr });
+                                    }}
+                                />
+                                {!item.class &&
+                                    <Text style={{ fontSize: 10, color: 'red' }}>Class is Required</Text>
+                                }
+                                {/* <Text style={styles.label}>School</Text>
                                 {item.school === '' ?
                                     <SelectList
                                         setSelected={(val) => {
@@ -275,7 +350,7 @@ export default function CoachCustomerDescription({ navigation, route }) {
                                 }
                                 {!item.slot &&
                                     <Text style={{ fontSize: 10, color: 'red' }}>Slot is Required</Text>
-                                }
+                                } */}
                                 <Text style={styles.label}>Handed</Text>
                                 <TextInput
                                     name="handed"
@@ -447,5 +522,29 @@ const styles = StyleSheet.create({
     buttonImage: {
         height: 100,
         width: 100
-    }
+    },
+    dropdown: {
+        margin: 16,
+        height: 60,
+        borderBottomColor: 'gray',
+        borderBottomWidth: 0.5,
+    },
+    icon: {
+        marginRight: 5,
+    },
+    placeholderStyle: {
+        fontSize: 16,
+    },
+    selectedTextStyle: {
+        fontSize: 16,
+        height: 60
+    },
+    iconStyle: {
+        width: 20,
+        height: 20,
+    },
+    inputSearchStyle: {
+        height: 40,
+        fontSize: 16,
+    },
 });

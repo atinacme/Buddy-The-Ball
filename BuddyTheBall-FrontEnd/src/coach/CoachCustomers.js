@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { SafeAreaView, Text, StyleSheet, TouchableOpacity, View, ScrollView } from 'react-native';
+import { SafeAreaView, Text, StyleSheet, TouchableOpacity, View, ScrollView, Alert } from 'react-native';
 import { useSelector } from "react-redux";
 import { DataTable } from 'react-native-paper';
 import LinearGradient from 'react-native-linear-gradient';
@@ -12,7 +12,8 @@ export default function CoachCustomers({ navigation }) {
     useEffect(() => {
         try {
             const getCustomers = async () => {
-                const result = await GetCustomersOfParticularCoachService(state.authPage.auth_data?._id);
+                const data = { coach_id: state.authPage.auth_data?.user_id, regional_manager_id: state.authPage.auth_data?.assigned_by_user_id }
+                const result = await GetCustomersOfParticularCoachService(data);
                 if (result) {
                     setCustomers(result);
                 }
@@ -34,10 +35,20 @@ export default function CoachCustomers({ navigation }) {
                             </DataTable.Header>
                             {customers.map(item => {
                                 return (
-                                    <TouchableOpacity key={item._id} onPress={() => navigation.navigate("Coach Customer Description", { customerData: item })}>
+                                    <TouchableOpacity key={item._id} onPress={() => item.created_by === 'coach' ?
+                                        navigation.navigate("Coach Customer Description", { customerData: item })
+                                        : Alert.alert(
+                                            "Alert",
+                                            "You can't Edit this!",
+                                            [
+                                                {
+                                                    text: "OK"
+                                                }
+                                            ]
+                                        )}>
                                         <DataTable.Row>
                                             <DataTable.Cell>{item.parent_name}</DataTable.Cell>
-                                            <DataTable.Cell>{item.created_by === 'coach' ? 'You' : 'Shopify'}</DataTable.Cell>
+                                            <DataTable.Cell>{item.created_by_user_id === state.authPage.auth_data?.user_id ? 'You' : item.created_by_user_id === state.authPage.auth_data?.assigned_by_user_id ? item.created_by_name : 'Shopify'}</DataTable.Cell>
                                             <DataTable.Cell>{item.email}</DataTable.Cell>
                                         </DataTable.Row>
                                     </TouchableOpacity>
@@ -47,7 +58,7 @@ export default function CoachCustomers({ navigation }) {
                     </View>
                 </ScrollView>
                 <View style={styles.adminbtn}>
-                    <TouchableOpacity onPress={() => navigation.navigate("Customer Creation")}>
+                    <TouchableOpacity onPress={() => navigation.navigate("Coach Customer Creation")}>
                         <Text style={styles.coach_cta}>Customer Creation</Text>
                     </TouchableOpacity>
                     <TouchableOpacity onPress={() => navigation.navigate("Coach Dashboard")}>

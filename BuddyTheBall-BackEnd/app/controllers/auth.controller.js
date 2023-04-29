@@ -8,6 +8,7 @@ const Customer = db.customer;
 const School = db.school;
 const Coach = db.coach;
 const RegionalManager = db.regionalmanager;
+const Class = db.class;
 
 exports.signup = (req, res) => {
     console.log("req--->", req.body);
@@ -36,8 +37,10 @@ exports.signup = (req, res) => {
                         player_name: element.player_name,
                         player_age: element.player_age,
                         wristband_level: element.wristband_level ? element.wristband_level : null,
-                        school: element.school,
-                        slot: element.slot,
+                        class: element.class,
+                        // school: element.school,
+                        // coach: element.coach,
+                        // schedule: element.schedule,
                         handed: element.handed,
                         num_buddy_books_read: element.num_buddy_books_read,
                         jersey_size: element.jersey_size ? element.jersey_size : null,
@@ -51,7 +54,9 @@ exports.signup = (req, res) => {
                     password: req.body.password,
                     parent_name: req.body.parent_name,
                     created_by: req.body.created_by,
-                    coach: req.body.coach,
+                    created_by_name: req.body.created_by_name,
+                    created_by_user_id: req.body.created_by_user_id,
+                    coach: req.body.created_by === "coach" ? req.body.coach : null,
                     children_data: children_data
                 });
 
@@ -62,18 +67,23 @@ exports.signup = (req, res) => {
                     }
                     var schoolsList = [];
                     req.body.children_data.forEach(element => {
-                        schoolsList.push(element.school);
-                    });
-                    const school_arr = schoolsList.filter((item, index) => schoolsList.indexOf(item) === index);
-                    console.log("xcdgs--->", schoolsList, school_arr);
-                    school_arr.forEach(v => {
-                        School.findByIdAndUpdate(v, {
-                            $push: {
-                                customers: customer._id
-                            }
+                        Class.findById(element.class).then(data => {
+                            console.log("gdsfds--->", data)
+                            schoolsList.push(data.school);
                         })
-                            .then();
                     });
+                    setTimeout(() => {
+                        const school_arr = schoolsList.filter((item, index) => schoolsList.indexOf(item) === index);
+                        console.log("xcdgs--->", schoolsList, school_arr);
+                        school_arr.forEach(v => {
+                            School.findByIdAndUpdate(v, {
+                                $push: {
+                                    customers: customer._id
+                                }
+                            })
+                                .then();
+                        });
+                    }, 1000)
                 });
             }
             if (req.body.roles[0] === "coach") {
@@ -155,6 +165,7 @@ exports.signup = (req, res) => {
                         res.status(500).send({ message: err });
                         return;
                     }
+                    console.log("dgdg--->", roles);
 
                     user.roles = roles.map(role => role._id);
                     user.save(err => {
@@ -173,6 +184,7 @@ exports.signup = (req, res) => {
                     res.status(500).send({ message: err });
                     return;
                 }
+                console.log("qaws--->", role);
 
                 user.roles = [role._id];
                 user.save(err => {
@@ -225,12 +237,14 @@ exports.signin = (req, res) => {
             for (let i = 0; i < user.roles.length; i++) {
                 authorities.push("ROLE_" + user.roles[i].name.toUpperCase());
             }
+            console.log("stgsg--->", user);
 
             if (authorities[0] === "ROLE_COACH") {
                 Coach.findOne({
                     email: req.body.email
                 })
                     .populate("assigned_schools", "-__v")
+                    .populate("classes", "-__v")
                     .populate("schedules", "-__v")
                     .exec((err, coach_data) => {
                         if (err) {
@@ -250,11 +264,25 @@ exports.signin = (req, res) => {
                 Customer.findOne({
                     email: req.body.email
                 })
-                    .populate("school coach", "-__v")
-                    .exec((err, customer_data) => {
-                        if (err) {
-                            res.status(500).send({ message: err });
+                    .populate([{
+                        path: 'children_data.class',
+                        populate: {
+                            path: 'schedules',
+                            model: 'Schedule',
+                            populate: {
+                                path: 'coaches',
+                                model: 'Coach'
+                            },
                         }
+                    }, {
+                        path: 'children_data.class',
+                        populate: {
+                            path: 'school',
+                            model: 'School'
+                        },
+                    }])
+                    .exec(function (err, customer_data) {
+                        if (err) return res.status(404).send({ message: "Not found Customer with email" + email });
                         return res.status(200).send({
                             id: user._id,
                             username: user.username,

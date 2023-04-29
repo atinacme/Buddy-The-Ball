@@ -39,6 +39,7 @@ exports.getCoachesOfParticularRegionalManager = (req, res) => {
     const id = req.params.id;
 
     Coach.find({ assigned_by_user_id: id })
+        .populate("assigned_schools", "-__v")
         .populate("schedules")
         .populate("schedules.school", "-__v")
         .then(data => {

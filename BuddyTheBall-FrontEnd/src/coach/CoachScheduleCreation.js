@@ -3,16 +3,19 @@ import {
     SafeAreaView, TouchableOpacity, StyleSheet, Text, Alert, View, Button, Pressable, TextInput, ScrollView, Platform
 } from 'react-native';
 import { useSelector } from "react-redux";
-import { SelectList } from 'react-native-dropdown-select-list';
+import { SelectList, MultipleSelectList } from 'react-native-dropdown-select-list';
 import { Agenda } from 'react-native-calendars';
 import moment from 'moment';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { CreateAgendaService, GetAgendaByDateAndCoachService, GetAgendaByDateService, UpdateAgendaService } from '../services/CalendarService';
 import { CreateScheduleService } from '../services/ScheduleService';
+import { GetRegionWiseSchools } from '../services/SchoolService';
+import { GetCoachesOfParticularRegionalManager } from '../services/RegionalManagerService';
 
 export default function CoachScheduleCreation({ navigation }) {
     const state = useSelector((state) => state);
-    const schoolsList = state.authPage.auth_data?.assigned_schools.map(v => Object.assign(v, { key: v._id, value: v.school_name }));
+    const [schoolsList, setSchoolslist] = useState([]);
+    const [coachList, setCoachList] = useState([]);
     const [time, setTime] = useState({ start: new Date(), end: new Date() });
     const [date, setDate] = useState(new Date());
     const [mode, setMode] = useState('date');
@@ -23,11 +26,13 @@ export default function CoachScheduleCreation({ navigation }) {
         endTime: false
     });
     const [topic, setTopic] = useState();
+    const [coach, setCoach] = useState([]);
     const [school, setSchool] = useState();
 
     const onChange = (event, selectedDate) => {
         const currentDate = selectedDate;
         setShow(false);
+        console.log("sxh--->", currentDate, moment(currentDate).format('h:mm A'));
         if (showType.date) {
             setDate(currentDate);
         } else if (showType.startTime) {
@@ -65,12 +70,14 @@ export default function CoachScheduleCreation({ navigation }) {
 
     const handleCreateSchedule = async () => {
         const data = {
-            coach_id: state.authPage.auth_data?._id,
-            user_id: state.authPage.auth_data?.user_id,
+            created_by: "coach",
+            created_by_name: state.authPage.auth_data?.coach_name,
+            created_by_user_id: state.authPage.auth_data?.user_id,
+            coaches: state.authPage.auth_data?._id,
             date: moment(date).format("YYYY-MM-DD"),
-            start_time: moment(time.start).format('H:mm A'),
-            end_time: moment(time.end).format('H:mm A'),
-            school: school,
+            start_time: moment(time.start).format('h:mm A'),
+            end_time: moment(time.end).format('h:mm A'),
+            // school: school,
             topic: topic
         };
         const result = await CreateScheduleService(data);
@@ -94,14 +101,8 @@ export default function CoachScheduleCreation({ navigation }) {
             <Button onPress={showStartTimepicker} title="Select Start Time" />
             <Button onPress={showEndTimepicker} title="Select End Time" />
             <Text style={styles.label}>Date : {moment(date).format("YYYY-MM-DD")}</Text>
-            <Text style={styles.label}>Start Time : {moment(time.start).format('H:mm A')}</Text>
-            <Text style={styles.label}>End Time : {moment(time.end).format('H:mm A')}</Text>
-            <Text style={styles.label}>School :</Text>
-            <SelectList
-                setSelected={(val) => setSchool(val)}
-                data={schoolsList}
-                save="key"
-            />
+            <Text style={styles.label}>Start Time : {moment(time.start).format('h:mm A')}</Text>
+            <Text style={styles.label}>End Time : {moment(time.end).format('h:mm A')}</Text>
             <View>
                 <Text style={styles.label}>Topic :</Text>
                 <TextInput
@@ -115,7 +116,6 @@ export default function CoachScheduleCreation({ navigation }) {
                     testID="dateTimePicker"
                     value={date}
                     mode={mode}
-                    is24Hour={true}
                     onChange={onChange}
                 />
             )}

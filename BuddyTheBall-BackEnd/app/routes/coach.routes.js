@@ -13,7 +13,7 @@ module.exports = function (app) {
 
     app.get("/api/getParticularCoach/:id", controller.findParticularCoach);
 
-    app.get("/api/getCustomersOfParticularCoach/:id", controller.findCustomersOfParticularCoach);
+    app.post("/api/getCustomersOfParticularCoach", controller.findCustomersOfParticularCoach);
 
     app.get("/api/getCustomersOfParticularCoachOfParticularSchool/:coachId/:schoolId", controller.findCustomersOfParticularCoachOfParticularSchool);
 
